@@ -58,10 +58,10 @@ nb_path: "nbs/utils.ipynb"
 
 
 
-<div id="d09dec5f-f5c1-4e88-9e3b-3c78bcf5c69e"></div>
+<div id="79c41e50-40dd-4c92-aeaf-26c66ff61854"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#d09dec5f-f5c1-4e88-9e3b-3c78bcf5c69e');
+var element = $('#79c41e50-40dd-4c92-aeaf-26c66ff61854');
 
 (function(root) {
   function now() {
@@ -201,10 +201,10 @@ var element = $('#d09dec5f-f5c1-4e88-9e3b-3c78bcf5c69e');
 
 
 
-<div id="6f3215be-449a-47d5-bb5d-8d33ac4a7e4b"></div>
+<div id="77276786-cbc6-40d8-8bf7-bade4e099385"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#6f3215be-449a-47d5-bb5d-8d33ac4a7e4b');
+var element = $('#77276786-cbc6-40d8-8bf7-bade4e099385');
 
 if ((window.PyViz === undefined) || (window.PyViz instanceof HTMLElement)) {
   window.PyViz = {comms: {}, comm_status:{}, kernels:{}, receivers: {}, plot_index: []}
@@ -487,9 +487,9 @@ if (window.Jupyter !== undefined) {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">fridge</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
-<span class="n">class_map</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">fridge</span><span class="o">.</span><span class="n">class_map</span><span class="p">()</span>
-<span class="n">parser</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">fridge</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">class_map</span><span class="p">)</span>
-<span class="n">train_records</span><span class="p">,</span> <span class="n">valid_records</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+<span class="n">test_class_map</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">fridge</span><span class="o">.</span><span class="n">class_map</span><span class="p">()</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">fridge</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">test_class_map</span><span class="p">)</span>
+<span class="n">test_train_records</span><span class="p">,</span> <span class="n">test_valid_records</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -644,7 +644,7 @@ if (window.Jupyter !== undefined) {
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">aggregate_record_data</span><span class="p">(</span><span class="n">valid_records</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">aggregate_record_data</span><span class="p">(</span><span class="n">test_valid_records</span><span class="p">))</span>
 <span class="n">res</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
@@ -693,73 +693,73 @@ if (window.Jupyter !== undefined) {
   <tbody>
     <tr>
       <th>0</th>
-      <td>0</td>
-      <td>499</td>
-      <td>666</td>
-      <td>2</td>
-      <td>100</td>
-      <td>233</td>
-      <td>173</td>
-      <td>521</td>
-      <td>46284</td>
-      <td>0.139270</td>
-      <td>0.382184</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>22</td>
-      <td>499</td>
-      <td>666</td>
-      <td>4</td>
-      <td>139</td>
-      <td>258</td>
-      <td>116</td>
-      <td>408</td>
-      <td>34748</td>
-      <td>0.104557</td>
-      <td>0.407534</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>22</td>
+      <td>46</td>
       <td>499</td>
       <td>666</td>
       <td>3</td>
-      <td>128</td>
-      <td>469</td>
-      <td>389</td>
-      <td>523</td>
-      <td>45694</td>
-      <td>0.137494</td>
-      <td>2.544776</td>
+      <td>101</td>
+      <td>219</td>
+      <td>171</td>
+      <td>478</td>
+      <td>36226</td>
+      <td>0.109005</td>
+      <td>0.384365</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>46</td>
+      <td>499</td>
+      <td>666</td>
+      <td>1</td>
+      <td>209</td>
+      <td>423</td>
+      <td>363</td>
+      <td>474</td>
+      <td>23754</td>
+      <td>0.071476</td>
+      <td>1.927928</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>9</td>
+      <td>499</td>
+      <td>666</td>
+      <td>3</td>
+      <td>107</td>
+      <td>240</td>
+      <td>272</td>
+      <td>501</td>
+      <td>30457</td>
+      <td>0.091646</td>
+      <td>0.580786</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>125</td>
+      <td>9</td>
       <td>499</td>
       <td>666</td>
-      <td>2</td>
-      <td>86</td>
-      <td>436</td>
-      <td>245</td>
-      <td>501</td>
-      <td>89600</td>
-      <td>0.269608</td>
-      <td>1.367188</td>
+      <td>1</td>
+      <td>261</td>
+      <td>393</td>
+      <td>274</td>
+      <td>449</td>
+      <td>23100</td>
+      <td>0.069508</td>
+      <td>0.754286</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>43</td>
+      <td>21</td>
       <td>499</td>
       <td>666</td>
-      <td>2</td>
-      <td>22</td>
-      <td>329</td>
-      <td>276</td>
-      <td>493</td>
-      <td>66619</td>
-      <td>0.200458</td>
-      <td>1.414747</td>
+      <td>3</td>
+      <td>196</td>
+      <td>299</td>
+      <td>200</td>
+      <td>428</td>
+      <td>23484</td>
+      <td>0.070664</td>
+      <td>0.451754</td>
     </tr>
   </tbody>
 </table>
