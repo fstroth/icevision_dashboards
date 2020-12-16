@@ -38,7 +38,7 @@ class TrainValRecordsComparison:
         # use the label column for here on generically
         if self.class_map is not None:
             full_data["label_num"] = full_data["label"]
-            full_data["label"] = full_data["label"].apply(class_map.get_id)
+            full_data["label"] = full_data["label"].apply(self.class_map.get_id)
         return full_data
 
     def _collect_stat(self):
