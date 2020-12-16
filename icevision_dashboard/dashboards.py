@@ -38,7 +38,7 @@ class TrainValRecordsComparison:
         # use the label column for here on generically
         if self.class_map is not None:
             full_data["label_num"] = full_data["label"]
-            full_data["label"] = full_data["label"].apply(self.class_map.get_id)
+            full_data["label"] = full_data["label"].apply(class_map.get_id)
         return full_data
 
     def _collect_stat(self):
@@ -89,7 +89,7 @@ class TrainValRecordsComparison:
 
     def area_histogram(self, width=500, height=500):
         """Generates area histogram for the train and val dataset."""
-        return class_area_histogram_with_select([group[1] for group in self.data.groupby("type")], width=width, height=height)
+        return histogram_with_gui([group[1] for group in self.data.groupby("type")], hist_func=area_histogram, width=width, height=height)
 
     def show(self):
         table = self.comparison_table(width=600, height=250)

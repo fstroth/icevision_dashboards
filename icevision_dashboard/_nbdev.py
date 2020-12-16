@@ -4,13 +4,14 @@ __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
 index = {"gallery": "components.ipynb",
          "barplot_class_occurance": "components.ipynb",
-         "draw_area_histogram": "components.ipynb",
-         "class_area_histogram_with_select": "components.ipynb",
+         "area_histogram": "components.ipynb",
+         "histogram_with_gui": "components.ipynb",
          "TrainValRecordsComparison": "dashboards.ipynb",
          "convert_rgb_image_to_bokeh_rgb_image": "utils.ipynb",
          "draw_record_with_bokeh": "utils.ipynb",
          "aggregate_record_data": "utils.ipynb",
-         "draw_class_based_barplot": "utils.ipynb"}
+         "draw_class_based_barplot": "utils.ipynb",
+         "histogram": "utils.ipynb"}
 
 modules = ["components.py",
            "dashboards.py",

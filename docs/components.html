@@ -58,10 +58,10 @@ nb_path: "nbs/components.ipynb"
 
 
 
-<div id="6613d6e2-8c31-46ee-af72-e0f91da9b1fc"></div>
+<div id="94a3c6aa-819c-40c2-832d-761a895b849e"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#6613d6e2-8c31-46ee-af72-e0f91da9b1fc');
+var element = $('#94a3c6aa-819c-40c2-832d-761a895b849e');
 
 (function(root) {
   function now() {
@@ -201,10 +201,10 @@ var element = $('#6613d6e2-8c31-46ee-af72-e0f91da9b1fc');
 
 
 
-<div id="84bf0c74-bcff-43a8-874e-94d81761bd92"></div>
+<div id="2246d1db-c95b-4373-8b4c-935c48db4747"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#84bf0c74-bcff-43a8-874e-94d81761bd92');
+var element = $('#2246d1db-c95b-4373-8b4c-935c48db4747');
 
 if ((window.PyViz === undefined) || (window.PyViz instanceof HTMLElement)) {
   window.PyViz = {comms: {}, comm_status:{}, kernels:{}, receivers: {}, plot_index: []}
@@ -487,9 +487,9 @@ if (window.Jupyter !== undefined) {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">fridge</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
-<span class="n">test_class_map</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">fridge</span><span class="o">.</span><span class="n">class_map</span><span class="p">()</span>
-<span class="n">parser</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">fridge</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">test_class_map</span><span class="p">)</span>
-<span class="n">test_train_records</span><span class="p">,</span> <span class="n">test_valid_records</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+<span class="n">class_map</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">fridge</span><span class="o">.</span><span class="n">class_map</span><span class="p">()</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">fridge</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">class_map</span><span class="p">)</span>
+<span class="n">train_records</span><span class="p">,</span> <span class="n">valid_records</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -528,8 +528,8 @@ if (window.Jupyter !== undefined) {
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_record_stats</span> <span class="o">=</span> <span class="n">aggregate_record_data</span><span class="p">(</span><span class="n">test_valid_records</span><span class="p">)</span>
-<span class="n">test_record_stats</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">test_record_stats</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">record_stats</span> <span class="o">=</span> <span class="n">aggregate_record_data</span><span class="p">(</span><span class="n">valid_records</span><span class="p">)</span>
+<span class="n">record_stats</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">record_stats</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -585,7 +585,7 @@ if (window.Jupyter !== undefined) {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%capture</span> --no-stderr
-<span class="n">gallery</span><span class="p">(</span><span class="n">test_valid_records</span><span class="p">)</span>
+<span class="n">gallery</span><span class="p">(</span><span class="n">valid_records</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -641,7 +641,7 @@ if (window.Jupyter !== undefined) {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%capture</span> --no-stderr
-<span class="n">barplot_class_occurance</span><span class="p">(</span><span class="n">test_record_stats</span><span class="p">)</span>
+<span class="n">barplot_class_occurance</span><span class="p">(</span><span class="n">record_stats</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -668,7 +668,7 @@ if (window.Jupyter !== undefined) {
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="draw_area_histogram" class="doc_header"><code>draw_area_histogram</code><a href="https://github.com/fstroth/icevision_dashboard/tree/master/icevision_dashboard/components.py#L97" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>draw_area_histogram</code>(<strong><code>record_stats</code></strong>, <strong><code>class_label</code></strong>, <strong><code>class_map</code></strong>=<em><code>None</code></em>, <strong><code>bins</code></strong>=<em><code>10</code></em>, <strong><code>normalized</code></strong>=<em><code>False</code></em>, <strong><code>width</code></strong>=<em><code>500</code></em>, <strong><code>height</code></strong>=<em><code>500</code></em>)</p>
+<h4 id="area_histogram" class="doc_header"><code>area_histogram</code><a href="https://github.com/fstroth/icevision_dashboard/tree/master/icevision_dashboard/components.py#L97" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>area_histogram</code>(<strong><code>record_stats</code></strong>, <strong><code>class_label</code></strong>, <strong><code>class_map</code></strong>=<em><code>None</code></em>, <strong><code>bins</code></strong>=<em><code>10</code></em>, <strong><code>normalized</code></strong>=<em><code>False</code></em>, <strong><code>density</code></strong>=<em><code>False</code></em>, <strong><code>range</code></strong>=<em><code>None</code></em>, <strong><code>width</code></strong>=<em><code>500</code></em>, <strong><code>height</code></strong>=<em><code>500</code></em>)</p>
 </blockquote>
 <p>Creates a histogram for a given class_label from record_stats.</p>
 
@@ -697,7 +697,7 @@ if (window.Jupyter !== undefined) {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%capture</span> --no-stderr
-<span class="n">pn</span><span class="o">.</span><span class="n">Row</span><span class="p">(</span><span class="n">draw_area_histogram</span><span class="p">(</span><span class="n">test_record_stats</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">test_class_map</span><span class="p">))</span>
+<span class="n">pn</span><span class="o">.</span><span class="n">Row</span><span class="p">(</span><span class="n">area_histogram</span><span class="p">(</span><span class="n">record_stats</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">class_map</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">45000</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
 </pre></div>
 
     </div>
@@ -718,9 +718,10 @@ if (window.Jupyter !== undefined) {
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="class_area_histogram_with_select" class="doc_header"><code>class_area_histogram_with_select</code><a href="https://github.com/fstroth/icevision_dashboard/tree/master/icevision_dashboard/components.py#L116" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>class_area_histogram_with_select</code>(<strong><code>record_stats_list</code></strong>, <strong><code>class_map</code></strong>=<em><code>None</code></em>, <strong><code>width</code></strong>=<em><code>500</code></em>, <strong><code>height</code></strong>=<em><code>500</code></em>)</p>
+<h4 id="histogram_with_gui" class="doc_header"><code>histogram_with_gui</code><a href="https://github.com/fstroth/icevision_dashboard/tree/master/icevision_dashboard/components.py#L116" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>histogram_with_gui</code>(<strong><code>record_stats_list</code></strong>, <strong><code>hist_func</code></strong>, <strong><code>class_map</code></strong>=<em><code>None</code></em>, <strong><code>width</code></strong>=<em><code>500</code></em>, <strong><code>height</code></strong>=<em><code>500</code></em>)</p>
 </blockquote>
-<p>Creates histograms for areas from a list of record_stats.</p>
+<p>Creates histograms for a list of record_stats and a histogram function (based on the histogram function from utils) with a full gui to customize the histogram parameters.
+The hist function must have the following call head: (record_stats, class_label, class_map, bins, normalized, density, range, width, height)</p>
 
 </div>
 
@@ -747,7 +748,7 @@ if (window.Jupyter !== undefined) {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%capture</span> --no-stderr
-<span class="n">class_area_histogram_with_select</span><span class="p">([</span><span class="n">test_record_stats</span><span class="p">,</span> <span class="n">test_record_stats</span><span class="p">],</span> <span class="n">test_class_map</span><span class="p">)</span>
+<span class="n">histogram_with_gui</span><span class="p">([</span><span class="n">record_stats</span><span class="p">,</span> <span class="n">record_stats</span><span class="p">],</span> <span class="n">area_histogram</span><span class="p">,</span> <span class="n">class_map</span><span class="p">)</span>
 </pre></div>
 
     </div>
