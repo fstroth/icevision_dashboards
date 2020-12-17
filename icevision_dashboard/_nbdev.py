@@ -3,6 +3,7 @@
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
 index = {"gallery": "components.ipynb",
+         "filtered_gallery": "components.ipynb",
          "barplot_class_occurance": "components.ipynb",
          "area_histogram": "components.ipynb",
          "histogram_with_gui": "components.ipynb",
@@ -11,7 +12,8 @@ index = {"gallery": "components.ipynb",
          "draw_record_with_bokeh": "utils.ipynb",
          "aggregate_record_data": "utils.ipynb",
          "draw_class_based_barplot": "utils.ipynb",
-         "histogram": "utils.ipynb"}
+         "histogram": "utils.ipynb",
+         "generate_range_filter": "utils.ipynb"}
 
 modules = ["components.py",
            "dashboards.py",
