@@ -8,12 +8,15 @@ index = {"gallery": "components.ipynb",
          "area_histogram": "components.ipynb",
          "histogram_with_gui": "components.ipynb",
          "TrainValRecordsComparison": "dashboards.ipynb",
+         "aggregate_record_data": "utils.ipynb",
          "convert_rgb_image_to_bokeh_rgb_image": "utils.ipynb",
          "draw_record_with_bokeh": "utils.ipynb",
-         "aggregate_record_data": "utils.ipynb",
          "draw_class_based_barplot": "utils.ipynb",
          "histogram": "utils.ipynb",
-         "generate_range_filter": "utils.ipynb"}
+         "time_arc_plot": "utils.ipynb",
+         "generate_range_filter": "utils.ipynb",
+         "get_min_and_max_dates": "utils.ipynb",
+         "generate_creation_modification_time_filter": "utils.ipynb"}
 
 modules = ["components.py",
            "dashboards.py",

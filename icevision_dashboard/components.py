@@ -85,50 +85,73 @@ def gallery(
     return pn.Column(gui, pn.Row(_plot, align="center"))
 
 # Cell
-def filtered_gallery(records, class_map=None, height=500, width=500):
+def filtered_gallery(records, class_map=None, export_variable=None, height=500, width=500):
+    inner_width = int(0.97*width)
     data = aggregate_record_data(records)
     data = pd.DataFrame(data)
+
     if class_map is not None:
         data["label_num"] = data["label"]
         data["label"] = data["label"].apply(class_map.get_id)
 
-    # class filter
+    # generate bbox filters
     options = data["label"].unique()
     options.sort()
-    class_filter = pnw.MultiSelect(name="Class", options=options.tolist(), value=options.tolist())
-    # generate filters
-    area_filter = generate_range_filter(data, "area", "Area", steps=10)
-    width_filter = generate_range_filter(data, "bbox_width", "Bbox width", steps=10)
-    height_filter = generate_range_filter(data, "bbox_height", "Bbbox height", steps=10)
-    ratio_filter = generate_range_filter(data, "bbox_ratio", "Ratio", steps=10)
-    filters = pn.Card(class_filter, area_filter, width_filter, height_filter, ratio_filter, header="<h1>Filters</h1>", width=width)
+    bbox_class_filter = pnw.MultiSelect(name="Class", options=options.tolist(), value=options.tolist())
+    bbox_num_annotations_filter = generate_range_filter(data["num_annotations"], "Num. Annotations", steps=data["num_annotations"].max()+3)
+    bbox_area_filter = generate_range_filter(data["area"], "Area", steps=10)
+    bbox_width_filter = generate_range_filter(data["bbox_width"], "Bbox width", steps=10)
+    bbox_height_filter = generate_range_filter(data["bbox_height"], "Bbbox height", steps=10)
+    bbox_ratio_filter = generate_range_filter(data["bbox_ratio"], "Ratio", steps=10)
+    annotation_filters = pn.Card(bbox_class_filter, bbox_num_annotations_filter, bbox_area_filter, bbox_width_filter, bbox_height_filter, bbox_ratio_filter, header="<h2>Bbox Filters</h2>", width=int(0.98*width), collapsed=True)
 
-    inner_trigger_flag = False
-    @pn.depends(class_filter.param.value, area_filter[0].param.value, width_filter[0].param.value, height_filter[0].param.value, ratio_filter[0].param.value)
-    def _gallery(classes_selection, area_selection, width_selection, height_selection, ratio_selection):
+    # generate image filters
+    file_creation_modification_time_filter = generate_creation_modification_time_filter(data, width=int(0.99*width))
+    file_width_filter = generate_range_filter(data["width"], "Width", steps=10, width=int(0.99*width))
+    file_height_filter = generate_range_filter(data["height"], "Height", steps=10, width=int(0.99*width))
+    file_filters = pn.Card(file_creation_modification_time_filter, file_width_filter, file_height_filter, header="<h2>Image Filters</h2>", width=int(0.98*width), collapsed=True)
+
+    filters = pn.Card(pn.Column(file_filters, annotation_filters), header="<h1>Filters</h1>", width=width, collapsed=True)
+
+    @pn.depends(
+        bbox_class_filter.param.value, bbox_num_annotations_filter[0].param.value, bbox_area_filter[0].param.value, bbox_width_filter[0].param.value, bbox_height_filter[0].param.value, bbox_ratio_filter[0].param.value,
+        file_creation_modification_time_filter[1], file_creation_modification_time_filter[2], file_width_filter[0], file_height_filter[0]
+    )
+    def _gallery(classes_selection, num_annotation_selection, area_selection, width_selection, height_selection, ratio_selection, image_creation_date_selection, image_modification_date_selection, image_with_selection, image_height_selection):
         nonlocal data
-        nonlocal inner_trigger_flag
-        nonlocal class_filter
-        nonlocal area_filter
-        nonlocal width_filter
-        nonlocal height_filter
-        nonlocal ratio_filter
+        nonlocal bbox_class_filter
+        nonlocal bbox_num_annotations_filter
+        nonlocal bbox_area_filter
+        nonlocal bbox_width_filter
+        nonlocal bbox_height_filter
+        nonlocal bbox_ratio_filter
+        nonlocal file_creation_modification_time_filter
+        nonlocal file_width_filter
+        nonlocal file_height_filter
+
+        range_mask = lambda values, selections: (values >= selections[0]) & (values < selections[1])
 
         # generate gallery
         filtered_data = data[
             (data["label"].isin(classes_selection))
-            & (data["area"] > area_selection[0]) & (data["area"] < area_selection[1])
-            & (data["bbox_width"] > width_selection[0]) & (data["bbox_width"] < width_selection[1])
-            & (data["bbox_height"] > height_selection[0]) & (data["bbox_height"] < height_selection[1])
-            & (data["bbox_ratio"] > ratio_selection[0]) & (data["bbox_ratio"] < ratio_selection[1])
+            & range_mask(data["num_annotations"], num_annotation_selection)
+            & range_mask(data["area"], area_selection)
+            & range_mask(data["bbox_width"], width_selection)
+            & range_mask(data["bbox_height"], height_selection)
+            & range_mask(data["bbox_ratio"], ratio_selection)
+            & range_mask(data["creation_date"], image_creation_date_selection)
+            & range_mask(data["modification_date"], image_modification_date_selection)
+            & range_mask(data["width"], image_with_selection)
+            & range_mask(data["height"], image_height_selection)
         ]
         filtered_records = [records[i] for i in filtered_data["record_index"].unique()]
 
         # update filter histograms
-        area_filter[1] = histogram(filtered_data["area"], bins=20, height=100, width=int(width*0.99), range=(data["area"].min(), data["area"].max()), remove_tools=True)
-        width_filter[1] = histogram(filtered_data["bbox_width"], bins=20, height=100, width=int(width*0.99), range=(data["bbox_width"].min(), data["bbox_width"].max()), remove_tools=True)
-        height_filter[1] = histogram(filtered_data["bbox_height"], bins=20, height=100, width=int(width*0.99), range=(data["bbox_height"].min(), data["bbox_height"].max()), remove_tools=True)
-        ratio_filter[1] = histogram(filtered_data["bbox_ratio"], bins=20, height=100, width=int(width*0.99), range=(data["bbox_ratio"].min(), data["bbox_ratio"].max()), remove_tools=True)
+        bbox_num_annotations_filter[1] = histogram(data.groupby("id").count()["width"], bins=20, height=100, width=int(width*0.97), range=(data.groupby("id").count()["width"].min(), data.groupby("id").count()["width"].max()), remove_tools=True)
+        bbox_area_filter[1] = histogram(filtered_data["area"], bins=20, height=100, width=int(width*0.97), range=(data["area"].min(), data["area"].max()), remove_tools=True)
+        bbox_width_filter[1] = histogram(filtered_data["bbox_width"], bins=20, height=100, width=int(width*0.97), range=(data["bbox_width"].min(), data["bbox_width"].max()), remove_tools=True)
+        bbox_height_filter[1] = histogram(filtered_data["bbox_height"], bins=20, height=100, width=int(width*0.97), range=(data["bbox_height"].min(), data["bbox_height"].max()), remove_tools=True)
+        bbox_ratio_filter[1] = histogram(filtered_data["bbox_ratio"], bins=20, height=100, width=int(width*0.97), range=(data["bbox_ratio"].min(), data["bbox_ratio"].max()), remove_tools=True)
 
         if len(filtered_records) == 0:
             return None
