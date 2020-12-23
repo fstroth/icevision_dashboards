@@ -135,7 +135,11 @@ def time_arc_plot(start_date, end_date, plot_figure=None, width=500, height=300)
 def generate_range_filter(data, name, with_hist=True, steps=50, height=500, width=500):
     "Generates a range slider with a histogram (if with_hist is True) for a given pd.DataFrame and a column key."
     val_min = data.min()
-    val_max = data.max() if data.max() > val_min else val_min+1
+    val_max = data.max()
+    # subtract and add a bit to the min and max value to ensure the whole range is captured
+    dist = val_max-val_min if val_max != val_min else 1
+    val_min = val_min-0.01*dist
+    val_max = val_max+0.01*dist
     slider = pnw.RangeSlider(name=name, start=val_min, end=val_max, step=round(((val_max-val_min)/steps), 1))
     if with_hist:
         hist = histogram(data, bins=20, height=100, width=int(width*0.98), remove_tools=True)

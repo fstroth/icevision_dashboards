@@ -3,10 +3,10 @@
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
 index = {"gallery": "components.ipynb",
-         "filtered_gallery": "components.ipynb",
          "barplot_class_occurance": "components.ipynb",
          "area_histogram": "components.ipynb",
          "histogram_with_gui": "components.ipynb",
+         "DatasetFilter": "dashboards.ipynb",
          "TrainValRecordsComparison": "dashboards.ipynb",
          "aggregate_record_data": "utils.ipynb",
          "convert_rgb_image_to_bokeh_rgb_image": "utils.ipynb",

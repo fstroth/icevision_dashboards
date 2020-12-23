@@ -58,10 +58,10 @@ nb_path: "nbs/dashboards.ipynb"
 
 
 
-<div id="a8c11d6f-2281-4b32-9d92-6cfd8b6cc1aa"></div>
+<div id="0144a1b1-476b-4f25-8565-a7876b4d346c"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#a8c11d6f-2281-4b32-9d92-6cfd8b6cc1aa');
+var element = $('#0144a1b1-476b-4f25-8565-a7876b4d346c');
 
 (function(root) {
   function now() {
@@ -201,10 +201,10 @@ var element = $('#a8c11d6f-2281-4b32-9d92-6cfd8b6cc1aa');
 
 
 
-<div id="1e2d44c5-2a12-4adc-a393-41451a6aeba8"></div>
+<div id="a2a3b796-40cf-4d37-ab05-2d68e6e38afa"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#1e2d44c5-2a12-4adc-a393-41451a6aeba8');
+var element = $('#a2a3b796-40cf-4d37-ab05-2d68e6e38afa');
 
 if ((window.PyViz === undefined) || (window.PyViz instanceof HTMLElement)) {
   window.PyViz = {comms: {}, comm_status:{}, kernels:{}, receivers: {}, plot_index: []}
@@ -523,6 +523,68 @@ if (window.Jupyter !== undefined) {
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Dataset-creation">Dataset creation<a class="anchor-link" href="#Dataset-creation"> </a></h2>
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h2 id="DatasetFilter" class="doc_header"><code>class</code> <code>DatasetFilter</code><a href="https://github.com/fstroth/icevision_dashboard/tree/master/icevision_dashboard/dashboards.py#L20" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>DatasetFilter</code>(<strong><code>records</code></strong>, <strong><code>class_map</code></strong>=<em><code>None</code></em>, <strong><code>export_variable</code></strong>:<code>Optional</code>[<code>list</code>]=<em><code>None</code></em>, <strong><code>height</code></strong>=<em><code>500</code></em>, <strong><code>width</code></strong>=<em><code>500</code></em>)</p>
+</blockquote>
+<p>Creates a gallery with filter options to select subsets of the data. If the export_varialbe is set to a variable, that is a list a dict with the current selection (pd.Dataframe (key: data) and list of records (key: records)) will be append to the list.</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%capture</span> --no-stderr
+<span class="n">dump_var</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">ds_filter</span> <span class="o">=</span> <span class="n">DatasetFilter</span><span class="p">(</span><span class="n">valid_records</span><span class="p">,</span> <span class="n">class_map</span><span class="p">,</span> <span class="n">export_variable</span><span class="o">=</span><span class="n">dump_var</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="c1"># trigger click event to test if record is added to dump_var</span>
+<span class="n">ds_filter</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">clicks</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">dump_var</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">dump_var</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;records&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid_records</span><span class="p">)</span>
+<span class="n">ds_filter</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Dahboard-for-comparing-train-and-val-dataset">Dahboard for comparing train and val dataset<a class="anchor-link" href="#Dahboard-for-comparing-train-and-val-dataset"> </a></h2>
 </div>
 </div>
@@ -538,7 +600,7 @@ if (window.Jupyter !== undefined) {
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="TrainValRecordsComparison" class="doc_header"><code>class</code> <code>TrainValRecordsComparison</code><a href="https://github.com/fstroth/icevision_dashboard/tree/master/icevision_dashboard/dashboards.py#L18" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>TrainValRecordsComparison</code>(<strong><code>train_records</code></strong>, <strong><code>val_records</code></strong>, <strong><code>class_map</code></strong>=<em><code>None</code></em>)</p>
+<h2 id="TrainValRecordsComparison" class="doc_header"><code>class</code> <code>TrainValRecordsComparison</code><a href="https://github.com/fstroth/icevision_dashboard/tree/master/icevision_dashboard/dashboards.py#L115" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>TrainValRecordsComparison</code>(<strong><code>train_records</code></strong>, <strong><code>val_records</code></strong>, <strong><code>class_map</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Dashboard to compare the generated train and val records, to ensure the don't diverge to much from each other.</p>
 
