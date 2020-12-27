@@ -174,10 +174,11 @@ def barplot(counts, values, class_map=None, bar_type="horizontal", width=500, he
         values = [str(entry) for entry in values]
     else:
         values = [class_map.get_id(entry) for entry in values]
-    p = figure(width=width, height=height, y_range=values)
     if bar_type == "horizontal":
+        p = figure(width=width, height=height, y_range=values)
         p.hbar(y=values, left=0, right=counts, height=0.9)
     elif bar_type == "vertical":
+        p = figure(width=width, height=height, x_range=values)
         p.vbar(x=values, bottom=0, top=counts, width=0.9)
     else:
         raise ValueError("hist_type has to be of 'horizontal' or 'vertical'")
