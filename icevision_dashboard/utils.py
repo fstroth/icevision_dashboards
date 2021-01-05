@@ -280,9 +280,9 @@ def generate_range_filter(data, name, with_hist=True, steps=50, height=500, widt
     dist = val_max-val_min if val_max != val_min else 1
     val_min = val_min-0.01*dist
     val_max = val_max+0.01*dist
-    slider = pnw.RangeSlider(name=name, start=val_min, end=val_max, step=round(((val_max-val_min)/steps), 1))
+    slider = pnw.RangeSlider(name=name, start=val_min, end=val_max, step=round(((val_max-val_min)/steps), 1), width=width)
     if with_hist:
-        hist = histogram(data, bins=20, height=100, width=int(width*0.98), remove_tools=True)
+        hist = histogram(data, bins=20, height=100, width=width, remove_tools=True)
     else:
         hist = None
     range_filter = pn.Column(slider, hist, "<br>")
@@ -300,11 +300,11 @@ def get_min_and_max_dates(dates):
 # Cell
 def generate_creation_modification_time_filter(data, width=500, height=500):
     """Generates an arc plot with creation and modification time and two range sliders to select parts for the two."""
-    plot = time_arc_plot(data["creation_date"], data["modification_date"], width=int(0.98*width))
+    plot = time_arc_plot(data["creation_date"], data["modification_date"], width=width)
     min_creation_date, max_creation_date = get_min_and_max_dates(data["creation_date"])
     min_modification_date, max_modification_date = get_min_and_max_dates(data["modification_date"])
     min_date = min(min_creation_date, min_modification_date)
     max_date = max(max_creation_date, max_modification_date)
-    creation_time_slider = pnw.DateRangeSlider(name="Creation Time", start=min_date, end=max_date)
-    modification_time_slider = pnw.DateRangeSlider(name="Modification Time", start=min_date, end=max_date)
+    creation_time_slider = pnw.DateRangeSlider(name="Creation Time", start=min_date, end=max_date, width=width)
+    modification_time_slider = pnw.DateRangeSlider(name="Modification Time", start=min_date, end=max_date, width=width)
     return pn.Column(plot, creation_time_slider, modification_time_slider)

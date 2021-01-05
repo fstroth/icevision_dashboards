@@ -25,15 +25,15 @@ def gallery(
     display_bbox: bool = True,
     display_mask: bool = True,
     display_keypoints: bool = True,
-    width=None,
-    height=None
+    width=500,
+    height=500
 ):
     """Shows a gallery for a list of records."""
     # gui
-    btn_prev = pnw.Button(name="<")
-    btn_next = pnw.Button(name=">")
-    current = pnw.TextInput(value="1")
-    overall = pn.Row("/" + str(len(records)))
+    btn_prev = pnw.Button(name="<", width=int(2*width/6))
+    btn_next = pnw.Button(name=">", width=int(2*width/6))
+    current = pnw.TextInput(value="1", width=int(width/6))
+    overall = pn.Row("/" + str(len(records)), width=int(width/6))
     gui = pn.Row(btn_prev, current, overall, btn_next, align="center", height=50)
 
     # plotting function
@@ -52,8 +52,8 @@ def gallery(
             display_mask=display_mask,
             display_keypoints=display_keypoints,
             return_figure=True,
-            width=width,
-            height=height-50 if height is not None else height
+            width=width if width < height-50 else None,
+            height=height-50 if height-50 < width else None
         )
         return img
 
@@ -170,7 +170,7 @@ def annotations_per_image_stacked_hist(record_stats: pd.DataFrame, width=500, he
     hover = [("Annotations: ", "@can")]
 
     p = figure(title="Annotations per Image", x_axis_label="Number of annoations in the image", y_axis_label="Occurance", tooltips=tooltip, width=width, height=height)
-    annotation_classes = record_stats["label"].unique().astype(str).tolist()
+    annotation_classes = record_stats["label"].unique().tolist()
     x = list(range(1, max(record_stats["num_annotations"]+1)))
     # if there are more than 256 classes make the color loop the color palette
     num_loops = len(annotation_classes)//256
@@ -183,7 +183,8 @@ def annotations_per_image_stacked_hist(record_stats: pd.DataFrame, width=500, he
         values = np.zeros(max(x))
         for index, value in num_annotations.items():
             values[index-1] = value
-        data[label] = values
+        data[str(label)] = values
+    annotation_classes = [str(entry) for entry in annotation_classes]
     p.vbar_stack(annotation_classes, x="num_annotations", width=0.9, color=colors, source=data, legend_label=annotation_classes)
     p.legend.click_policy="hide"
 
