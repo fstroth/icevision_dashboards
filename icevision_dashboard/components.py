@@ -115,16 +115,16 @@ def area_histogram(record_stats, class_label, bins=10, normalized=False, density
     return p
 
 # Cell
-def comparison_histogram_with_gui(record_stats_list, hist_func, width=500, height=500):
+def comparison_histogram_with_gui(record_dataset_list, hist_func, width=500, height=500):
     """Creates histograms for a list of record_stats and a histogram function (based on the histogram function from utils) with a full gui to customize the histogram parameters.
     The hist function must have the following call head: (record_stats, class_label, bins, normalized, density, range, width, height)"""
     # gui
     # remove the first entry from the class map, because the background class is not explicit part of the annotaitons
-    unique_labels = sorted(pd.unique(record_stats_list[0]["label"]))
-    for record_stats in record_stats_list[1:]:
-        if not all(pd.unique(sorted(record_stats["label"])) == unique_labels):
+    unique_labels = sorted(pd.unique(record_dataset_list[0].data["label"]))
+    for record_dataset in record_dataset_list[1:]:
+        if not sorted(pd.unique(record_dataset.data["label"])) == unique_labels:
             raise ValueError("All dataframes in the records_stats_list need to have the same set of unique values.")
-    options = pd.unique(record_stats_list[0]["label"])
+    options = pd.unique(record_dataset_list[0].data["label"])
     options.sort()
     class_dropdown = pnw.Select(options=options.tolist())
 
@@ -132,8 +132,8 @@ def comparison_histogram_with_gui(record_stats_list, hist_func, width=500, heigh
     checkbox_normalized = pnw.Checkbox(name="Normalized", value=False)
     checkbox_density = pnw.Checkbox(name="Density", value=False)
 
-    range_min = int(min(record_stats["area"].min() for record_stats in record_stats_list))
-    range_max = int(max(record_stats["area"].max() for record_stats in record_stats_list))
+    range_min = int(min(record_stats.data["area"].min() for record_stats in record_dataset_list))
+    range_max = int(max(record_stats.data["area"].max() for record_stats in record_dataset_list))
     steps = (range_max-range_min)/50
     range_slider = pnw.RangeSlider(name="Range", start=range_min, end=range_max, step=steps)
 
@@ -141,7 +141,7 @@ def comparison_histogram_with_gui(record_stats_list, hist_func, width=500, heigh
     def _draw_histogram(class_label, bins, normalized, density, range):
         nonlocal width
         nonlocal height
-        nonlocal record_stats_list
+        nonlocal record_dataset_list
         # make the range slider dynamic with respect to the normalization
         if normalized:
             if range_slider.end != 1:
@@ -153,13 +153,13 @@ def comparison_histogram_with_gui(record_stats_list, hist_func, width=500, heigh
                 range_slider.value = ((range_slider.value[0]-old_slider_start)/(old_slider_end-old_slider_start), (range_slider.value[1]-old_slider_start)/(old_slider_end-old_slider_start))
                 range = range_slider.value
         else:
-            if range_slider.end != int(max(record_stats["area"].max() for record_stats in record_stats_list)):
-                range_slider.start = int(min(record_stats["area"].min() for record_stats in record_stats_list))
-                range_slider.end = int(max(record_stats["area"].max() for record_stats in record_stats_list))
+            if range_slider.end != int(max(record_stats.data["area"].max() for record_stats in record_dataset_list)):
+                range_slider.start = int(min(record_stats.data["area"].min() for record_stats in record_dataset_list))
+                range_slider.end = int(max(record_stats.data["area"].max() for record_stats in record_dataset_list))
                 range_slider.step = (range_max-range_min)/50
                 range_slider.value = ((range_slider.value[0]*(range_slider.end-range_slider.start))+range_slider.start, (range_slider.value[1]*(range_slider.end-range_slider.start))+range_slider.start)
                 range = range_slider.value
-        return pn.Row(*[hist_func(record_stats, class_label, bins=bins, normalized=normalized, density=density, range=range, width=width, height=height) for record_stats in record_stats_list])
+        return pn.Row(*[hist_func(record_stats.data, class_label, bins=bins, normalized=normalized, density=density, range=range, width=width, height=height) for record_stats in record_dataset_list])
 
     return pn.Column(class_dropdown, pn.Row(bins_slider, checkbox_normalized), pn.Row(range_slider, checkbox_density), _draw_histogram)
 
