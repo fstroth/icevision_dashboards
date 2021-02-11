@@ -1,0 +1,12 @@
+{
+  "icevision_dashboards": {
+    "Overview": "/",
+    "core.dashboards": "core.dashboards.html",
+    "core.data": "core.data.html",
+    "dashboards": "dashboards.html",
+    "data": "data.html",
+    "plotting.controls": "plotting.controls.html",
+    "plotting.core": "plotting.core.html",
+    "plotting.utils": "plotting.utils.html"
+  }
+}
