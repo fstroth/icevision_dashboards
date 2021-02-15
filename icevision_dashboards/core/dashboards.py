@@ -33,46 +33,57 @@ class Dashboard(ABC):
         pass
 
 # Cell
-class Gallery(Dashboard, ABC):
-    def __init__(self, dataset, sort_cols=None, sort_desciptor=None, width=500, height=500):
-        if sort_cols is None and sort_desciptor is not None or sort_cols is not None and sort_desciptor is None:
-            raise ValueError("sort_cols and sort_descrptor need to be both none or both need to be set.")
-        else:
-            self.sort_cols = sort_cols
-            self.sort_desciptor = sort_desciptor
-        self.index_mapping = [i for i in range(len(dataset))]
+class Gallery(Dashboard):
+    def __init__(self, dataset, gallery_desciptor, img_id_col, sort_cols=None, width=500, height=500):
+        """The dataset need to have a property num_images."""
         self.dataset = dataset
+        self.sort_cols = sort_cols
+        self.gallery_desciptor = gallery_desciptor
+        self.img_id_col = img_id_col
+        self.num_images = getattr(self.dataset, self.gallery_desciptor).sort_values(img_id_col).drop_duplicates(self.img_id_col).shape[0]
+        self.UPDATING = False
+        if sort_cols is None:
+            self.index_mapping = getattr(self.dataset, self.gallery_desciptor).sort_values(img_id_col).drop_duplicates(self.img_id_col).reset_index(drop=True)
+        else:
+            self.index_mapping = getattr(self.dataset, self.gallery_desciptor).sort_values(sort_cols[0]).drop_duplicates(self.img_id_col).reset_index(drop=True)
         super().__init__(width, height)
 
-    def get_mapped_index(self, idx):
-        return self.index_mapping[idx]
-
-    @abstractmethod
-    def load_image_by_index(self, index, width, height):
-        # needs to be a bokeh figure of pn Row, Column etc.
-        pass
+    def get_image_by_index(self, index):
+        height_subtracor = 50 if self.sort_cols is None else 100
+        return self.dataset.get_image_by_image_id(self.index_mapping.iloc[index][self.img_id_col], width=self.width, height=self.height-height_subtracor)
 
     def update_sorting(self, event):
-        self.index_mapping = getattr(self.dataset, self.sort_desciptor)[event.obj.value].argsort()
+        sort_ascending = False if  "Desc." in self.sort_order.value else True
+        data = getattr(self.dataset, self.gallery_desciptor).sort_values(self.sorter.value, ascending=sort_ascending)
+        if "Drop duplicates" in self.sort_order.value:
+            data = data.drop_duplicates(self.img_id_col)
+        self.num_images = data.shape[0]
+        self.image_count = pn.Row("/" + str(self.num_images), width=int(self.width/6))
+        self.gui[0][1][2] = self.image_count
+        self.index_mapping = data.reset_index(drop=True)
 
     def build_gui(self):
         if self.sort_cols is not None:
             self.sorter = pnw.Select(name="Sort by", options=self.sort_cols)
             self.sorter.param.watch(self.update_sorting, "value")
+            self.sort_order = pnw.CheckButtonGroup(name="Options", options=["Desc.", "Drop duplicates"])
+            self.sort_order.param.watch(self.update_sorting, "value")
+            self.sort_gui = pn.Row(self.sorter, self.sort_order)
 
         self.btn_prev = pnw.Button(name="<", width=int(2*self.width/6))
         self.btn_next = pnw.Button(name=">", width=int(2*self.width/6))
         self.current = pnw.TextInput(value="1", width=int(self.width/6))
-        self.image_count = pn.Row("/" + str(len(self.dataset)), width=int(self.width/6))
+        self.image_count = pn.Row("/" + str(self.num_images), width=int(self.width/6))
         if self.sort_cols is not None:
-            self.gui_controlls = pn.Column(self.sorter, pn.Row(self.btn_prev, self.current, self.image_count, self.btn_next, align="center", height=50))
+            self.gui_controlls = pn.Column(self.sort_gui, pn.Row(self.btn_prev, self.current, self.image_count, self.btn_next, align="center", height=50))
         else:
             self.gui_controlls = pn.Row(self.btn_prev, self.current, self.image_count, self.btn_next, align="center", height=50)
-        self._image = pn.Row(self.load_image_by_index(int(self.current.value)-1), align="center")
+        self._image = pn.Row(self.get_image_by_index(int(self.current.value)-1), align="center")
         self.gui = pn.Column(self.gui_controlls, self.image)
 
         self.btn_prev.on_click(self._previous)
         self.btn_next.on_click(self._next)
+        self.current.param.watch(self._number_input, "value")
 
     @property
     def image(self):
@@ -85,21 +96,31 @@ class Gallery(Dashboard, ABC):
 
     def _next(self, _):
         index = int(self.current.value)
-        if index == len(self.dataset):
+        if index == self.num_images:
             index = 1
         else:
             index += 1
+        self.UPDATING = True
         self.current.value = str(index)
-        self.image = pn.Row(self.load_image_by_index(index-1), align="center")
+        self.UPDATING = False
+        self.image = pn.Row(self.get_image_by_index(index-1), align="center")
 
     def _previous(self, _):
         index = int(self.current.value)
         if index == 1:
-            index = len(self.dataset)
+            index = self.num_images
         else:
             index -= 1
+        self.UPDATING = True
         self.current.value = str(index)
-        self.image = pn.Row(self.load_image_by_index(index-1), align="center")
+        self.UPDATING = False
+        self.image = pn.Row(self.get_image_by_index(index-1), align="center")
+
+    def _number_input(self, _):
+        if self.UPDATING:
+            return
+        index = int(self.current.value)
+        self.image = pn.Row(self.get_image_by_index(index-1), align="center")
 
     def show(self):
         return self.gui

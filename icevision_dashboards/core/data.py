@@ -92,6 +92,7 @@ class ObservableList(Observable):
 
 # Cell
 class DatasetDescriptor(ABC):
+    """Abstrac base class for descriptors of datasets"""
     def __set_name__(self, owner, name):
         owner._descriptors.append(self)
         self.private_name = '_' + name

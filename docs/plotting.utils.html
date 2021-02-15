@@ -47,7 +47,38 @@ nb_path: "nbs/plotting.utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="calculate_mixing_matrix" class="doc_header"><code>calculate_mixing_matrix</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/plotting/utils.py#L18" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>calculate_mixing_matrix</code>(<strong><code>data</code></strong>:<code>DataFrame</code>, <strong><code>mixing_col</code></strong>:<code>str</code>, <strong><code>mixing_objects</code></strong>:<code>str</code>, <strong><code>return_df</code></strong>:<code>bool</code>=<em><code>True</code></em>)</p>
+<h4 id="toggle_legend_js" class="doc_header"><code>toggle_legend_js</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/plotting/utils.py#L19" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>toggle_legend_js</code>(<strong><code>figure</code></strong>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="calculate_mixing_matrix" class="doc_header"><code>calculate_mixing_matrix</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/plotting/utils.py#L31" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>calculate_mixing_matrix</code>(<strong><code>data</code></strong>:<code>DataFrame</code>, <strong><code>mixing_col</code></strong>:<code>str</code>, <strong><code>mixing_objects</code></strong>:<code>str</code>, <strong><code>return_df</code></strong>:<code>bool</code>=<em><code>True</code></em>)</p>
 </blockquote>
 <p>Calculates mixing matrix for the mixing_objects column where they mix in the mixing_col.
 By standard the object class mixing matrix over the images is calculated.
@@ -120,7 +151,7 @@ If return_df is True (default) a dataframe (instead of the mixing matrix) will b
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_min_and_max_dates" class="doc_header"><code>get_min_and_max_dates</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/plotting/utils.py#L51" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_min_and_max_dates</code>(<strong><code>dates</code></strong>:<code>Iterable</code>[<code>datetime</code>])</p>
+<h4 id="get_min_and_max_dates" class="doc_header"><code>get_min_and_max_dates</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/plotting/utils.py#L64" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_min_and_max_dates</code>(<strong><code>dates</code></strong>:<code>Iterable</code>[<code>datetime</code>])</p>
 </blockquote>
 <p>Returns the min and max date. If all dates are the same the max date is moved one day forward.</p>
 
@@ -171,7 +202,7 @@ If return_df is True (default) a dataframe (instead of the mixing matrix) will b
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="convert_rgb_image_to_bokeh_rgb_image" class="doc_header"><code>convert_rgb_image_to_bokeh_rgb_image</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/plotting/utils.py#L61" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>convert_rgb_image_to_bokeh_rgb_image</code>(<strong><code>img</code></strong>:<code>ndarray</code>)</p>
+<h4 id="convert_rgb_image_to_bokeh_rgb_image" class="doc_header"><code>convert_rgb_image_to_bokeh_rgb_image</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/plotting/utils.py#L74" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>convert_rgb_image_to_bokeh_rgb_image</code>(<strong><code>img</code></strong>:<code>ndarray</code>)</p>
 </blockquote>
 <p>Convertes a image in the form of a numpy array to an array that can be shown by bokeh.</p>
 
@@ -210,7 +241,7 @@ If return_df is True (default) a dataframe (instead of the mixing matrix) will b
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="draw_record_with_bokeh" class="doc_header"><code>draw_record_with_bokeh</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/plotting/utils.py#L74" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>draw_record_with_bokeh</code>(<strong><code>record</code></strong>, <strong><code>class_map</code></strong>=<em><code>None</code></em>, <strong><code>display_label</code></strong>=<em><code>True</code></em>, <strong><code>display_bbox</code></strong>=<em><code>False</code></em>, <strong><code>display_mask</code></strong>=<em><code>False</code></em>, <strong><code>display_keypoints</code></strong>=<em><code>False</code></em>, <strong><code>return_figure</code></strong>=<em><code>False</code></em>, <strong><code>width</code></strong>=<em><code>None</code></em>, <strong><code>height</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="draw_record_with_bokeh" class="doc_header"><code>draw_record_with_bokeh</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/plotting/utils.py#L87" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>draw_record_with_bokeh</code>(<strong><code>record</code></strong>, <strong><code>class_map</code></strong>=<em><code>None</code></em>, <strong><code>display_label</code></strong>=<em><code>True</code></em>, <strong><code>display_bbox</code></strong>=<em><code>False</code></em>, <strong><code>display_mask</code></strong>=<em><code>False</code></em>, <strong><code>display_keypoints</code></strong>=<em><code>False</code></em>, <strong><code>return_figure</code></strong>=<em><code>False</code></em>, <strong><code>width</code></strong>=<em><code>None</code></em>, <strong><code>height</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Draws a record or returns a bokeh figure containing the image.</p>
 

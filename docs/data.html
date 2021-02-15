@@ -87,14 +87,6 @@ nb_path: "nbs/data.ipynb"
 </div>
 </div>
 
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -112,7 +104,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="RecordDataframeParser" class="doc_header"><code>class</code> <code>RecordDataframeParser</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L29" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>RecordDataframeParser</code>(<strong><code>record_dataframe</code></strong>) :: <code>Parser</code></p>
+<h2 id="RecordDataframeParser" class="doc_header"><code>class</code> <code>RecordDataframeParser</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L30" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>RecordDataframeParser</code>(<strong><code>record_dataframe</code></strong>) :: <code>Parser</code></p>
 </blockquote>
 <p>Base class for all parsers, implements the main parsing logic.</p>
 <p>The actual fields to be parsed are defined by the mixins used when
@@ -151,7 +143,7 @@ are <code>image_id</code> and <code>image_width_height</code>.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="BboxRecordDataframeParser" class="doc_header"><code>class</code> <code>BboxRecordDataframeParser</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L51" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BboxRecordDataframeParser</code>(<strong><code>record_dataframe</code></strong>) :: <a href="/icevision_dashboards/data.html#RecordDataframeParser"><code>RecordDataframeParser</code></a></p>
+<h2 id="BboxRecordDataframeParser" class="doc_header"><code>class</code> <code>BboxRecordDataframeParser</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L52" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BboxRecordDataframeParser</code>(<strong><code>record_dataframe</code></strong>) :: <a href="/icevision_dashboards/data.html#RecordDataframeParser"><code>RecordDataframeParser</code></a></p>
 </blockquote>
 <p>Base class for all parsers, implements the main parsing logic.</p>
 <p>The actual fields to be parsed are defined by the mixins used when
@@ -190,7 +182,7 @@ are <code>image_id</code> and <code>image_width_height</code>.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="MaskRecordDataframeParser" class="doc_header"><code>class</code> <code>MaskRecordDataframeParser</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L56" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MaskRecordDataframeParser</code>(<strong><code>record_dataframe</code></strong>) :: <a href="/icevision_dashboards/data.html#BboxRecordDataframeParser"><code>BboxRecordDataframeParser</code></a></p>
+<h2 id="MaskRecordDataframeParser" class="doc_header"><code>class</code> <code>MaskRecordDataframeParser</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L57" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MaskRecordDataframeParser</code>(<strong><code>record_dataframe</code></strong>) :: <a href="/icevision_dashboards/data.html#BboxRecordDataframeParser"><code>BboxRecordDataframeParser</code></a></p>
 </blockquote>
 <p>Parser with required mixins for Mask RCNN.</p>
 
@@ -222,7 +214,7 @@ are <code>image_id</code> and <code>image_width_height</code>.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="RecordDataset" class="doc_header"><code>class</code> <code>RecordDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L63" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>RecordDataset</code>(<strong><code>records</code></strong>:<code>Union</code>[<code>List</code>[<code>BaseRecord</code>], <a href="/icevision_dashboards/core.data.html#ObservableList"><code>ObservableList</code></a>, <code>str</code>], <strong><code>class_map</code></strong>=<em><code>None</code></em>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/core.data.html#GenericDataset"><code>GenericDataset</code></a></p>
+<h2 id="RecordDataset" class="doc_header"><code>class</code> <code>RecordDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L65" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>RecordDataset</code>(<strong><code>records</code></strong>:<code>Union</code>[<code>List</code>[<code>BaseRecord</code>], <a href="/icevision_dashboards/core.data.html#ObservableList"><code>ObservableList</code></a>, <code>str</code>], <strong><code>class_map</code></strong>=<em><code>None</code></em>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/core.data.html#GenericDataset"><code>GenericDataset</code></a></p>
 </blockquote>
 
 </div>
@@ -253,10 +245,9 @@ are <code>image_id</code> and <code>image_width_height</code>.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="DataDescriptorBbox" class="doc_header"><code>class</code> <code>DataDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L145" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>DataDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="DataDescriptorBbox" class="doc_header"><code>class</code> <code>DataDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L151" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>DataDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
-<p>Helper class that provides a standard way to create an ABC using
-inheritance.</p>
+<p>Abstrac base class for descriptors of datasets</p>
 
 </div>
 
@@ -286,10 +277,9 @@ inheritance.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="StatsDesscriptorBbox" class="doc_header"><code>class</code> <code>StatsDesscriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L174" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>StatsDesscriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="StatsDescriptorBbox" class="doc_header"><code>class</code> <code>StatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L180" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>StatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
-<p>Helper class that provides a standard way to create an ABC using
-inheritance.</p>
+<p>Abstrac base class for descriptors of datasets</p>
 
 </div>
 
@@ -319,10 +309,9 @@ inheritance.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ImageStatsDesscriptorBbox" class="doc_header"><code>class</code> <code>ImageStatsDesscriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L189" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ImageStatsDesscriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="ImageStatsDescriptorBbox" class="doc_header"><code>class</code> <code>ImageStatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L195" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ImageStatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
-<p>Helper class that provides a standard way to create an ABC using
-inheritance.</p>
+<p>Abstrac base class for descriptors of datasets</p>
 
 </div>
 
@@ -352,10 +341,9 @@ inheritance.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ClassStatsDesscriptorBbox" class="doc_header"><code>class</code> <code>ClassStatsDesscriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L201" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ClassStatsDesscriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="ClassStatsDescriptorBbox" class="doc_header"><code>class</code> <code>ClassStatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L207" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ClassStatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
-<p>Helper class that provides a standard way to create an ABC using
-inheritance.</p>
+<p>Abstrac base class for descriptors of datasets</p>
 
 </div>
 
@@ -385,7 +373,39 @@ inheritance.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="BboxRecordDataset" class="doc_header"><code>class</code> <code>BboxRecordDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L218" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BboxRecordDataset</code>(<strong><code>records</code></strong>:<code>Union</code>[<code>List</code>[<code>BaseRecord</code>], <a href="/icevision_dashboards/core.data.html#ObservableList"><code>ObservableList</code></a>, <code>str</code>], <strong><code>class_map</code></strong>=<em><code>None</code></em>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/data.html#RecordDataset"><code>RecordDataset</code></a></p>
+<h2 id="GalleryStatsDescriptorBbox" class="doc_header"><code>class</code> <code>GalleryStatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L224" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GalleryStatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+</blockquote>
+<p>Abstrac base class for descriptors of datasets</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h2 id="BboxRecordDataset" class="doc_header"><code>class</code> <code>BboxRecordDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L231" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BboxRecordDataset</code>(<strong><code>records</code></strong>:<code>Union</code>[<code>List</code>[<code>BaseRecord</code>], <a href="/icevision_dashboards/core.data.html#ObservableList"><code>ObservableList</code></a>, <code>str</code>], <strong><code>class_map</code></strong>=<em><code>None</code></em>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/data.html#RecordDataset"><code>RecordDataset</code></a></p>
 </blockquote>
 
 </div>
@@ -548,113 +568,113 @@ inheritance.</p>
   <tbody>
     <tr>
       <th>0</th>
-      <td>97</td>
+      <td>65</td>
       <td>499</td>
       <td>666</td>
-      <td>carton</td>
-      <td>68</td>
-      <td>376</td>
-      <td>340</td>
-      <td>574</td>
-      <td>72072</td>
-      <td>0.216866</td>
-      <td>1.316239</td>
+      <td>milk_bottle</td>
+      <td>65</td>
+      <td>184</td>
+      <td>264</td>
+      <td>545</td>
+      <td>33439</td>
+      <td>0.100619</td>
+      <td>0.423488</td>
       <td>0</td>
-      <td>308</td>
-      <td>234</td>
-      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/71.jpg</td>
-      <td>2021-01-13 11:38:01.343184</td>
-      <td>2020-12-14 21:50:19.136311</td>
-      <td>4</td>
-      <td>2</td>
+      <td>119</td>
+      <td>281</td>
+      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/42.jpg</td>
+      <td>2021-01-13 11:38:01.347184</td>
+      <td>2020-12-14 21:50:19.140311</td>
+      <td>3</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>97</td>
+      <td>65</td>
       <td>499</td>
       <td>666</td>
-      <td>can</td>
-      <td>9</td>
-      <td>111</td>
-      <td>273</td>
-      <td>439</td>
-      <td>16932</td>
-      <td>0.050949</td>
-      <td>0.614458</td>
+      <td>carton</td>
+      <td>144</td>
+      <td>408</td>
+      <td>308</td>
+      <td>508</td>
+      <td>52800</td>
+      <td>0.158876</td>
+      <td>1.320000</td>
       <td>0</td>
-      <td>102</td>
-      <td>166</td>
-      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/71.jpg</td>
-      <td>2021-01-13 11:38:01.343184</td>
-      <td>2020-12-14 21:50:19.136311</td>
-      <td>4</td>
-      <td>1</td>
+      <td>264</td>
+      <td>200</td>
+      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/42.jpg</td>
+      <td>2021-01-13 11:38:01.347184</td>
+      <td>2020-12-14 21:50:19.140311</td>
+      <td>3</td>
+      <td>2</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>97</td>
+      <td>65</td>
       <td>499</td>
       <td>666</td>
       <td>water_bottle</td>
-      <td>236</td>
-      <td>321</td>
-      <td>171</td>
-      <td>366</td>
-      <td>16575</td>
-      <td>0.049875</td>
-      <td>0.435897</td>
+      <td>337</td>
+      <td>428</td>
+      <td>175</td>
+      <td>404</td>
+      <td>20839</td>
+      <td>0.062705</td>
+      <td>0.397380</td>
       <td>0</td>
-      <td>85</td>
-      <td>195</td>
-      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/71.jpg</td>
-      <td>2021-01-13 11:38:01.343184</td>
-      <td>2020-12-14 21:50:19.136311</td>
-      <td>4</td>
+      <td>91</td>
+      <td>229</td>
+      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/42.jpg</td>
+      <td>2021-01-13 11:38:01.347184</td>
+      <td>2020-12-14 21:50:19.140311</td>
+      <td>3</td>
       <td>4</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>97</td>
+      <td>59</td>
       <td>499</td>
       <td>666</td>
-      <td>milk_bottle</td>
-      <td>365</td>
-      <td>461</td>
-      <td>210</td>
-      <td>435</td>
-      <td>21600</td>
-      <td>0.064995</td>
-      <td>0.426667</td>
-      <td>0</td>
-      <td>96</td>
-      <td>225</td>
-      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/71.jpg</td>
-      <td>2021-01-13 11:38:01.343184</td>
+      <td>carton</td>
+      <td>32</td>
+      <td>207</td>
+      <td>196</td>
+      <td>566</td>
+      <td>64750</td>
+      <td>0.194834</td>
+      <td>0.472973</td>
+      <td>1</td>
+      <td>175</td>
+      <td>370</td>
+      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/37.jpg</td>
+      <td>2021-01-13 11:38:01.339184</td>
       <td>2020-12-14 21:50:19.136311</td>
-      <td>4</td>
       <td>3</td>
+      <td>2</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>99</td>
+      <td>59</td>
       <td>499</td>
       <td>666</td>
-      <td>can</td>
-      <td>50</td>
-      <td>149</td>
-      <td>312</td>
-      <td>483</td>
-      <td>16929</td>
-      <td>0.050940</td>
-      <td>0.578947</td>
+      <td>water_bottle</td>
+      <td>244</td>
+      <td>337</td>
+      <td>212</td>
+      <td>472</td>
+      <td>24180</td>
+      <td>0.072758</td>
+      <td>0.357692</td>
       <td>1</td>
-      <td>99</td>
-      <td>171</td>
-      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/73.jpg</td>
-      <td>2021-01-13 11:38:01.399184</td>
-      <td>2020-12-14 21:50:19.160311</td>
+      <td>93</td>
+      <td>260</td>
+      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/37.jpg</td>
+      <td>2021-01-13 11:38:01.339184</td>
+      <td>2020-12-14 21:50:19.136311</td>
+      <td>3</td>
       <td>4</td>
-      <td>1</td>
     </tr>
     <tr>
       <th>...</th>
@@ -679,118 +699,118 @@ inheritance.</p>
       <td>...</td>
     </tr>
     <tr>
-      <th>261</th>
-      <td>29</td>
-      <td>499</td>
-      <td>666</td>
-      <td>carton</td>
-      <td>279</td>
-      <td>462</td>
-      <td>111</td>
-      <td>484</td>
-      <td>68259</td>
-      <td>0.205393</td>
-      <td>0.490617</td>
-      <td>99</td>
-      <td>183</td>
-      <td>373</td>
-      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/125.jpg</td>
-      <td>2021-01-13 11:38:01.351184</td>
-      <td>2020-12-14 21:50:19.140311</td>
-      <td>2</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>262</th>
-      <td>5</td>
+      <th>267</th>
+      <td>35</td>
       <td>499</td>
       <td>666</td>
       <td>can</td>
-      <td>144</td>
-      <td>318</td>
-      <td>260</td>
-      <td>429</td>
-      <td>29406</td>
-      <td>0.088483</td>
-      <td>1.029586</td>
-      <td>100</td>
-      <td>174</td>
-      <td>169</td>
-      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/103.jpg</td>
-      <td>2021-01-13 11:38:01.439184</td>
+      <td>289</td>
+      <td>427</td>
+      <td>248</td>
+      <td>488</td>
+      <td>33120</td>
+      <td>0.099659</td>
+      <td>0.575000</td>
+      <td>97</td>
+      <td>138</td>
+      <td>240</td>
+      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/15.jpg</td>
+      <td>2021-01-13 11:38:01.435184</td>
       <td>2020-12-14 21:50:19.176311</td>
-      <td>1</td>
+      <td>2</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>263</th>
-      <td>55</td>
+      <th>268</th>
+      <td>84</td>
       <td>499</td>
       <td>666</td>
-      <td>water_bottle</td>
-      <td>72</td>
-      <td>172</td>
-      <td>150</td>
-      <td>399</td>
-      <td>24900</td>
-      <td>0.074925</td>
-      <td>0.401606</td>
-      <td>101</td>
-      <td>100</td>
-      <td>249</td>
-      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/33.jpg</td>
-      <td>2021-01-13 11:38:01.335184</td>
-      <td>2020-12-14 21:50:19.136311</td>
-      <td>3</td>
-      <td>4</td>
+      <td>can</td>
+      <td>125</td>
+      <td>369</td>
+      <td>316</td>
+      <td>439</td>
+      <td>30012</td>
+      <td>0.090307</td>
+      <td>1.983740</td>
+      <td>98</td>
+      <td>244</td>
+      <td>123</td>
+      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/6.jpg</td>
+      <td>2021-01-13 11:38:01.451184</td>
+      <td>2020-12-14 21:50:19.180311</td>
+      <td>1</td>
+      <td>1</td>
     </tr>
     <tr>
-      <th>264</th>
-      <td>55</td>
+      <th>269</th>
+      <td>51</td>
+      <td>499</td>
+      <td>666</td>
+      <td>can</td>
+      <td>259</td>
+      <td>383</td>
+      <td>231</td>
+      <td>458</td>
+      <td>28148</td>
+      <td>0.084698</td>
+      <td>0.546256</td>
+      <td>99</td>
+      <td>124</td>
+      <td>227</td>
+      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/3.jpg</td>
+      <td>2021-01-13 11:38:01.399184</td>
+      <td>2020-12-14 21:50:19.160311</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>270</th>
+      <td>7</td>
       <td>499</td>
       <td>666</td>
       <td>milk_bottle</td>
-      <td>192</td>
-      <td>308</td>
-      <td>229</td>
-      <td>534</td>
-      <td>35380</td>
-      <td>0.106459</td>
-      <td>0.380328</td>
-      <td>101</td>
-      <td>116</td>
-      <td>305</td>
-      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/33.jpg</td>
-      <td>2021-01-13 11:38:01.335184</td>
-      <td>2020-12-14 21:50:19.136311</td>
-      <td>3</td>
+      <td>142</td>
+      <td>395</td>
+      <td>257</td>
+      <td>463</td>
+      <td>52118</td>
+      <td>0.156824</td>
+      <td>1.228155</td>
+      <td>100</td>
+      <td>253</td>
+      <td>206</td>
+      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/105.jpg</td>
+      <td>2021-01-13 11:38:01.395184</td>
+      <td>2020-12-14 21:50:19.156311</td>
+      <td>1</td>
       <td>3</td>
     </tr>
     <tr>
-      <th>265</th>
-      <td>55</td>
+      <th>271</th>
+      <td>0</td>
       <td>499</td>
       <td>666</td>
-      <td>can</td>
-      <td>324</td>
-      <td>415</td>
-      <td>246</td>
-      <td>410</td>
-      <td>14924</td>
-      <td>0.044907</td>
-      <td>0.554878</td>
+      <td>carton</td>
+      <td>100</td>
+      <td>233</td>
+      <td>173</td>
+      <td>521</td>
+      <td>46284</td>
+      <td>0.139270</td>
+      <td>0.382184</td>
       <td>101</td>
-      <td>91</td>
-      <td>164</td>
-      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/33.jpg</td>
-      <td>2021-01-13 11:38:01.335184</td>
-      <td>2020-12-14 21:50:19.136311</td>
-      <td>3</td>
+      <td>133</td>
+      <td>348</td>
+      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/1.jpg</td>
+      <td>2021-01-13 11:38:01.423184</td>
+      <td>2020-12-14 21:50:19.168311</td>
       <td>1</td>
+      <td>2</td>
     </tr>
   </tbody>
 </table>
-<p>266 rows × 19 columns</p>
+<p>272 rows × 19 columns</p>
 </div>
 </div>
 
@@ -824,14 +844,6 @@ inheritance.</p>
 
 <div class="output_subarea output_stream output_stderr output_text">
 <pre><span class="ansi-bold">INFO    </span> - <span class="ansi-blue-intense-fg ansi-bold">Autofixing records</span> | <span class="ansi-cyan-fg">icevision.parsers.parser</span>:<span class="ansi-cyan-fg">parse</span>:<span class="ansi-cyan-fg">126</span>
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
 </pre>
 </div>
 </div>
@@ -878,12 +890,254 @@ inheritance.</p>
 
 <div class="output_area">
 
-<div class="output_subarea output_stream output_stdout output_text">
+<div class="output_subarea output_text output_error">
 <pre>
-</pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-21-cd95e4e53b14&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">      6</span> <span class="ansi-green-fg">assert</span> len<span class="ansi-blue-fg">(</span>os<span class="ansi-blue-fg">.</span>listdir<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;dump_dir&#34;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">==</span> <span class="ansi-cyan-fg">2</span>
+<span class="ansi-green-intense-fg ansi-bold">      7</span> <span class="ansi-green-fg">assert</span> os<span class="ansi-blue-fg">.</span>path<span class="ansi-blue-fg">.</span>isfile<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;dump_dir/dataset.json&#34;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">----&gt; 8</span><span class="ansi-red-fg"> </span>test_loaded_record_dataset <span class="ansi-blue-fg">=</span> BboxRecordDataset<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;dump_dir/dataset.json&#34;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      9</span> <span class="ansi-green-fg">assert</span> test_record_dataset<span class="ansi-blue-fg">.</span>data<span class="ansi-blue-fg">.</span>sort_values<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;area&#34;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>shape <span class="ansi-blue-fg">==</span> test_loaded_record_dataset<span class="ansi-blue-fg">.</span>data<span class="ansi-blue-fg">.</span>sort_values<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;id&#34;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>shape
+<span class="ansi-green-intense-fg ansi-bold">     10</span> shutil<span class="ansi-blue-fg">.</span>rmtree<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;dump_dir&#34;</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">&lt;ipython-input-14-2fc667128dca&gt;</span> in <span class="ansi-cyan-fg">__init__</span><span class="ansi-blue-fg">(self, records, class_map, name, description)</span>
+<span class="ansi-green-intense-fg ansi-bold">     10</span>     <span class="ansi-green-fg">def</span> __init__<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> records<span class="ansi-blue-fg">:</span> Union<span class="ansi-blue-fg">[</span>List<span class="ansi-blue-fg">[</span>BaseRecord<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span> ObservableList<span class="ansi-blue-fg">,</span> str<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span> class_map<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span> name<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span> description<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">     11</span>         super<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>__init__<span class="ansi-blue-fg">(</span>records<span class="ansi-blue-fg">,</span> class_map<span class="ansi-blue-fg">,</span> name<span class="ansi-blue-fg">,</span> description<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">---&gt; 12</span><span class="ansi-red-fg">         </span>self<span class="ansi-blue-fg">.</span>record_index_image_id_map <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span>str<span class="ansi-blue-fg">(</span>record<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;filepath&#34;</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span> index <span class="ansi-green-fg">for</span> index<span class="ansi-blue-fg">,</span> record <span class="ansi-green-fg">in</span> enumerate<span class="ansi-blue-fg">(</span>records<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">}</span>
+<span class="ansi-green-intense-fg ansi-bold">     13</span>         self<span class="ansi-blue-fg">.</span>data <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-green-intense-fg ansi-bold">     14</span>         self<span class="ansi-blue-fg">.</span>gallery_data <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span>
+
+<span class="ansi-green-fg">&lt;ipython-input-14-2fc667128dca&gt;</span> in <span class="ansi-cyan-fg">&lt;dictcomp&gt;</span><span class="ansi-blue-fg">(.0)</span>
+<span class="ansi-green-intense-fg ansi-bold">     10</span>     <span class="ansi-green-fg">def</span> __init__<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> records<span class="ansi-blue-fg">:</span> Union<span class="ansi-blue-fg">[</span>List<span class="ansi-blue-fg">[</span>BaseRecord<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span> ObservableList<span class="ansi-blue-fg">,</span> str<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span> class_map<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span> name<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span> description<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">     11</span>         super<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>__init__<span class="ansi-blue-fg">(</span>records<span class="ansi-blue-fg">,</span> class_map<span class="ansi-blue-fg">,</span> name<span class="ansi-blue-fg">,</span> description<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">---&gt; 12</span><span class="ansi-red-fg">         </span>self<span class="ansi-blue-fg">.</span>record_index_image_id_map <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span>str<span class="ansi-blue-fg">(</span>record<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#34;filepath&#34;</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span> index <span class="ansi-green-fg">for</span> index<span class="ansi-blue-fg">,</span> record <span class="ansi-green-fg">in</span> enumerate<span class="ansi-blue-fg">(</span>records<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">}</span>
+<span class="ansi-green-intense-fg ansi-bold">     13</span>         self<span class="ansi-blue-fg">.</span>data <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-green-intense-fg ansi-bold">     14</span>         self<span class="ansi-blue-fg">.</span>gallery_data <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span>
+
+<span class="ansi-red-fg">TypeError</span>: string indices must be integers</pre>
 </div>
 </div>
 
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># from icevision.all import *</span>
+<span class="c1"># import icedata</span>
+
+<span class="c1"># # Load the Fridge dataset</span>
+<span class="c1"># path = icedata.fridge.load_data()</span>
+
+<span class="c1"># # Get the class_map, a utility that maps from number IDs to classs names</span>
+<span class="c1"># class_map = icedata.fridge.class_map()</span>
+
+<span class="c1"># # Fridge parser: provided out-of-the-box</span>
+<span class="c1"># parser = icedata.fridge.parser(data_dir=path, class_map=class_map)</span>
+<span class="c1"># train_records, valid_records = parser.parse()</span>
+
+<span class="c1"># # shows images with corresponding labels and boxes</span>
+<span class="c1"># # show_records(train_records[:6], ncols=3, class_map=class_map, show=True)</span>
+
+<span class="c1"># # Define transforms - using Albumentations transforms out of the box</span>
+<span class="c1"># train_tfms = tfms.A.Adapter(</span>
+<span class="c1">#     [*tfms.A.aug_tfms(size=384, presize=512), tfms.A.Normalize()]</span>
+<span class="c1"># )</span>
+<span class="c1"># valid_tfms = tfms.A.Adapter([*tfms.A.resize_and_pad(384), tfms.A.Normalize()])</span>
+<span class="c1"># # Create both training and validation datasets</span>
+<span class="c1"># train_ds = Dataset(train_records, train_tfms)</span>
+<span class="c1"># valid_ds = Dataset(valid_records, valid_tfms)</span>
+
+<span class="c1"># # Create both training and validation dataloaders</span>
+<span class="c1"># train_dl = faster_rcnn.train_dl(train_ds, batch_size=14, num_workers=4, shuffle=True)</span>
+<span class="c1"># valid_dl = faster_rcnn.valid_dl(valid_ds, batch_size=14, num_workers=4, shuffle=False)</span>
+
+<span class="c1"># # Create model</span>
+<span class="c1"># model = faster_rcnn.model(num_classes=len(class_map))</span>
+
+<span class="c1"># # Define metrics</span>
+<span class="c1"># metrics = [COCOMetric(metric_type=COCOMetricType.bbox)]</span>
+
+<span class="c1"># # Train using fastai2</span>
+<span class="c1"># learn = faster_rcnn.fastai.learner(</span>
+<span class="c1">#     dls=[train_dl, valid_dl], model=model, metrics=metrics</span>
+<span class="c1"># )</span>
+
+<span class="c1"># learn.fine_tune(20, lr=1e-4)</span>
+
+
+<span class="c1"># new_train_ds = Dataset(train_records, valid_tfms)</span>
+<span class="c1"># samples_plus_losses, preds, losses_stats = faster_rcnn.interp.plot_top_losses(model=model, dataset=new_train_ds, sort_by=&quot;loss_total&quot;, n_samples=4)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># from icevision.all import *</span>
+<span class="c1"># import icedata</span>
+
+<span class="c1"># # Load the Pets dataset</span>
+<span class="c1"># path = icedata.pets.load_data()</span>
+
+<span class="c1"># # Get the class_map, a utility that maps from number IDs to classs names</span>
+<span class="c1"># class_map = icedata.pets.class_map()</span>
+
+<span class="c1"># # Pets parser: provided out-of-the-box</span>
+<span class="c1"># parser = icedata.pets.parser(data_dir=path, class_map=class_map)</span>
+<span class="c1"># train_records, valid_records = parser.parse()</span>
+
+<span class="c1"># # shows images with corresponding labels and boxes</span>
+<span class="c1"># # show_records(train_records[:6], ncols=3, class_map=class_map, show=True)</span>
+
+<span class="c1"># # Define transforms - using Albumentations transforms out of the box</span>
+<span class="c1"># train_tfms = tfms.A.Adapter(</span>
+<span class="c1">#     [*tfms.A.aug_tfms(size=384, presize=512), tfms.A.Normalize()]</span>
+<span class="c1"># )</span>
+<span class="c1"># valid_tfms = tfms.A.Adapter([*tfms.A.resize_and_pad(384), tfms.A.Normalize()])</span>
+<span class="c1"># # Create both training and validation datasets</span>
+<span class="c1"># train_ds = Dataset(train_records, train_tfms)</span>
+<span class="c1"># valid_ds = Dataset(valid_records, valid_tfms)</span>
+
+<span class="c1"># # Create both training and validation dataloaders</span>
+<span class="c1"># train_dl = faster_rcnn.train_dl(train_ds, batch_size=14, num_workers=4, shuffle=True)</span>
+<span class="c1"># valid_dl = faster_rcnn.valid_dl(valid_ds, batch_size=14, num_workers=4, shuffle=False)</span>
+
+<span class="c1"># # Create model</span>
+<span class="c1"># model = faster_rcnn.model(num_classes=len(class_map))</span>
+
+<span class="c1"># # Define metrics</span>
+<span class="c1"># metrics = [COCOMetric(metric_type=COCOMetricType.bbox)]</span>
+
+<span class="c1"># # Train using fastai2</span>
+<span class="c1"># learn = faster_rcnn.fastai.learner(</span>
+<span class="c1">#     dls=[train_dl, valid_dl], model=model, metrics=metrics</span>
+<span class="c1"># )</span>
+
+<span class="c1"># learn.fine_tune(5, lr=1e-4)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">new_train_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">train_records</span><span class="p">,</span> <span class="n">valid_tfms</span><span class="p">)</span>
+<span class="n">samples_plus_losses</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">faster_rcnn</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="s2">&quot;loss_total&quot;</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h2 id="MetricBaseDataObjectDetection" class="doc_header"><code>class</code> <code>MetricBaseDataObjectDetection</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L257" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MetricBaseDataObjectDetection</code>(<strong><code>data_descriptor_name</code></strong>=<em><code>'base_data'</code></em>, <strong><code>image_identification_col</code></strong>=<em><code>'filepath'</code></em>, <strong><code>ious</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+</blockquote>
+<p>Calculates TP, FP, FN at the given ious. Requires the Dataset to have DataDescriptorBboxWithPredictions as the descriptor Data</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h2 id="ObjectDetectionResultsDataset" class="doc_header"><code>class</code> <code>ObjectDetectionResultsDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L296" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ObjectDetectionResultsDataset</code>(<strong><code>dataframe</code></strong>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/core.data.html#GenericDataset"><code>GenericDataset</code></a></p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">odrd</span> <span class="o">=</span> <span class="n">ObjectDetectionResultsDataset</span><span class="o">.</span><span class="n">init_from_preds_and_sampels</span><span class="p">(</span><span class="n">preds</span><span class="p">,</span> <span class="n">samples_plus_losses</span><span class="p">,</span> <span class="n">class_map</span><span class="p">)</span>
+<span class="n">odrd</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;test_results/pets_valid.dat&quot;</span><span class="p">)</span>
+<span class="n">odrd</span> <span class="o">=</span> <span class="n">ObjectDetectionResultsDataset</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;test_results/pets_valid.dat&quot;</span><span class="p">)</span>
+<span class="n">odrd</span><span class="o">.</span><span class="n">metric_base_data</span>
+</pre></div>
+
+    </div>
 </div>
 </div>
 

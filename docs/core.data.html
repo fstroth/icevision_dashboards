@@ -6,8 +6,8 @@ title: core.data
 keywords: fastai
 sidebar: home_sidebar
 
-summary: "Supplies dashboards and dashboard components. Dashboards are defined as classes, to show the dashboard use the .show() function on an dashboard instance."
-description: "Supplies dashboards and dashboard components. Dashboards are defined as classes, to show the dashboard use the .show() function on an dashboard instance."
+summary: "The basic data structures are defined here."
+description: "The basic data structures are defined here."
 nb_path: "nbs/core.data.ipynb"
 ---
 <!--
@@ -127,8 +127,7 @@ nb_path: "nbs/core.data.ipynb"
 <div class="output_markdown rendered_html output_subarea ">
 <h2 id="DatasetDescriptor" class="doc_header"><code>class</code> <code>DatasetDescriptor</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/core/data.py#L94" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>DatasetDescriptor</code>() :: <code>ABC</code></p>
 </blockquote>
-<p>Helper class that provides a standard way to create an ABC using
-inheritance.</p>
+<p>Abstrac base class for descriptors of datasets</p>
 
 </div>
 
@@ -149,8 +148,7 @@ inheritance.</p>
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Abstaract base class for dashboards. Inherited classes are required to implement a <code>build_gui</code> function, that builds the gui to be shown as well as setting up interactions and a <code>show</code> function that returns the gui. The <code>build_gui</code> function is called at the end of the <code>__init__</code> function. Most dashboards require different descriptors from the dataset (data, stats usw.). For simple handling of cases where the name is different (a vision dataset might have stats for the images, the annotations and the annotation classes) most dashboards have class variables for the different descriptors, wich can be changed to use a new descriptor.</p>
-<p>For complexer dashboards, that use other dashboards as components the same approche is used, where class varibales ar used to choose a implementation of a dashboard. With this, in some cases only certain parts need to be replaced and not everything.</p>
+<p>Abstaract base class for dataset descriptors. Inherited classes are required to implement a <code>calculate_description</code> function, that calculates the specific stats about a dataset one wants.</p>
 
 </div>
 </div>
@@ -166,7 +164,7 @@ inheritance.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="StringDescriptor" class="doc_header"><code>class</code> <code>StringDescriptor</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/core/data.py#L116" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>StringDescriptor</code>()</p>
+<h2 id="StringDescriptor" class="doc_header"><code>class</code> <code>StringDescriptor</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/core/data.py#L117" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>StringDescriptor</code>()</p>
 </blockquote>
 
 </div>
@@ -204,7 +202,7 @@ inheritance.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="GenericDataset" class="doc_header"><code>class</code> <code>GenericDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/core/data.py#L127" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GenericDataset</code>(<strong><code>base_data</code></strong>, <strong><code>name</code></strong>:<code>Optional</code>[<code>str</code>]=<em><code>None</code></em>, <strong><code>description</code></strong>:<code>Optional</code>[<code>str</code>]=<em><code>None</code></em>)</p>
+<h2 id="GenericDataset" class="doc_header"><code>class</code> <code>GenericDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/core/data.py#L128" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GenericDataset</code>(<strong><code>base_data</code></strong>, <strong><code>name</code></strong>:<code>Optional</code>[<code>str</code>]=<em><code>None</code></em>, <strong><code>description</code></strong>:<code>Optional</code>[<code>str</code>]=<em><code>None</code></em>)</p>
 </blockquote>
 
 </div>
@@ -298,21 +296,6 @@ can be propagated without explicit calls after each change. To achive this infor
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Stats before update:  {&#39;name&#39;: &#39;name&#39;, &#39;description&#39;: &#39;description&#39;, &#39;num_data_points&#39;: 3}
-Stats after update:  {&#39;name&#39;: &#39;name&#39;, &#39;description&#39;: &#39;description&#39;, &#39;num_data_points&#39;: 4}
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
