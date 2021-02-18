@@ -2,8 +2,8 @@
 
 __all__ = ['RecordDataframeParser', 'BboxRecordDataframeParser', 'MaskRecordDataframeParser', 'RecordDataset',
            'DataDescriptorBbox', 'StatsDescriptorBbox', 'ImageStatsDescriptorBbox', 'ClassStatsDescriptorBbox',
-           'GalleryStatsDescriptorBbox', 'BboxRecordDataset', 'MetricBaseDataObjectDetection',
-           'PrecisionRecallMetricsObjectDetection', 'ObjectDetectionResultsDataset']
+           'GalleryStatsDescriptorBbox', 'BboxRecordDataset', 'PrecisionRecallMetricsDescriptorObjectDetection',
+           'ObjectDetectionResultsDataset']
 
 # Cell
 import datetime
@@ -12,11 +12,13 @@ import os
 import shutil
 import json
 from copy import deepcopy
+import random
 
 import numpy as np
 import pandas as pd
 from PIL import Image
 import panel as pn
+import numba
 
 from icevision.core.record import BaseRecord
 import icevision.parsers as parsers
@@ -27,6 +29,7 @@ from icevision.core.class_map import ClassMap
 from fastprogress import master_bar, progress_bar
 
 from .plotting.utils import draw_record_with_bokeh
+from .metrics import APObjectDetectionFast
 from .core.data import *
 
 # Cell
@@ -88,6 +91,13 @@ class RecordDataset(GenericDataset):
     def __len__(self):
         return len(self.records)
 
+    def split_in_train_and_val(self, train_fraction):
+        records = list(self.records)
+        if train_fraction > 1:
+            train_fraction /= len(records)
+        train, val = records[:int(len(records)*train_fraction)], records[int(len(records)*train_fraction):]
+        return train, val
+
     @property
     def num_images(self):
         return len(self)
@@ -122,7 +132,7 @@ class RecordDataset(GenericDataset):
     def save(self, save_path):
         if not os.path.isdir(save_path):
             os.makedirs(save_path, exist_ok=True)
-        save_name = "dataset" if self.name == "" else self.name
+        save_name = "dataset" if self.name == "" or self.name is None else self.name
         if not os.path.isfile(os.path.join(save_path, save_name+".json")):
             save_name = save_name+".json"
         else:
@@ -134,20 +144,20 @@ class RecordDataset(GenericDataset):
                 else:
                     break
 
-        class_map = self.class_map if self.class_map is not None else self.create_class_map_from_record_df(df)
+        class_map = self.class_map if self.class_map is not None else self.create_class_map_from_record_df(self.data)
         save_data = {"name": self.name, "description": self.description, "data": self.data.to_dict(), "class_map": class_map.id2class}
 
         json.dump(save_data, open(os.path.join(save_path, save_name), "w"), default=str)
 
     def get_image_by_index(self, index, width, height):
-        return draw_record_with_bokeh(self[index], width=None, height=height, return_figure=True)
+        return draw_record_with_bokeh(self[index], class_map=self.class_map, width=None, height=height, return_figure=True)
 
     @classmethod
     def create_new_from_mask(cls, cls_instance, mask):
         selection = cls_instance.data[mask]
         filepaths = np.unique(selection["filepath"]).tolist()
         new_records = [record for record in cls_instance.records if str(record["filepath"]) in filepaths]
-        return cls(new_records)
+        return cls(new_records, cls_instance.class_map)
 
 # Cell
 class DataDescriptorBbox(DatasetDescriptor):
@@ -246,6 +256,7 @@ class BboxRecordDataset(RecordDataset):
         self.stats_dataset = None
         self.stats_image = None
         self.stats_class = None
+        self.stats = None
 
     @staticmethod
     def parse_df_to_records(record_data_df):
@@ -253,49 +264,10 @@ class BboxRecordDataset(RecordDataset):
 
     def get_image_by_image_id(self, image_id, width, height):
         index = self.record_index_image_id_map[image_id]
-        return draw_record_with_bokeh(self[index], display_bbox=True, width=None, height=height, return_figure=True)
+        return draw_record_with_bokeh(self[index], display_bbox=True, class_map=self.class_map, width=None, height=height, return_figure=True)
 
 # Cell
-class MetricBaseDataObjectDetection(DatasetDescriptor):
-    """Calculates TP, FP, FN at the given ious. Requires the Dataset to have DataDescriptorBboxWithPredictions as the descriptor Data"""
-    def __init__(self, data_descriptor_name="base_data", image_identification_col="filepath", ious=None):
-        self.image_identification_col = image_identification_col
-        self.data_descriptor_name = data_descriptor_name
-        if ious is None:
-            self.ious = np.arange(0.5, 1, 0.05).round(2)
-        else:
-            self.ious = ious
-
-    def calculate_description(self, obj):
-        data_list = []
-        iou_bar = master_bar(self.ious, total=len(self.ious))
-        iou_bar.main_bar.comment = f"iou: {self.ious[0]}"
-        for index,iou in enumerate(iou_bar):
-            iou_bar.main_bar.comment = f"iou: {self.ious[min(index+1, len(self.ious)-1)]}"
-            data = getattr(obj, self.data_descriptor_name)
-            data = data.copy()
-            data["statistic"] = "FP"
-            data.loc[data["is_prediction"] == False, "statistic"] = "FN"
-            data["iou"] = iou
-            for image_path, image_data in progress_bar(data.groupby(self.image_identification_col), parent=iou_bar):
-                predictions = image_data[image_data["is_prediction"] == True]
-                annotations = image_data[image_data["is_prediction"] == False]
-                for index, annotation in annotations.iterrows():
-                    x_overlap = np.maximum(predictions["bbox_xmax"]*0, np.minimum(predictions["bbox_xmax"], annotation["bbox_xmax"]) - np.maximum(predictions["bbox_xmin"], annotation["bbox_xmin"]))
-                    y_overlap = np.maximum(predictions["bbox_xmax"]*0, np.minimum(predictions["bbox_ymax"], annotation["bbox_ymax"]) - np.maximum(predictions["bbox_ymin"], annotation["bbox_ymin"]))
-                    intersections = x_overlap * y_overlap
-                    ious = intersections / (predictions["area"] + annotation["area"] - intersections)
-                    if any(np.logical_and(ious >= iou, predictions["label"] == annotation["label"])):
-                        index_position = np.argmax(ious)
-                        data.loc[index, "statistic"] = None
-                        data.loc[predictions.index[index_position], "statistic"] = "TP"
-                        # remove the annotation to avoid double counting
-                        predictions = predictions.drop(index=predictions.index[index_position])
-            data_list.append(data)
-        return pd.concat(data_list).reset_index(drop=True)
-
-# Cell
-class PrecisionRecallMetricsObjectDetection(DatasetDescriptor):
+class PrecisionRecallMetricsDescriptorObjectDetection(DatasetDescriptor):
     def __init__(self, ious=None):
         if ious is None:
             self.ious = np.arange(0.5, 1, 0.05).round(2)
@@ -303,13 +275,17 @@ class PrecisionRecallMetricsObjectDetection(DatasetDescriptor):
             self.ious = ious
 
     def calculate_description(self, obj):
-        pass
+        return APObjectDetectionFast(obj.base_data, self.ious).get_metric_data()
 
 # Cell
 class ObjectDetectionResultsDataset(GenericDataset):
+    metric_data_ap = PrecisionRecallMetricsDescriptorObjectDetection()
 
     def __init__(self, dataframe, name=None, description=None):
         super().__init__(dataframe, name, description)
+        # instanciate metric data and preload it
+        self.metric_data_ap = None
+        _ = self.metric_data_ap
 
     def save(self, path):
         if not os.path.exists(os.path.join(*path.split("/")[:-1])):
@@ -330,8 +306,8 @@ class ObjectDetectionResultsDataset(GenericDataset):
             res_pred["bboxes"] = []
         else:
             res_pred = res_pred[0]
-        plot_gt = draw_record_with_bokeh(res_gt, display_bbox=True, return_figure=True, width=width, height=height)
-        plot_pred = draw_record_with_bokeh(res_pred, display_bbox=True, return_figure=True, width=width, height=height)
+        plot_gt = draw_record_with_bokeh(res_gt, class_map=self.class_map, display_bbox=True, return_figure=True, width=width, height=height)
+        plot_pred = draw_record_with_bokeh(res_pred, class_map=self.class_map, display_bbox=True, return_figure=True, width=width, height=height)
         return pn.Row(pn.Column(pn.Row("<b>Ground Truth</b>",  align="center"), plot_gt), pn.Column(pn.Row("<b>Prediction</b>",  align="center"), plot_pred))
 
     @classmethod
@@ -340,25 +316,25 @@ class ObjectDetectionResultsDataset(GenericDataset):
         return cls(df, None, None)
 
     @classmethod
-    def init_from_preds_and_sampels(cls, predictions, sampels_plus_losses, padded_along_shortest=True, class_map=None, name=None, description=None):
+    def init_from_preds_and_samples(cls, predictions, samples_plus_losses, padded_along_shortest=True, class_map=None, name=None, description=None):
         """The input_records are required because they are the only information source with the image stats(width, etc.) for the image on the disk."""
         data = []
-        for index, (prediction, sampel_plus_loss) in enumerate(zip(predictions, samples_plus_losses)):
+        for index, (prediction, sample_plus_loss) in enumerate(zip(predictions, samples_plus_losses)):
             # TODO: At the moment only resize_and_pad or resize are handelt. Check if there are other edge cases that need to be included
-            # The correction requires that the sampel_plus_loss has the scaled image sizes (not the padded ones or the original ones)
+            # The correction requires that the sample_plus_loss has the scaled image sizes (not the padded ones or the original ones)
             # correct the width and height to the values of the original image
-            img = Image.open(sampel_plus_loss["filepath"])
+            img = Image.open(sample_plus_loss["filepath"])
             width = img.size[0]
             height = img.size[1]
-            # use bool to int for padded_along_shortest and int(sampel_plus_loss["width"] < sampel_plus_loss["height"]) to avoid if branches
-            factor = max(width, height)/max(sampel_plus_loss["width"], sampel_plus_loss["height"])
-            padding = max(sampel_plus_loss["width"], sampel_plus_loss["height"]) - min(sampel_plus_loss["width"], sampel_plus_loss["height"])
+            # use bool to int for padded_along_shortest and int(sample_plus_loss["width"] < sample_plus_loss["height"]) to avoid if branches
+            factor = max(width, height)/max(sample_plus_loss["width"], sample_plus_loss["height"])
+            padding = max(sample_plus_loss["width"], sample_plus_loss["height"]) - min(sample_plus_loss["width"], sample_plus_loss["height"])
             # at the end /2 due to symmetric padding
-            correct_x = lambda x: factor * (x - int(padded_along_shortest) * int(sampel_plus_loss["width"] < sampel_plus_loss["height"]) * padding/2)
-            correct_y = lambda y: factor * (y - int(padded_along_shortest) * int(sampel_plus_loss["width"] > sampel_plus_loss["height"]) * padding/2)
+            correct_x = lambda x: factor * (x - int(padded_along_shortest) * int(sample_plus_loss["width"] < sample_plus_loss["height"]) * padding/2)
+            correct_y = lambda y: factor * (y - int(padded_along_shortest) * int(sample_plus_loss["width"] > sample_plus_loss["height"]) * padding/2)
             for label, bbox, score in zip(prediction["labels"], prediction["bboxes"], prediction["scores"]):
                 xmin, xmax, ymin, ymax = correct_x(bbox.xmin), correct_x(bbox.xmax), correct_y(bbox.ymin), correct_y(bbox.ymax)
-                file_stats = sampel_plus_loss["filepath"].stat()
+                file_stats = sample_plus_loss["filepath"].stat()
                 bbox_widht = xmax - xmin
                 bbox_height = ymax - ymin
                 area = bbox_widht * bbox_height
@@ -366,18 +342,18 @@ class ObjectDetectionResultsDataset(GenericDataset):
                 bbox_ratio = bbox_widht / bbox_height
                 data.append(
                     {
-                        "id": sampel_plus_loss["imageid"], "width": width, "height": height, "label": label,
+                        "id": sample_plus_loss["imageid"], "width": width, "height": height, "label": label,
                         "score": score, "bbox_xmin": xmin, "bbox_xmax": xmax, "bbox_ymin": ymin, "bbox_ymax": ymax, "area": area,
                         "area_normalized": area_normalized, "bbox_ratio": bbox_ratio, "record_index": index, "bbox_width": bbox_widht,
-                        "bbox_height": bbox_height, "filepath": str(sampel_plus_loss["filepath"]), "filename": str(sampel_plus_loss["filepath"]).split("/")[-1], "creation_date": datetime.datetime.fromtimestamp(file_stats.st_ctime),
+                        "bbox_height": bbox_height, "filepath": str(sample_plus_loss["filepath"]), "filename": str(sample_plus_loss["filepath"]).split("/")[-1], "creation_date": datetime.datetime.fromtimestamp(file_stats.st_ctime),
                         "modification_date": datetime.datetime.fromtimestamp(file_stats.st_mtime), "num_annotations": len(prediction["bboxes"]), "is_prediction": True,
-                        "loss_classifier": sampel_plus_loss["loss_classifier"], "loss_box_reg": sampel_plus_loss["loss_box_reg"], "loss_objectness": sampel_plus_loss["loss_objectness"],
-                        "loss_rpn_box_reg": sampel_plus_loss["loss_rpn_box_reg"], "loss_total": sampel_plus_loss["loss_total"]
+                        "loss_classifier": sample_plus_loss["loss_classifier"], "loss_box_reg": sample_plus_loss["loss_box_reg"], "loss_objectness": sample_plus_loss["loss_objectness"],
+                        "loss_rpn_box_reg": sample_plus_loss["loss_rpn_box_reg"], "loss_total": sample_plus_loss["loss_total"]
                     }
                 )
-            for label, bbox in zip(sampel_plus_loss["labels"], sampel_plus_loss["bboxes"]):
+            for label, bbox in zip(sample_plus_loss["labels"], sample_plus_loss["bboxes"]):
                 xmin, xmax, ymin, ymax = correct_x(bbox.xmin), correct_x(bbox.xmax), correct_y(bbox.ymin), correct_y(bbox.ymax)
-                file_stats = sampel_plus_loss["filepath"].stat()
+                file_stats = sample_plus_loss["filepath"].stat()
                 bbox_widht = xmax - xmin
                 bbox_height = ymax - ymin
                 area = bbox_widht * bbox_height
@@ -385,13 +361,13 @@ class ObjectDetectionResultsDataset(GenericDataset):
                 bbox_ratio = bbox_widht / bbox_height
                 data.append(
                     {
-                        "id": sampel_plus_loss["imageid"], "width": width, "height": height, "label": label,
-                        "score": 1, "bbox_xmin": xmin, "bbox_xmax": xmax, "bbox_ymin": ymin, "bbox_ymax": ymax, "area": area,
+                        "id": sample_plus_loss["imageid"], "width": width, "height": height, "label": label,
+                        "score": 999, "bbox_xmin": xmin, "bbox_xmax": xmax, "bbox_ymin": ymin, "bbox_ymax": ymax, "area": area,
                         "area_normalized": area_normalized, "bbox_ratio": bbox_ratio, "record_index": index, "bbox_width": bbox_widht,
-                        "bbox_height": bbox_height, "filepath": str(sampel_plus_loss["filepath"]), "filename": str(sampel_plus_loss["filepath"]).split("/")[-1], "creation_date": datetime.datetime.fromtimestamp(file_stats.st_ctime),
+                        "bbox_height": bbox_height, "filepath": str(sample_plus_loss["filepath"]), "filename": str(sample_plus_loss["filepath"]).split("/")[-1], "creation_date": datetime.datetime.fromtimestamp(file_stats.st_ctime),
                         "modification_date": datetime.datetime.fromtimestamp(file_stats.st_mtime), "num_annotations": len(prediction["bboxes"]), "is_prediction": False,
-                        "loss_classifier": sampel_plus_loss["loss_classifier"], "loss_box_reg": sampel_plus_loss["loss_box_reg"], "loss_objectness": sampel_plus_loss["loss_objectness"],
-                        "loss_rpn_box_reg": sampel_plus_loss["loss_rpn_box_reg"], "loss_total": sampel_plus_loss["loss_total"]
+                        "loss_classifier": sample_plus_loss["loss_classifier"], "loss_box_reg": sample_plus_loss["loss_box_reg"], "loss_objectness": sample_plus_loss["loss_objectness"],
+                        "loss_rpn_box_reg": sample_plus_loss["loss_rpn_box_reg"], "loss_total": sample_plus_loss["loss_total"]
                     }
                 )
         data = pd.DataFrame(data)

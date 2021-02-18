@@ -22,6 +22,9 @@ entries:
       title: data
       url: data.html
     - output: web,pdf
+      title: metrics
+      url: metrics.html
+    - output: web,pdf
       title: plotting.controls
       url: plotting.controls.html
     - output: web,pdf

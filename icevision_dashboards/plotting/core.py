@@ -24,7 +24,7 @@ import panel.widgets as pnw
 from .utils import *
 
 # Cell
-def barplot(counts: Union[np.ndarray, List[np.ndarray]], values: Union[np.ndarray, List[np.ndarray]], bar_type: Literal["horizontal", "vertical"] = "horizontal", linked_axis=True, width: int = 500, height: int = 500) -> bokeh.plotting.Figure:
+def barplot(counts: Union[np.ndarray, List[np.ndarray]], values: Union[np.ndarray, List[np.ndarray]], bar_type: Literal["horizontal", "vertical"] = "horizontal", linked_axis=True, width: int = 500, height: int = 500, **kwargs) -> bokeh.plotting.Figure:
     """Creates a figure with a barplot, were the counts is the bar height and values are the labels for the bars."""
     if isinstance(counts, list) and isinstance(values, list):
         plot_list = []
@@ -205,7 +205,7 @@ def time_arc_plot(start_dates: pd.core.series.Series, end_dates: Iterable[dateti
     return p
 
 # Cell
-def table_from_dataframe(data: Union[pd.DataFrame, List[pd.DataFrame]], columns: List[str] = None, width: int = 500, height: int = None, index_position: int = None) -> pn.widgets.tables.DataFrame:
+def table_from_dataframe(data: Union[pd.DataFrame, List[pd.DataFrame]], columns: List[str] = None, width: int = 500, height: int = None, index_position: int = None, **kwargs) -> pn.widgets.tables.DataFrame:
     if height is None:
         upper_bound = data.shape[0] if isinstance(data, pd.DataFrame) else data[0].shape[0]
         alternative_bound = data.shape[0] if isinstance(data, pd.DataFrame) else data[0].shape[0]
@@ -216,7 +216,7 @@ def table_from_dataframe(data: Union[pd.DataFrame, List[pd.DataFrame]], columns:
             columns = df.columns
         selection = df[columns]
         template = """<span href="#" data-toggle="tooltip" title="<%= value %>"><%= value %></span>"""
-        table = pnw.DataFrame(selection, formatters={key: HTMLTemplateFormatter(template=template) for key in selection.columns}, selection=[0], width=width, height=height)
+        table = pnw.DataFrame(selection, formatters={key: HTMLTemplateFormatter(template=template) for key in selection.columns}, selection=[0], width=width, height=height, **kwargs)
         return table
 
     if isinstance(data, pd.DataFrame):
@@ -235,7 +235,7 @@ def stacked_hist(data: Union[list, pd.DataFrame], x_col: str, stack_col: str, x_
         for stack_value in dataframe[stack_col].unique():
             x_values = dataframe.groupby(stack_col).get_group(stack_value).groupby(x_col).count()
             data[str(stack_value)] = [float(x_values[x_values.index == i][stack_col].values) if i in x_values.index else 0 for i in sorted(dataframe[x_col].unique())]
-        colors = viridis(dataframe[stack_col].nunique()) if (2 > dataframe[stack_col].nunique() > 21) else Category20[dataframe[stack_col].nunique()]
+        colors =  Category20[dataframe[stack_col].nunique()] if (2 < dataframe[stack_col].nunique() < 21) else viridis(dataframe[stack_col].nunique())
         legend = [stack_col+": "+i for i in dataframe[stack_col].unique().astype(str).tolist()]
 
         if x_range is None and y_range is None:
@@ -359,10 +359,12 @@ def categorical_2d_histogram_with_gui(data: pd.DataFrame, category_cols=None, hi
     if isinstance(data, pd.DataFrame):
         x_range_start=data[x_select.value].min()
         x_range_end=data[x_select.value].max()
+        x_range_end=x_range_end if x_range_end > x_range_start else x_range_end*1.1
         x_range_step=(x_range_end - x_range_start) / 50
     elif isinstance(data, list):
         x_range_start=min(df[x_select.value].min() for df in data)
         x_range_end=max(df[x_select.value].max() for df in data)
+        x_range_end=x_range_end if x_range_end > x_range_start else x_range_end*1.1
         x_range_step=(x_range_end - x_range_start) / 50
     x_range = pnw.RangeSlider(name="X-Axis Range", start=x_range_start, end=x_range_end, step=x_range_step, disabled=False)
 
