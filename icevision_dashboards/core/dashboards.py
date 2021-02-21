@@ -325,9 +325,10 @@ class DatasetGenerator(Dashboard):
     MULTI_DATASET_OVERVIEW = MultiDatasetOverview
     DATASET_OVERVIEW = DatasetOverview
 
-    def __init__(self, dataset, width=500, height=500):
+    def __init__(self, dataset, with_dataset_overview=False, width=500, height=500):
         self.base_dataset = dataset
         self.created_datasets = ObservableList([])
+        self.with_dataset_overview = with_dataset_overview
         super().__init__(width, height)
 
     def build_gui(self):
@@ -336,11 +337,16 @@ class DatasetGenerator(Dashboard):
         self.dataset_filter_create_dataset_button.on_click(self.create_dataset)
         self.dataset_filter_with_export = pn.Column(pn.Row(self.dataset_filter.show(), align="center"), pn.Row(self.dataset_filter_create_dataset_button, align="center"))
 
-        self.created_datasets_overview = self.MULTI_DATASET_OVERVIEW(self.created_datasets, with_del_button=True, height=150, width=self.width)
-        self.selected_dataset_overview = self.DATASET_OVERVIEW(self.base_dataset, height=self.height-250, width=self.width)
+        if self.with_dataset_overview:
+            self.created_datasets_overview = self.MULTI_DATASET_OVERVIEW(self.created_datasets, with_del_button=True, height=150, width=self.width)
+            self.selected_dataset_overview = self.DATASET_OVERVIEW(self.base_dataset, height=self.height-250, width=self.width).gui
+        else:
+            self.created_datasets_overview = self.MULTI_DATASET_OVERVIEW(self.created_datasets, with_del_button=True, height=self.height-100, width=self.width)
+            self.selected_dataset_overview = pn.Spacer(sizing_mode="stretch_both")
         self.export_gui = self.create_export_gui()
-        self.datasets_overview = pn.Column(pn.Row(self.created_datasets_overview.gui, align="center"), pn.Row(self.selected_dataset_overview.gui, align="center"), pn.Row(self.export_gui, align="center"))
-        self.created_datasets_overview.overview_table.param.watch(self.update_dataset_overview, "selection")
+        self.datasets_overview = pn.Column(pn.Row(self.created_datasets_overview.gui, align="center"), pn.Row(self.selected_dataset_overview, align="center"), pn.Row(self.export_gui, align="center"))
+        if self.with_dataset_overview:
+            self.created_datasets_overview.overview_table.param.watch(self.update_dataset_overview, "selection")
 
         self.gui = pn.Tabs(("Dataset Filter", self.dataset_filter_with_export), ("Dataset Overview", self.datasets_overview))
 

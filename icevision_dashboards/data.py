@@ -175,7 +175,7 @@ class DataDescriptorBbox(DatasetDescriptor):
                 bbox_ratio = bbox_widht / bbox_height
                 data.append(
                     {
-                        "id": record["imageid"], "width": record["width"], "height": record["height"], "label": label,
+                        "id": record["imageid"], "width": record["width"], "height": record["height"], "label": label, "area_square_root": area**2, "area_square_root_normalized": area_normalized**2,
                         "bbox_xmin": bbox.xmin, "bbox_xmax": bbox.xmax, "bbox_ymin": bbox.ymin, "bbox_ymax": bbox.ymax, "area": area,
                         "area_normalized": area_normalized, "bbox_ratio": bbox_ratio, "record_index": index, "bbox_width": bbox_widht,
                         "bbox_height": bbox_height, "filepath": str(record["filepath"]), "creation_date": datetime.datetime.fromtimestamp(file_stats.st_ctime),
@@ -306,8 +306,8 @@ class ObjectDetectionResultsDataset(GenericDataset):
             res_pred["bboxes"] = []
         else:
             res_pred = res_pred[0]
-        plot_gt = draw_record_with_bokeh(res_gt, class_map=self.class_map, display_bbox=True, return_figure=True, width=width, height=height)
-        plot_pred = draw_record_with_bokeh(res_pred, class_map=self.class_map, display_bbox=True, return_figure=True, width=width, height=height)
+        plot_gt = draw_record_with_bokeh(res_gt, display_bbox=True, return_figure=True, width=width, height=height)
+        plot_pred = draw_record_with_bokeh(res_pred, display_bbox=True, return_figure=True, width=width, height=height)
         return pn.Row(pn.Column(pn.Row("<b>Ground Truth</b>",  align="center"), plot_gt), pn.Column(pn.Row("<b>Prediction</b>",  align="center"), plot_pred))
 
     @classmethod
@@ -342,7 +342,7 @@ class ObjectDetectionResultsDataset(GenericDataset):
                 bbox_ratio = bbox_widht / bbox_height
                 data.append(
                     {
-                        "id": sample_plus_loss["imageid"], "width": width, "height": height, "label": label,
+                        "id": sample_plus_loss["imageid"], "width": width, "height": height, "label": label, "area_square_root": area**2, "area_square_root_normalized": area_normalized**2,
                         "score": score, "bbox_xmin": xmin, "bbox_xmax": xmax, "bbox_ymin": ymin, "bbox_ymax": ymax, "area": area,
                         "area_normalized": area_normalized, "bbox_ratio": bbox_ratio, "record_index": index, "bbox_width": bbox_widht,
                         "bbox_height": bbox_height, "filepath": str(sample_plus_loss["filepath"]), "filename": str(sample_plus_loss["filepath"]).split("/")[-1], "creation_date": datetime.datetime.fromtimestamp(file_stats.st_ctime),
@@ -362,7 +362,7 @@ class ObjectDetectionResultsDataset(GenericDataset):
                 data.append(
                     {
                         "id": sample_plus_loss["imageid"], "width": width, "height": height, "label": label,
-                        "score": 999, "bbox_xmin": xmin, "bbox_xmax": xmax, "bbox_ymin": ymin, "bbox_ymax": ymax, "area": area,
+                        "score": 999, "bbox_xmin": xmin, "bbox_xmax": xmax, "bbox_ymin": ymin, "bbox_ymax": ymax, "area": area, "area_square_root": area**2, "area_square_root_normalized": area_normalized**2,
                         "area_normalized": area_normalized, "bbox_ratio": bbox_ratio, "record_index": index, "bbox_width": bbox_widht,
                         "bbox_height": bbox_height, "filepath": str(sample_plus_loss["filepath"]), "filename": str(sample_plus_loss["filepath"]).split("/")[-1], "creation_date": datetime.datetime.fromtimestamp(file_stats.st_ctime),
                         "modification_date": datetime.datetime.fromtimestamp(file_stats.st_mtime), "num_annotations": len(prediction["bboxes"]), "is_prediction": False,

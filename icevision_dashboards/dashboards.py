@@ -61,7 +61,7 @@ class ObjectDetectionDatasetOverview(DatasetOverview):
         self.categorical_2d_histogram = categorical_2d_histogram_with_gui(
             getattr(self.dataset, self.DESCRIPTOR_DATA),
             category_cols=["label", "num_annotations", "width", "height"],
-            hist_cols=["num_annotations", "area", "area_normalized", "bbox_ratio", "bbox_xmin", "bbox_xmax", "bbox_ymin", "bbox_ymax", "width", "height"],
+            hist_cols=["num_annotations", "area", "area_normalized", "area_square_root", "area_square_root_normalized", "bbox_ratio", "bbox_xmin", "bbox_xmax", "bbox_ymin", "bbox_ymax", "width", "height"],
             height=self.height//2, width=self.width//2
         )
         # ratio distribution
@@ -140,7 +140,7 @@ class ObjectDetectionDatasetComparison(DatasetComparison):
         self.categorical_2d_histogram = categorical_2d_histogram_with_gui(
             self._get_descriptor_for_all_datasets(self.DESCRIPTOR_DATA),
             category_cols=["label", "num_annotations", "width", "height"],
-            hist_cols=["num_annotations", "area", "area_normalized", "bbox_ratio", "bbox_xmin", "bbox_xmax", "bbox_ymin", "bbox_ymax", "width", "height"],
+            hist_cols=["num_annotations", "area", "area_normalized", "area_square_root", "area_square_root_normalized", "bbox_ratio", "bbox_xmin", "bbox_xmax", "bbox_ymin", "bbox_ymax", "bbox_width", "bbox_height", "width", "height"],
             height=floor(plot_size*1.5), width=floor(plot_size*1.5)
         )
         return pn.Column(_mixing_plots, self.categorical_2d_histogram, align="center")
@@ -244,6 +244,28 @@ class ObjectDetectionResultOverview(Dashboard):
                 ap_plots.append(pn.Column("<b>"+ap_key.replace("_", " ").title().replace("Ap", "AP")+"</b>", ap_plot))
 
         return pn.Column(pn.Row(map_table, align="center"), pn.Row(*ap_plots, align="center"))
+
+    @staticmethod
+    def precision_recall_plot(data, iou):
+        plot_data = pd.DataFrame({key: data[key] for key in ["recall", "precision", "scores", "tp", "fp", "fn"]})
+        source = ColumnDataSource(plot_data)
+        p = figure(x_axis_type=None, height=350, width=400, title="AP@"+str(iou)+" - "+str(round(data["ap"],4)), y_axis_label="precision", tools="")
+        p.line("recall", "precision", source=source, legend_label="Actual", color="black", line_width=2)
+        p.step(data["ap11_recalls"], data["ap11_precisions"], legend_label="AP11", color="green", line_width=2)
+        p.step(data["monotonic_recalls"], data["monotonic_precisions"], legend_label="Monotonic", color="firebrick", line_width=2)
+        p.add_tools(HoverTool(tooltips=[("Score", "@scores"), ("TP", "@tp"), ("FP", "@fp"), ("FN", "@fn")], mode="vline"))
+        p.js_on_event(events.DoubleTap, toggle_legend_js(p))
+        p.legend.click_policy="hide"
+        p_score = figure(x_range=p.x_range, height=150, width=400, x_axis_label="recall", y_axis_label="score", tools="")
+        p_score.scatter(data["recall"], data["scores"])
+        return pn.Row(gridplot([[p],[p_score]]))
+
+    def plot_precision_recall_curves_for_class(self, data, class_key):
+        plot_list = []
+        for key, value in data.items():
+            if key != "ap":
+                plot_list.append(self.precision_recall_plot(data[key], key))
+        return plots_as_matrix(plot_list, 5, 2, width=400*5, height=500*2)
 
     @staticmethod
     def precision_recall_plot(data, iou):
