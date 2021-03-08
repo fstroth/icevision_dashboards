@@ -88,7 +88,7 @@ nb_path: "nbs/core.data.ipynb"
 <div class="output_markdown rendered_html output_subarea ">
 <h2 id="ObservableList" class="doc_header"><code>class</code> <code>ObservableList</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/core/data.py#L25" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ObservableList</code>(<strong><code>observable_list</code></strong>:<code>list</code>) :: <a href="/icevision_dashboards/core.data.html#Observable"><code>Observable</code></a></p>
 </blockquote>
-<p>List with observer pattern</p>
+<p>List with observer pattern. The internal list prepresentation can be accessed with the list attribute</p>
 
 </div>
 
@@ -127,7 +127,7 @@ nb_path: "nbs/core.data.ipynb"
 <div class="output_markdown rendered_html output_subarea ">
 <h2 id="DatasetDescriptor" class="doc_header"><code>class</code> <code>DatasetDescriptor</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/core/data.py#L94" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>DatasetDescriptor</code>() :: <code>ABC</code></p>
 </blockquote>
-<p>Abstrac base class for descriptors of datasets</p>
+<p>Abstract base class for descriptors of datasets</p>
 
 </div>
 
@@ -148,7 +148,7 @@ nb_path: "nbs/core.data.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Abstaract base class for dataset descriptors. Inherited classes are required to implement a <code>calculate_description</code> function, that calculates the specific stats about a dataset one wants.</p>
+<p>Abstaract base class for dataset descriptors. Inherited classes are required to implement a <code>calculate_description</code> function, that calculates the specific stats about a dataset one wants. For more information on how they are used see: <a href="/icevision_dashboards/core.data.html#GenericDataset"><code>GenericDataset</code></a>.</p>
 
 </div>
 </div>
@@ -166,6 +166,7 @@ nb_path: "nbs/core.data.ipynb"
 <div class="output_markdown rendered_html output_subarea ">
 <h2 id="StringDescriptor" class="doc_header"><code>class</code> <code>StringDescriptor</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/core/data.py#L117" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>StringDescriptor</code>()</p>
 </blockquote>
+<p>Descriptor for strings</p>
 
 </div>
 
@@ -202,8 +203,9 @@ nb_path: "nbs/core.data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="GenericDataset" class="doc_header"><code>class</code> <code>GenericDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/core/data.py#L128" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GenericDataset</code>(<strong><code>base_data</code></strong>, <strong><code>name</code></strong>:<code>Optional</code>[<code>str</code>]=<em><code>None</code></em>, <strong><code>description</code></strong>:<code>Optional</code>[<code>str</code>]=<em><code>None</code></em>)</p>
+<h2 id="GenericDataset" class="doc_header"><code>class</code> <code>GenericDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/core/data.py#L129" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GenericDataset</code>(<strong><code>base_data</code></strong>, <strong><code>name</code></strong>:<code>Optional</code>[<code>str</code>]=<em><code>None</code></em>, <strong><code>description</code></strong>:<code>Optional</code>[<code>str</code>]=<em><code>None</code></em>)</p>
 </blockquote>
+<p>A generic datset that has a name and description. Data is stored under the attribute base_data. The class provides a function <code>reset_infered_data</code> which can be called to reset all descriptors.</p>
 
 </div>
 
@@ -296,6 +298,21 @@ can be propagated without explicit calls after each change. To achive this infor
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Stats before update:  {&#39;name&#39;: &#39;name&#39;, &#39;description&#39;: &#39;description&#39;, &#39;num_data_points&#39;: 3}
+Stats after update:  {&#39;name&#39;: &#39;name&#39;, &#39;description&#39;: &#39;description&#39;, &#39;num_data_points&#39;: 4}
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 

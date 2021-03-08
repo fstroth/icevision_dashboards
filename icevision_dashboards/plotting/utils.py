@@ -17,13 +17,14 @@ from icevision.visualize.draw_data import draw_record
 
 # Cell
 def toggle_legend_js(figure):
+    """Creates custom JS for bokeh to hide the legend with a double tap."""
     toggle_legend_js = CustomJS(
-                    args=dict(leg=figure.legend[0]),
-                    code="""if (leg.visible) {
-                                leg.visible = false
-                            } else {
-                                leg.visible = true
-                            }"""
+        args=dict(leg=figure.legend[0]),
+        code="""if (leg.visible){
+                    leg.visible = false
+                } else {
+                    leg.visible = true
+                }"""
     )
     return toggle_legend_js
 

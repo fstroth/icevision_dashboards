@@ -22,6 +22,7 @@ from .utils import *
 
 # Cell
 class Filter(metaclass=ABCMeta):
+    """Abstract base class for filters."""
     def __init__(self, data, width=500, height=500) -> None:
         self.data = data
         self.width = width
@@ -53,6 +54,7 @@ class Filter(metaclass=ABCMeta):
 class RangeFilter(Filter):
     def __init__(self, data: np.ndarray, name: str, bins: int = 20, steps: int = 50, with_hist: bool = True, width: int = 500, height: int = 500) -> None:
         self.steps = steps
+        self.step_width = (data.max()-data.min())/steps
         self.bins = bins
         self.name = name
         self.with_hist = with_hist
@@ -78,7 +80,7 @@ class RangeFilter(Filter):
         self.update_with_mask(mask)
 
     def get_selection(self, inverted: bool = False) -> np.ndarray:
-        selection = (self.data > self.gui[0].value[0]) & (self.data < self.gui[0].value[1])
+        selection = (self.data >= self.gui[0].value[0]) & (self.data <= self.gui[0].value[1])
         if inverted:
             selection = ~selection
         return selection
@@ -100,6 +102,7 @@ class RangeFilter(Filter):
 
 # Cell
 class CategoricalFilter(Filter):
+    """A multi select based filter for categorical data"""
     def __init__(self, data: np.ndarray, name: str, width: int = 500, height: int = 500) -> None:
         self.name = name
         super().__init__(data=data, width=width, height=height)
@@ -127,6 +130,7 @@ class CategoricalFilter(Filter):
 
 # Cell
 class TimeFilter(Filter):
+    """A filter for time data with a start and an end date"""
     def __init__(self, start_times: Iterable[datetime.datetime], end_times: Iterable[datetime.datetime], start_time_label: str = "Start", end_time_label: str = "End", width: int = 500, height: int = 500) -> None:
         self.start_times = start_times
         self.end_times = end_times
@@ -159,6 +163,7 @@ class TimeFilter(Filter):
 
 # Cell
 class ScatterFilter(Filter):
+    """A filter based on a scatter plot with a lasso selection."""
     def __init__(self, x, y, x_label: str = "", y_label: str = "", width: int = 500, height: int = 500):
         self.x_label = x_label
         self.y_label = y_label
@@ -186,6 +191,7 @@ class ScatterFilter(Filter):
 
 # Cell
 class GenericMulitScatterFilter(Filter):
+    """A generic filter base on the scatter plot filter, that provides additional inputs for column selection and how the selections over the different columns should be combined."""
     def __init__(self, data, columns: Optional[List[str]] = None, mode: str = "symmetric", width: int = 500, height: int = 500):
         """mode: symmetric (default) or singular. If symmetric for a specific x-y combination the corrosponding y-x combination will be updated with the same values. Else they have different selections."""
         self.mode = mode
@@ -210,11 +216,18 @@ class GenericMulitScatterFilter(Filter):
         second_select_index = 1 if len(self.data.columns) > 1 else 0
         self.y_select = pnw.Select(name="y-Axis", options=list(self.data.columns), value=self.data.columns[second_select_index], width=self.width//2, height=50)
         self.y_select.param.watch(self.update_plot, "value")
-        self.combine_selections = pnw.RadioBoxGroup(name="Combine selections", options=["None", "Or", "And"], value="None", width=self.width, inline=True)
+        self.combine_selections = pnw.RadioBoxGroup(name="Combine selections", options=["None", "Or", "And"], value="None", width=self.width//3, inline=True)
         self.combine_selections.param.watch(self.update_plot, "value")
+        self.ignore_empty_selections = pnw.CheckBoxGroup(name="Ignore empty selections", value=["Ignore empty selections"], options=["Ignore empty selections"])
+        self.ignore_empty_selections.param.watch(self.update_plot, "value")
         p = self.scatter_plot()
         legend = pn.Row("<p style='color:#B22222';>Selected in current</p>", "<p style='color:#FF00FF';>Selected in another</p>", "<p style='color:#808080';>Not selected</p>")
-        self.gui = pn.Column(pn.Row(self.x_select, self.y_select), pn.Row("Combine selections with: ", self.combine_selections), legend, p)
+        self.gui = pn.Column(
+            pn.Row(self.x_select, self.y_select),
+            pn.Row("Combine selections with: ", self.combine_selections, self.ignore_empty_selections),
+#             pn.Row("Ignore empty selections", ),
+            legend, p
+        )
 
     def scatter_plot(self):
         p = figure(x_axis_label=self.x_select.value, y_axis_label=self.y_select.value, width=self.width, height=self.height-50, tools="lasso_select")
@@ -223,7 +236,12 @@ class GenericMulitScatterFilter(Filter):
             combined_selection_selected = self.selections[self.x_select.value][self.y_select.value]
         else:
             # put all singel selections into one list so they can be iterated over with zip
-            single_selections = [selection for layer_1 in self.selections.values() for selection in layer_1.values()]
+            if "Ignore empty selections" in self.ignore_empty_selections.value:
+                single_selections = [selection for layer_1 in self.selections.values() for selection in layer_1.values() if any(selection)]
+                if len(single_selections) == 0:
+                    single_selections = [selection for selection in single_selections if any(selection)]
+            else:
+                single_selections = [selection for layer_1 in self.selections.values() for selection in layer_1.values()]
             if self.combine_selections.value == "And":
                 combined_selection_selected = [all(point_selections) for point_selections in zip(*single_selections)]
             else:
@@ -252,8 +270,12 @@ class GenericMulitScatterFilter(Filter):
         if self.combine_selections.value == "None":
             selection = [value for value in self.selections[self.x_select.value][self.y_select.value]]
         else:
-            single_selections = [selection for layer_1 in self.selections.values() for selection in layer_1.values()]
-
+            if "Ignore empty selections" in self.ignore_empty_selections.value:
+                single_selections = [selection for layer_1 in self.selections.values() for selection in layer_1.values() if any(selection)]
+                if len(single_selections) == 0:
+                    single_selections = [selection for selection in single_selections if any(selection)]
+            else:
+                single_selections = [selection for layer_1 in self.selections.values() for selection in layer_1.values()]
             if self.combine_selections.value == "And":
                 selection = [all(point_selections) for point_selections in zip(*single_selections)]
             else:

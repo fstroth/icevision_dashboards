@@ -34,6 +34,7 @@ from .core.data import *
 
 # Cell
 class RecordDataframeParser(parsers.Parser, parsers.FilepathMixin, parsers.SizeMixin, parsers.LabelsMixin):
+    """IceVision parser for pandas datagrames. This parser is mostly used by the RecordDataset to load records from a saved RecordDataset."""
     def __init__(self, record_dataframe):
         self.record_dataframe = record_dataframe
 
@@ -56,11 +57,13 @@ class RecordDataframeParser(parsers.Parser, parsers.FilepathMixin, parsers.SizeM
 
 # Cell
 class BboxRecordDataframeParser(RecordDataframeParser, parsers.BBoxesMixin):
+    """Extends the RecordDataframeParser for object detection"""
     def bboxes(self, o):
         return [BBox(annot[1]["bbox_xmin"], annot[1]["bbox_ymin"], annot[1]["bbox_xmax"], annot[1]["bbox_ymax"]) for annot in o.iterrows()]
 
 # Cell
 class MaskRecordDataframeParser(BboxRecordDataframeParser, parsers.MaskRCNN):
+    """Extends the RecordDataframeParser for instance segmentation"""
     def iscrowds(self, o):
         raise NotImplementedError()
 
@@ -69,6 +72,7 @@ class MaskRecordDataframeParser(BboxRecordDataframeParser, parsers.MaskRCNN):
 
 # Cell
 class RecordDataset(GenericDataset):
+    """Base class dashboard datasets that are based on IceVision records."""
     def __init__(self, records: Union[List[BaseRecord], ObservableList, str], class_map=None, name=None, description=None):
         if isinstance(records, str):
             self.load_from_file(records)
@@ -161,6 +165,7 @@ class RecordDataset(GenericDataset):
 
 # Cell
 class DataDescriptorBbox(DatasetDescriptor):
+    """Dashboard dataset for object detection"""
     def calculate_description(self, obj):
         """Aggregates stats from a list of records and returns a pandas dataframe with the aggregated stats. The creation time is not necessarily the real creation time.
         This depends on the OS, for more information see: https://docs.python.org/3/library/os.html#os.stat_result."""
@@ -279,6 +284,7 @@ class PrecisionRecallMetricsDescriptorObjectDetection(DatasetDescriptor):
 
 # Cell
 class ObjectDetectionResultsDataset(GenericDataset):
+    """Dashboard dataset for the results of and object detection system."""
     metric_data_ap = PrecisionRecallMetricsDescriptorObjectDetection()
 
     def __init__(self, dataframe, name=None, description=None):
@@ -293,6 +299,7 @@ class ObjectDetectionResultsDataset(GenericDataset):
         self.base_data.to_csv(path)
 
     def get_image_by_image_id(self, image_id, width=None, height=None):
+        """For gallery dashboards"""
         df_pred = self.base_data[(self.base_data["filepath"] == image_id) & (self.base_data["is_prediction"] == True)]
         df_gt = self.base_data[(self.base_data["filepath"] == image_id) & (self.base_data["is_prediction"] == False)]
 

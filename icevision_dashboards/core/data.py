@@ -23,7 +23,7 @@ class Observable(ABC):
 
 # Cell
 class ObservableList(Observable):
-    """List with observer pattern"""
+    """List with observer pattern. The internal list prepresentation can be accessed with the list attribute"""
     def __init__(self, observable_list: list):
         self._list = observable_list
         super().__init__()
@@ -92,7 +92,7 @@ class ObservableList(Observable):
 
 # Cell
 class DatasetDescriptor(ABC):
-    """Abstrac base class for descriptors of datasets"""
+    """Abstract base class for descriptors of datasets"""
     def __set_name__(self, owner, name):
         owner._descriptors.append(self)
         self.private_name = '_' + name
@@ -115,6 +115,7 @@ class DatasetDescriptor(ABC):
 
 # Cell
 class StringDescriptor:
+    """Descriptor for strings"""
     def __set_name__(self, owner, name):
         self.private_name = '_' + name
 
@@ -126,6 +127,7 @@ class StringDescriptor:
 
 # Cell
 class GenericDataset:
+    """A generic datset that has a name and description. Data is stored under the attribute base_data. The class provides a function `reset_infered_data` which can be called to reset all descriptors."""
     _descriptors = []
 
     name = StringDescriptor()

@@ -13,6 +13,7 @@ from shapely.geometry import Polygon
 
 # Cell
 class AP(ABC):
+    """Abstarct base class for the AP score and further metrics based on it."""
     def __init__(self, data, ious=None):
         self.data = data
         self.ious = ious if ious is not None else np.arange(0.5, 1, 0.05).round(2)
@@ -195,6 +196,7 @@ class AP(ABC):
 
 # Cell
 class APObjectDetection(AP):
+    """Implementation of the (m)AP score based metrics for object detection. This implementation uses shapely for calulating the iou. For a faster version see: `APObjectDetectionFast`"""
     @staticmethod
     def filter_data(df, filter_key_word):
         if filter_key_word == "AP":
@@ -236,6 +238,7 @@ class APObjectDetection(AP):
 
 # Cell
 class APObjectDetectionFast:
+    """A faster implementaiton for the (m)AP scores."""
     def __init__(self, data, ious=None):
         self.data = data
         self.ious = ious if ious is not None else np.arange(0.5, 1, 0.05).round(2)

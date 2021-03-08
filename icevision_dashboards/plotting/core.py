@@ -71,7 +71,7 @@ def barplot(counts: Union[np.ndarray, List[np.ndarray]], values: Union[np.ndarra
 
 # Cell
 def histogram(values: Union[np.ndarray, List[np.ndarray]], bins: int = 10, range: Tuple[int] = None, density: bool = False, remove_tools: bool = False, linked_axis=True, title="", x_label="", y_label="", orientation="horizontal", width: int = 500, height: int = 500) -> bokeh.plotting.Figure:
-    "Creates a histogram"
+    "Creates a histogram."
     if isinstance(values, np.ndarray):
         if orientation == "vertical":
             x_label, y_label = y_label, x_label
@@ -193,6 +193,7 @@ def heatmap(data: Union[pd.DataFrame, List[pd.DataFrame]], col_x: str, col_y: st
 
 # Cell
 def time_arc_plot(start_dates: pd.core.series.Series, end_dates: Iterable[datetime.datetime], width: int = 500, height: int  = 300) -> bokeh.plotting.Figure:
+    """Creates a plot of arcs where each ark spans from a start date to an end date."""
     radius = (end_dates-start_dates)/2
     x = start_dates + radius
     p = figure(x_axis_label="Date", x_axis_type='datetime', y_range=(0, radius.max()), x_range=(start_dates.min(), end_dates.max()), width=width, height=height, tools="")
