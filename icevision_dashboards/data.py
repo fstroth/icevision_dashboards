@@ -18,7 +18,6 @@ import numpy as np
 import pandas as pd
 from PIL import Image
 import panel as pn
-import numba
 
 from icevision.core.record import BaseRecord
 import icevision.parsers as parsers
@@ -29,7 +28,7 @@ from icevision.core.class_map import ClassMap
 from fastprogress import master_bar, progress_bar
 
 from .plotting.utils import draw_record_with_bokeh
-from .metrics import APObjectDetectionFast
+from .metrics import APObjectDetectionFast, APObjectDetection
 from .core.data import *
 
 # Cell
@@ -280,7 +279,7 @@ class PrecisionRecallMetricsDescriptorObjectDetection(DatasetDescriptor):
             self.ious = ious
 
     def calculate_description(self, obj):
-        return APObjectDetectionFast(obj.base_data, self.ious).get_metric_data()
+        return APObjectDetection(obj.base_data, self.ious).get_metric_data()
 
 # Cell
 class ObjectDetectionResultsDataset(GenericDataset):
@@ -291,7 +290,7 @@ class ObjectDetectionResultsDataset(GenericDataset):
         super().__init__(dataframe, name, description)
         # instanciate metric data and preload it
         self.metric_data_ap = None
-        _ = self.metric_data_ap
+        # _ = self.metric_data_ap
 
     def save(self, path):
         if not os.path.exists(os.path.join(*path.split("/")[:-1])):

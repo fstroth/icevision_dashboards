@@ -76,20 +76,6 @@ nb_path: "nbs/data.ipynb"
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre><span class="ansi-bold">INFO    </span> - <span class="ansi-blue-intense-fg ansi-bold">Autofixing records</span> | <span class="ansi-cyan-fg">icevision.parsers.parser</span>:<span class="ansi-cyan-fg">parse</span>:<span class="ansi-cyan-fg">126</span>
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
     {% endraw %}
 
@@ -104,7 +90,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="RecordDataframeParser" class="doc_header"><code>class</code> <code>RecordDataframeParser</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L36" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>RecordDataframeParser</code>(<strong><code>record_dataframe</code></strong>) :: <code>Parser</code></p>
+<h2 id="RecordDataframeParser" class="doc_header"><code>class</code> <code>RecordDataframeParser</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L35" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>RecordDataframeParser</code>(<strong><code>record_dataframe</code></strong>) :: <code>Parser</code></p>
 </blockquote>
 <p>IceVision parser for pandas datagrames. This parser is mostly used by the RecordDataset to load records from a saved RecordDataset.</p>
 
@@ -136,7 +122,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="BboxRecordDataframeParser" class="doc_header"><code>class</code> <code>BboxRecordDataframeParser</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L59" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BboxRecordDataframeParser</code>(<strong><code>record_dataframe</code></strong>) :: <a href="/icevision_dashboards/data.html#RecordDataframeParser"><code>RecordDataframeParser</code></a></p>
+<h2 id="BboxRecordDataframeParser" class="doc_header"><code>class</code> <code>BboxRecordDataframeParser</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L58" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BboxRecordDataframeParser</code>(<strong><code>record_dataframe</code></strong>) :: <a href="/icevision_dashboards/data.html#RecordDataframeParser"><code>RecordDataframeParser</code></a></p>
 </blockquote>
 <p>Extends the RecordDataframeParser for object detection</p>
 
@@ -168,7 +154,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="MaskRecordDataframeParser" class="doc_header"><code>class</code> <code>MaskRecordDataframeParser</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L65" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MaskRecordDataframeParser</code>(<strong><code>record_dataframe</code></strong>) :: <a href="/icevision_dashboards/data.html#BboxRecordDataframeParser"><code>BboxRecordDataframeParser</code></a></p>
+<h2 id="MaskRecordDataframeParser" class="doc_header"><code>class</code> <code>MaskRecordDataframeParser</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L64" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MaskRecordDataframeParser</code>(<strong><code>record_dataframe</code></strong>) :: <a href="/icevision_dashboards/data.html#BboxRecordDataframeParser"><code>BboxRecordDataframeParser</code></a></p>
 </blockquote>
 <p>Extends the RecordDataframeParser for instance segmentation</p>
 
@@ -200,7 +186,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="RecordDataset" class="doc_header"><code>class</code> <code>RecordDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L74" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>RecordDataset</code>(<strong><code>records</code></strong>:<code>Union</code>[<code>List</code>[<code>BaseRecord</code>], <a href="/icevision_dashboards/core.data.html#ObservableList"><code>ObservableList</code></a>, <code>str</code>], <strong><code>class_map</code></strong>=<em><code>None</code></em>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/core.data.html#GenericDataset"><code>GenericDataset</code></a></p>
+<h2 id="RecordDataset" class="doc_header"><code>class</code> <code>RecordDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L73" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>RecordDataset</code>(<strong><code>records</code></strong>:<code>Union</code>[<code>List</code>[<code>BaseRecord</code>], <a href="/icevision_dashboards/core.data.html#ObservableList"><code>ObservableList</code></a>, <code>str</code>], <strong><code>class_map</code></strong>=<em><code>None</code></em>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/core.data.html#GenericDataset"><code>GenericDataset</code></a></p>
 </blockquote>
 <p>Base class dashboard datasets that are based on IceVision records.</p>
 
@@ -232,7 +218,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="DataDescriptorBbox" class="doc_header"><code>class</code> <code>DataDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L167" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>DataDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="DataDescriptorBbox" class="doc_header"><code>class</code> <code>DataDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L166" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>DataDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
 <p>Dashboard dataset for object detection</p>
 
@@ -264,7 +250,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="StatsDescriptorBbox" class="doc_header"><code>class</code> <code>StatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L197" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>StatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="StatsDescriptorBbox" class="doc_header"><code>class</code> <code>StatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L196" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>StatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
 <p>Abstract base class for descriptors of datasets</p>
 
@@ -296,7 +282,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ImageStatsDescriptorBbox" class="doc_header"><code>class</code> <code>ImageStatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L212" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ImageStatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="ImageStatsDescriptorBbox" class="doc_header"><code>class</code> <code>ImageStatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L211" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ImageStatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
 <p>Abstract base class for descriptors of datasets</p>
 
@@ -328,7 +314,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ClassStatsDescriptorBbox" class="doc_header"><code>class</code> <code>ClassStatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L224" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ClassStatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="ClassStatsDescriptorBbox" class="doc_header"><code>class</code> <code>ClassStatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L223" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ClassStatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
 <p>Abstract base class for descriptors of datasets</p>
 
@@ -360,7 +346,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="GalleryStatsDescriptorBbox" class="doc_header"><code>class</code> <code>GalleryStatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L241" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GalleryStatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="GalleryStatsDescriptorBbox" class="doc_header"><code>class</code> <code>GalleryStatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L240" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GalleryStatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
 <p>Abstract base class for descriptors of datasets</p>
 
@@ -392,7 +378,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="BboxRecordDataset" class="doc_header"><code>class</code> <code>BboxRecordDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L248" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BboxRecordDataset</code>(<strong><code>records</code></strong>:<code>Union</code>[<code>List</code>[<code>BaseRecord</code>], <a href="/icevision_dashboards/core.data.html#ObservableList"><code>ObservableList</code></a>, <code>str</code>], <strong><code>class_map</code></strong>=<em><code>None</code></em>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/data.html#RecordDataset"><code>RecordDataset</code></a></p>
+<h2 id="BboxRecordDataset" class="doc_header"><code>class</code> <code>BboxRecordDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L247" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BboxRecordDataset</code>(<strong><code>records</code></strong>:<code>Union</code>[<code>List</code>[<code>BaseRecord</code>], <a href="/icevision_dashboards/core.data.html#ObservableList"><code>ObservableList</code></a>, <code>str</code>], <strong><code>class_map</code></strong>=<em><code>None</code></em>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/data.html#RecordDataset"><code>RecordDataset</code></a></p>
 </blockquote>
 <p>Base class dashboard datasets that are based on IceVision records.</p>
 
@@ -547,7 +533,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="PrecisionRecallMetricsDescriptorObjectDetection" class="doc_header"><code>class</code> <code>PrecisionRecallMetricsDescriptorObjectDetection</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L275" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>PrecisionRecallMetricsDescriptorObjectDetection</code>(<strong><code>ious</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="PrecisionRecallMetricsDescriptorObjectDetection" class="doc_header"><code>class</code> <code>PrecisionRecallMetricsDescriptorObjectDetection</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L274" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>PrecisionRecallMetricsDescriptorObjectDetection</code>(<strong><code>ious</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
 <p>Abstract base class for descriptors of datasets</p>
 
@@ -579,7 +565,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ObjectDetectionResultsDataset" class="doc_header"><code>class</code> <code>ObjectDetectionResultsDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L286" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ObjectDetectionResultsDataset</code>(<strong><code>dataframe</code></strong>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/core.data.html#GenericDataset"><code>GenericDataset</code></a></p>
+<h2 id="ObjectDetectionResultsDataset" class="doc_header"><code>class</code> <code>ObjectDetectionResultsDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L285" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ObjectDetectionResultsDataset</code>(<strong><code>dataframe</code></strong>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/core.data.html#GenericDataset"><code>GenericDataset</code></a></p>
 </blockquote>
 <p>Dashboard dataset for the results of and object detection system.</p>
 
