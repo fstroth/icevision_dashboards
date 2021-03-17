@@ -292,6 +292,11 @@ class ObjectDetectionResultOverview(Dashboard):
                 plot_list.append(self.precision_recall_plot_bokeh(plot_data, iou))
         return plots_as_matrix(plot_list, 5, 2, width=400*5, height=500*2)
 
+    def plot_additional_stats_bokeh(self, class_data, class_name):
+        # histograms
+        hist = histogram(list(class_data.values()))
+        return pn.pane.Bokeh(hist)
+
     @staticmethod
     def precision_recall_plot_matplotlib(fig, data, iou, bottom, top, left, right):
         gs = fig.add_gridspec(nrows=4, ncols=1, left=left, right=right, bottom=bottom, top=top, hspace=0)
@@ -322,6 +327,26 @@ class ObjectDetectionResultOverview(Dashboard):
         plt.close()
         return pn.pane.Matplotlib(fig, width=self.width)
 
+    def plot_additional_stats_matplotlib(self, class_data, class_name):
+        # histograms
+        class_data[0.5]["additional_stats"]
+        hist_fig, hist_ax = plt.subplots(1, len(class_data[0.5]["additional_stats"]), figsize=(9*len(class_data[0.5]["additional_stats"]), 9))
+        for ax, (stat_name, stat_data) in zip(hist_ax, class_data[0.5]["additional_stats"].items()):
+            ax.hist(stat_data, bins=20)
+            ax.set_xlabel(" ".join(stat_name.split("_")).title(), fontsize=32)
+            ax.set_ylabel("Counts", fontsize=32)
+            ax.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
+            ax.xaxis.offsetText.set_fontsize(34)
+            for x_tick, y_tick in zip(ax.xaxis.get_major_ticks(),  ax.yaxis.get_major_ticks()):
+                x_tick.label.set_fontsize(34)
+                y_tick.label.set_fontsize(34)
+            for x_tick, y_tick in zip(ax.xaxis.get_minor_ticks(),  ax.yaxis.get_minor_ticks()):
+                x_tick.label.set_fontsize(34)
+                y_tick.label.set_fontsize(34)
+        plt.tight_layout()
+        plt.close()
+        return pn.pane.Matplotlib(hist_fig, width=self.width)
+
     def build_precison_recall_overview(self, data):
         if len(data) == 1:
             return pn.Column("<h1> No information available</h1>")
@@ -335,9 +360,16 @@ class ObjectDetectionResultOverview(Dashboard):
             table_df.index.names = ["iou"]
             overview_table = table_from_dataframe(table_df)
             if self.plotting_backend == "bokeh":
-                return pn.Column(heading, pn.Row(overview_table, align="center"), self.plot_precision_recall_curves_for_class_bokeh(data[class_name], class_name))
+                precision_recall_curves = self.plot_precision_recall_curves_for_class_bokeh(data[class_name], class_name)
+                if "additional_stats" in next(iter(data[class_name].values())).keys():
+                    additional_stats_plot = self.plot_additional_stats_bokeh(data[class_name], class_name)
+                    return pn.Column(heading, pn.Row(overview_table, align="center"), precision_recall_curves, additional_stats_plot)
             else:
-                return pn.Column(heading, pn.Row(overview_table, align="center"), self.plot_precision_recall_curves_for_class_matplotlib(data[class_name], class_name))
+                precision_recall_curves = self.plot_precision_recall_curves_for_class_matplotlib(data[class_name], class_name)
+                if "additional_stats" in next(iter(data[class_name].values())).keys():
+                    additional_stats_plot = self.plot_additional_stats_matplotlib(data[class_name], class_name)
+                    return pn.Column(heading, pn.Row(overview_table, align="center"), precision_recall_curves, additional_stats_plot)
+            return pn.Column(heading, pn.Row(overview_table, align="center"), precision_recall_curves)
         return pn.Column(class_select, _plot, width=self.width)
 
     def build_precision_recall_tab(self):

@@ -34,8 +34,9 @@ from .core.data import *
 # Cell
 class RecordDataframeParser(parsers.Parser, parsers.FilepathMixin, parsers.SizeMixin, parsers.LabelsMixin):
     """IceVision parser for pandas datagrames. This parser is mostly used by the RecordDataset to load records from a saved RecordDataset."""
-    def __init__(self, record_dataframe):
+    def __init__(self, record_dataframe, class_map):
         self.record_dataframe = record_dataframe
+        self.class_map = class_map
 
     def __iter__(self):
         for group in self.record_dataframe.groupby("filepath"):
@@ -107,7 +108,7 @@ class RecordDataset(GenericDataset):
 
     @classmethod
     def load_from_record_dataframe(cls, record_data_df: pd.DataFrame, class_map=None, name=None, description=None):
-        records = cls.parse_df_to_records(record_data_df)
+        records = cls.parse_df_to_records(record_data_df, class_map)
         if class_map is None:
             class_map = cls.create_class_map_from_record_df(record_data_df)
         return cls(records, class_map=class_map, name=name, description=description)
@@ -126,11 +127,11 @@ class RecordDataset(GenericDataset):
     def load_from_file(self, path):
         data = json.load(open(path))
         df = pd.DataFrame(data["data"])
-        records = self.parse_df_to_records(df)
-        self.records = ObservableList(records)
         self.class_map = ClassMap(data["class_map"])
         self._name = data["name"]
         self._description = data["description"]
+        records = self.parse_df_to_records(df, self.class_map)
+        self.records = ObservableList(records)
 
     def save(self, save_path):
         if not os.path.isdir(save_path):
@@ -263,8 +264,8 @@ class BboxRecordDataset(RecordDataset):
         self.stats = None
 
     @staticmethod
-    def parse_df_to_records(record_data_df):
-        return BboxRecordDataframeParser(record_data_df).parse(RandomSplitter([1]))[0]
+    def parse_df_to_records(record_data_df, class_map):
+        return BboxRecordDataframeParser(record_data_df, class_map).parse(RandomSplitter([1]))[0]
 
     def get_image_by_image_id(self, image_id, width, height):
         index = self.record_index_image_id_map[image_id]
@@ -279,7 +280,7 @@ class PrecisionRecallMetricsDescriptorObjectDetection(DatasetDescriptor):
             self.ious = ious
 
     def calculate_description(self, obj):
-        return APObjectDetection(obj.base_data, self.ious).get_metric_data()
+        return APObjectDetectionFast(obj.base_data, self.ious).metric_data
 
 # Cell
 class ObjectDetectionResultsDataset(GenericDataset):
@@ -290,7 +291,7 @@ class ObjectDetectionResultsDataset(GenericDataset):
         super().__init__(dataframe, name, description)
         # instanciate metric data and preload it
         self.metric_data_ap = None
-        # _ = self.metric_data_ap
+        self.class_map = ClassMap(self.base_data[["label", "label_num"]].drop_duplicates().sort_values("label_num")["label"].tolist())
 
     def save(self, path):
         if not os.path.exists(os.path.join(*path.split("/")[:-1])):
@@ -302,8 +303,8 @@ class ObjectDetectionResultsDataset(GenericDataset):
         df_pred = self.base_data[(self.base_data["filepath"] == image_id) & (self.base_data["is_prediction"] == True)]
         df_gt = self.base_data[(self.base_data["filepath"] == image_id) & (self.base_data["is_prediction"] == False)]
 
-        parser_pred = BboxRecordDataframeParser(df_pred)
-        parser_gt = BboxRecordDataframeParser(df_gt)
+        parser_pred = BboxRecordDataframeParser(df_pred, self.class_map)
+        parser_gt = BboxRecordDataframeParser(df_gt, self.class_map)
         res_gt = parser_gt.parse(show_pbar=False, autofix=False)[1][0]
         res_pred = parser_pred.parse(show_pbar=False, autofix=False)[1]
         if len(res_pred) == 0:

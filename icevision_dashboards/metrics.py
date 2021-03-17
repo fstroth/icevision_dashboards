@@ -14,35 +14,18 @@ from shapely.geometry import Polygon
 # Cell
 class AP(ABC):
     """Abstarct base class for the AP score and further metrics based on it."""
-    def __init__(self, data, ious=None, additional_stats_should_be_calculated=True):
+    def __init__(self, data, ious=None):
         self.data = data
         self.ious = ious if ious is not None else np.arange(0.5, 1, 0.05).round(2)
-        self.additional_stats_should_be_calculated = additional_stats_should_be_calculated
-
-    def calculate_additional_stats(self, gt_box, pred_box, additional_stats):
-        gt_center_x, gt_center_y = np.array(gt_box.centroid.coords.xy)
-        pred_center_x, pred_center_y = np.array(pred_box.centroid.coords.xy)
-        uncovered_area_gt = (gt_box-pred_box).area
-        uncovered_area_pred = (pred_box-gt_box).area
-        intersection = gt_box.intersection(pred_box).area
-        additional_stats["x_offset"].append(gt_center_x-pred_center_x)
-        additional_stats["y_offset"].append(gt_center_y-pred_center_y)
-        additional_stats["uncovered_area_gt"].append(uncovered_area_gt)
-        additional_stats["uncovered_area_pred"].append(uncovered_area_pred)
-        additional_stats["intersection"].append(intersection)
 
     def get_image_stats(self, gt_boxes, pred_boxes, iou_threshold):
         """
-        Returns: {"tp": tp, "fp": fp, "fn": fn, "additional_data": {"x_offset": [], "y_offset": [], "uncovered_area_gt": [], "uncovered_area_pred": [], "intersection": []}}
-        The additional_data is only included if additional_stats_should_be_calculated is True
+        Returns: tp, fp, fn
         """
-        if self.additional_stats_should_be_calculated:
-            additional_stats = {"x_offset": [], "y_offset": [], "uncovered_area_gt": [], "uncovered_area_pred": [], "intersection": []}
-
         if pred_boxes is None:
-            result = {"tp": 0, "fp": 0, "fn": len(gt_boxes)}
-        elif len(gt_boxes) == 0:
-            result = {"tp": 0, "fp": len(pred_boxes), "fn": 0}
+            return 0,  0, len(gt_boxes)
+        if len(gt_boxes) == 0:
+            return 0, len(pred_boxes), 0
         else:
             # calculate ious and log their mapping with box indices
             gt_box_indices = []
@@ -58,7 +41,7 @@ class AP(ABC):
 
             # check if any hits happend
             if len(ious) == 0:
-                result = {"tp": 0, "fp": len(pred_boxes), "fn": len(gt_boxes)}
+                return 0, len(pred_boxes), len(gt_boxes)
             else:
                 # select matches based on iou
                 indices_descending = np.argsort(ious)[::-1]
@@ -70,35 +53,20 @@ class AP(ABC):
                     if (gt_index not in gt_match_indices) and (pred_index not in pred_match_indices):
                         gt_match_indices.append(gt_index)
                         pred_match_indices.append(pred_index)
-                        # calculate the additional stats
-                        if self.additional_stats_should_be_calculated:
-                            self.calculate_additional_stats(gt_boxes[gt_index], pred_boxes[pred_index], additional_stats)
-                result = {"tp": len(gt_match_indices), "fp": len(pred_boxes) - len(pred_match_indices), "fn": len(gt_boxes) - len(gt_match_indices)}
-        if self.additional_stats_should_be_calculated:
-            result["additional_stats"] = additional_stats
-        return result
+                return len(gt_match_indices), len(pred_boxes) - len(pred_match_indices), len(gt_boxes) - len(gt_match_indices)
 
-    def get_precision_and_recall_and_stats(self, gt, pred, iou):
+    def get_precision_and_recall(self, gt, pred, iou):
         """gt and pred need to be sored dicts with the lowest score being the first entry"""
         tps, fps, fns = [], [], []
         precisions, recalls, score_thresholds = [], [], []
-        if self.additional_stats_should_be_calculated:
-            additional_stats = {}
 
         if pred is None:
-            result = {
+            return {
                 "tp": np.array([0]), "fp": [sum(len(gt_boxes) for gt_boxes in gt.values())], "fn": np.array([0]),
                 "precision": np.array([0]), "recall": np.array([0]), "scores": np.array([0]),
                 "ap11": 0, "ap": 0, "monotonic_recalls": np.array([0]), "monotonic_precisions": np.array([0]),
-                "ap11_recalls": np.array([0]), "ap11_precisions": np.array([0]),
+                "ap11_recalls": np.array([0]), "ap11_precisions": np.array([0])
             }
-            if self.additional_stats_should_be_calculated:
-                result.update(
-                    {
-                        "x_offset": np.array([0]), "y_offset": np.array([0]), "uncovered_area_gt": np.array([0]), "uncovered_area_pred": np.array([0]), "intersection": np.array([0])
-                    }
-                )
-            return result
 
         scores = list(pred.keys())
         pred_boxes = list(pred.values())
@@ -115,18 +83,10 @@ class AP(ABC):
                         active_preds[filename].append(bbox)
             # loop over gt images
             for filename, image_gt_boxes in gt.items():
-                image_stats = self.get_image_stats(image_gt_boxes, active_preds.get(filename, None), iou)
-                score_tp += image_stats["tp"]
-                score_fp += image_stats["fp"]
-                score_fn += image_stats["fn"]
-                if self.additional_stats_should_be_calculated:
-                    additional_stats_for_image = image_stats["additional_stats"]
-                    for key, value in additional_stats_for_image.items():
-                        if key in additional_stats:
-                            additional_stats[key] = additional_stats[key] + value
-                        else:
-                            additional_stats[key] = value
-
+                img_tp, img_fp, img_fn = self.get_image_stats(image_gt_boxes, active_preds.get(filename, None), iou)
+                score_tp += img_tp
+                score_fp += img_fp
+                score_fn += img_fn
             # calculate precision and recall for the threshold
             score_precision = score_tp/(score_tp + score_fp) if score_tp + score_fp > 0 else 0
             score_recall = score_tp/(score_tp + score_fn) if score_tp + score_fn > 0 else 0
@@ -173,16 +133,11 @@ class AP(ABC):
         for i in changing_index_list:
             ap += ((calc_recalls[i]-calc_recalls[i-1])*calc_precisions[i])
 
-        result = {
+        return {
             "tp": tps, "fp": fps, "fn": fns, "precision": precisions, "recall": recalls, "scores": score_thresholds,
             "ap11": ap11, "ap": ap, "monotonic_recalls": np.array(calc_recalls), "monotonic_precisions": np.array(calc_precisions),
             "ap11_recalls": np.linspace(0.0, 1.0, 11), "ap11_precisions": np.array(precisions_at_recall_value)
         }
-        if self.additional_stats_should_be_calculated:
-            for key, value in additional_stats.items():
-                additional_stats[key] = np.array(value).flatten()
-            result["additional_stats"] = additional_stats
-        return result
 
     @abstractmethod
     def prepare_data(df):
@@ -231,12 +186,11 @@ class AP(ABC):
             for class_name in class_names:
                     iou_data = {}
                     for iou in self.ious:
-                        res = self.get_precision_and_recall_and_stats(gt_dict[class_name], pred_dict.get(class_name, None), iou)
+                        res = self.get_precision_and_recall(gt_dict[class_name], pred_dict.get(class_name, None), iou)
                         iou_data[iou] = res
                     iou_data["ap"] = np.array([iou["ap"] for iou in iou_data.values()]).mean()
                     class_data[class_name] = iou_data
-            aps = [class_entry["ap"] for class_entry in class_data.values()]
-            class_data["map"] = np.array(aps).mean() if len(aps) > 0 else 0
+            class_data["map"] = np.array([class_entry["ap"] for class_entry in class_data.values()]).mean()
             analysis_data[analysis_type] = class_data
         return analysis_data
 
@@ -283,39 +237,12 @@ class APObjectDetection(AP):
         return gt_dict, pred_dict
 
 # Cell
-class APObjectDetectionFast(APObjectDetection):
+class APObjectDetectionFast:
     """A faster implementaiton for the (m)AP scores."""
-    def __init__(self, data, ious=None, additional_stats_should_be_calculated=True):
+    def __init__(self, data, ious=None):
         self.data = data
         self.ious = ious if ious is not None else np.arange(0.5, 1, 0.05).round(2)
-        self.additional_stats_should_be_calculated = additional_stats_should_be_calculated
         self.metric_data = self.get_metric_data()
-
-    def calculate_additional_stats(self, gt_box, pred_box, additional_stats):
-        px1, py1, px2, py2 = pred_box
-        tx1, ty1, tx2, ty2 = gt_box
-
-        # return 0 if the boxes don't intersect
-        if (tx2 < px1 or px2 < tx1 or ty2 < py1 or py2 < ty1):
-            return 0
-        else:
-            lower_x = max(tx1, px1)
-            upper_x = min(tx2, px2)
-            lower_y = max(ty1, py1)
-            upper_y = min(ty2, py2)
-            intersection_area = (upper_x-lower_x) * (upper_y-lower_y)
-            gt_box_area = (tx2-tx1) * (ty2-ty1)
-            pred_box_area = (px2-px1) * (py2-py1)
-
-        gt_center_x, gt_center_y = gt_box[2]-gt_box[0], gt_box[1]-gt_box[3]
-        pred_center_x, pred_center_y = pred_box[2]-pred_box[0], pred_box[1]-pred_box[3]
-        uncovered_area_gt = gt_box_area-intersection_area
-        uncovered_area_pred = pred_box_area-intersection_area
-        additional_stats["x_offset"].append(gt_center_x-pred_center_x)
-        additional_stats["y_offset"].append(gt_center_y-pred_center_y)
-        additional_stats["uncovered_area_gt"].append(uncovered_area_gt)
-        additional_stats["uncovered_area_pred"].append(uncovered_area_pred)
-        additional_stats["intersection"].append(intersection_area)
 
     @staticmethod
     def calculate_iou(pred_box, gt_box):
@@ -335,6 +262,128 @@ class APObjectDetectionFast(APObjectDetection):
             pred_box_area = (px2-px1) * (py2-py1)
             iou = intersection_area / (gt_box_area + pred_box_area - intersection_area)
             return iou
+
+    def get_image_stats(self, gt_boxes, pred_boxes, iou_threshold):
+        """
+        Returns: tp, fp, fn
+        """
+        if pred_boxes is None:
+            return 0,  0, len(gt_boxes)
+        if len(gt_boxes) == 0:
+            return 0, len(pred_boxes), 0
+        else:
+            # calculate ious and log their mapping with box indices
+            gt_box_indices = []
+            pred_box_indices = []
+            ious = []
+            for pred_box_index, pred_box in enumerate(pred_boxes):
+                for gt_box_index, gt_box in enumerate(gt_boxes):
+                    iou = self.calculate_iou(pred_box, gt_box)
+                    if iou >= iou_threshold:
+                        gt_box_indices.append(gt_box_index)
+                        pred_box_indices.append(pred_box_index)
+                        ious.append(iou)
+
+            # check if any hits happend
+            if len(ious) == 0:
+                return 0, len(pred_boxes), len(gt_boxes)
+            else:
+                # select matches based on iou
+                indices_descending = np.argsort(ious)[::-1]
+                gt_match_indices = []
+                pred_match_indices = []
+                for index in indices_descending:
+                    gt_index = gt_box_indices[index]
+                    pred_index = pred_box_indices[index]
+                    if (gt_index not in gt_match_indices) and (pred_index not in pred_match_indices):
+                        gt_match_indices.append(gt_index)
+                        pred_match_indices.append(pred_index)
+                return len(gt_match_indices), len(pred_boxes) - len(pred_match_indices), len(gt_boxes) - len(gt_match_indices)
+
+    def get_precision_and_recall(self, gt, pred, iou):
+        """gt and pred need to be sored dicts with the lowest score being the first entry"""
+        tps, fps, fns = [], [], []
+        precisions, recalls, score_thresholds = [], [], []
+
+        if pred is None:
+            return {
+                "tp": np.array([0]), "fp": [sum(len(gt_boxes) for gt_boxes in gt.values())], "fn": np.array([0]),
+                "precision": np.array([0]), "recall": np.array([0]), "scores": np.array([0]),
+                "ap11": 0, "ap": 0, "monotonic_recalls": np.array([0]), "monotonic_precisions": np.array([0]),
+                "ap11_recalls": np.array([0]), "ap11_precisions": np.array([0])
+            }
+
+        scores = list(pred.keys())
+        pred_boxes = list(pred.values())
+        # loop over scores to calculate statistics for the score
+        for score_index, score in enumerate(scores):
+            score_tp, score_fp, score_fn = 0, 0, 0
+            # create dict with active predicitons (prediction with the same or higher score)
+            active_preds = {}
+            for pred_entry in pred_boxes[score_index:]:
+                for filename, bbox in zip(pred_entry["filename"], pred_entry["bboxes"]):
+                    if filename not in active_preds.keys():
+                        active_preds[filename] = [bbox]
+                    else:
+                        active_preds[filename].append(bbox)
+            # loop over gt images
+            for filename, image_gt_boxes in gt.items():
+                img_tp, img_fp, img_fn = self.get_image_stats(image_gt_boxes, active_preds.get(filename, None), iou)
+                score_tp += img_tp
+                score_fp += img_fp
+                score_fn += img_fn
+            # calculate precision and recall for the threshold
+            score_precision = score_tp/(score_tp + score_fp) if score_tp + score_fp > 0 else 0
+            score_recall = score_tp/(score_tp + score_fn) if score_tp + score_fn > 0 else 0
+
+            tps.append(score_tp)
+            fps.append(score_fp)
+            fns.append(score_fn)
+            precisions.append(score_precision)
+            recalls.append(score_recall)
+            score_thresholds.append(score)
+
+        # convert data to np.arrays for further processing
+        tps = np.array(tps)
+        fps = np.array(fps)
+        fns = np.array(fns)
+        precisions = np.array(precisions)
+        recalls = np.array(recalls)
+        score_thresholds = np.array(score_thresholds)
+
+        # calculate additional stats
+
+        # AP11
+        precisions_at_recall_value = []
+        for recall_value in np.linspace(0.0, 1.0, 11):
+            indices = np.argwhere(np.array(recalls) >= recall_value).flatten()
+            precision_max = max(precisions[indices]) if indices.size > 0 else 0
+            precisions_at_recall_value.append(precision_max)
+        ap11 = np.mean(precisions_at_recall_value)
+
+        #AP
+        sorted_indices = np.argsort(recalls)
+        sorted_recalls = recalls[sorted_indices]
+        sorted_precision = precisions[sorted_indices]
+        # make the precision values monotonically
+        calc_recalls = [0] + sorted_recalls.tolist() + [1]
+        calc_precisions = [0] + sorted_precision.tolist() + [0]
+        for i in range(len(calc_recalls)-2, -1, -1):
+            calc_precisions[i] = max(calc_precisions[i], calc_precisions[i+1])
+        # get indices where the recall value changes
+        changing_index_list = []
+        for i in range(1, len(calc_recalls)):
+            if calc_recalls[i] != calc_recalls[i-1]:
+                changing_index_list.append(i)
+        ap = 0.0
+        for i in changing_index_list:
+            ap += ((calc_recalls[i]-calc_recalls[i-1])*calc_precisions[i])
+
+        return {
+            "tp": tps, "fp": fps, "fn": fns, "precision": precisions, "recall": recalls, "scores": score_thresholds,
+            "ap11": ap11, "ap": ap, "monotonic_recalls": np.array(calc_recalls), "monotonic_precisions": np.array(calc_precisions),
+            "ap11_recalls": np.linspace(0.0, 1.0, 11), "ap11_precisions": np.array(precisions_at_recall_value)
+        }
 
     @staticmethod
     def prepare_data(df):
@@ -372,3 +421,21 @@ class APObjectDetectionFast(APObjectDetection):
             return df[((32**2 < df["area"]) & (df["area"] < 96**2))]
         elif filter_key_word == "AP_large":
             return df[96**2 < df["area"]]
+
+    def get_metric_data(self):
+        analysis_data = {}
+        for analysis_type in ["AP", "AP_small", "AP_medium", "AP_large"]:
+            filtered_df = self.filter_data(self.data, analysis_type)
+            gt_dict, pred_dict = self.prepare_data(filtered_df)
+            class_names = gt_dict.keys()
+            class_data = {}
+            for class_name in class_names:
+                    iou_data = {}
+                    for iou in self.ious:
+                        res = self.get_precision_and_recall(gt_dict[class_name], pred_dict.get(class_name, None), iou)
+                        iou_data[iou] = res
+                    iou_data["ap"] = np.array([iou["ap"] for iou in iou_data.values()]).mean()
+                    class_data[class_name] = iou_data
+            class_data["map"] = np.array([class_entry["ap"] for class_entry in class_data.values()]).mean() if len(class_data.values()) > 0 else 0
+            analysis_data[analysis_type] = class_data
+        return analysis_data
