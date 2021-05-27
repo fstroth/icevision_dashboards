@@ -20,6 +20,7 @@ from PIL import Image
 import panel as pn
 
 from icevision.core.record import BaseRecord
+from icevision.core.record_defaults import ObjectDetectionRecord, InstanceSegmentationRecord
 import icevision.parsers as parsers
 from icevision.data.data_splitter import RandomSplitter
 from icevision.core.bbox import BBox
@@ -32,38 +33,48 @@ from .metrics import APObjectDetectionFast, APObjectDetection
 from .core.data import *
 
 # Cell
-class RecordDataframeParser(parsers.Parser, parsers.FilepathMixin, parsers.SizeMixin, parsers.LabelsMixin):
+class RecordDataframeParser(parsers.Parser):
     """IceVision parser for pandas datagrames. This parser is mostly used by the RecordDataset to load records from a saved RecordDataset."""
-    def __init__(self, record_dataframe, class_map):
-        self.record_dataframe = record_dataframe
-        self.class_map = class_map
+    def __init__(self, record_template):
+        super().__init__(record_template)
 
     def __iter__(self):
         for group in self.record_dataframe.groupby("filepath"):
             yield group[1]
 
-    def imageid(self, o):
+    def __len__(self):
+        return self.record_dataframe["filepath"].nunique
+
+    def record_id(self, o):
         return o.iloc[0]["id"]
 
-    def filepath(self, o):
-        return o.iloc[0]["filepath"]
-
-    def image_width_height(self, o):
+    def parse_fields(self, o, record, is_new):
         width, height = o.iloc[0]["width"], o.iloc[0]["height"]
-        return (width, height)
-
-    def labels(self, o):
-        return [annot[1]["label_num"] for annot in o.iterrows()]
+        record.set_filepath(o.iloc[0]["filepath"])
+        record.set_img_size((width, height))
+        record.detection.set_class_map(self.class_map)
+        record.detection.add_labels(o["label"])
 
 # Cell
-class BboxRecordDataframeParser(RecordDataframeParser, parsers.BBoxesMixin):
+class BboxRecordDataframeParser(RecordDataframeParser):
     """Extends the RecordDataframeParser for object detection"""
-    def bboxes(self, o):
-        return [BBox(annot[1]["bbox_xmin"], annot[1]["bbox_ymin"], annot[1]["bbox_xmax"], annot[1]["bbox_ymax"]) for annot in o.iterrows()]
+    def __init__(self, record_dataframe, class_map):
+        super().__init__(ObjectDetectionRecord())
+        self.record_dataframe = record_dataframe
+        self.class_map = class_map
+
+    def parse_fields(self, o, record, is_new):
+        super().parse_fields(o, record, is_new)
+        record.detection.add_bboxes([BBox(annot[1]["bbox_xmin"], annot[1]["bbox_ymin"], annot[1]["bbox_xmax"], annot[1]["bbox_ymax"]) for annot in o.iterrows()])
 
 # Cell
-class MaskRecordDataframeParser(BboxRecordDataframeParser, parsers.MaskRCNN):
+class MaskRecordDataframeParser(RecordDataframeParser):
     """Extends the RecordDataframeParser for instance segmentation"""
+    def __init__(self, record_dataframe, class_map):
+        super().__init__(InstanceSegmentationRecord())
+        self.record_dataframe = record_dataframe
+        self.class_map = class_map
+
     def iscrowds(self, o):
         raise NotImplementedError()
 
@@ -73,7 +84,7 @@ class MaskRecordDataframeParser(BboxRecordDataframeParser, parsers.MaskRCNN):
 # Cell
 class RecordDataset(GenericDataset):
     """Base class dashboard datasets that are based on IceVision records."""
-    def __init__(self, records: Union[List[BaseRecord], ObservableList, str], class_map=None, name=None, description=None):
+    def __init__(self, records: Union[List[BaseRecord], ObservableList, str], class_map, name=None, description=None):
         if isinstance(records, str):
             self.load_from_file(records)
         else:
@@ -149,7 +160,7 @@ class RecordDataset(GenericDataset):
                     break
 
         class_map = self.class_map if self.class_map is not None else self.create_class_map_from_record_df(self.data)
-        save_data = {"name": self.name, "description": self.description, "data": self.data.to_dict(), "class_map": class_map.id2class}
+        save_data = {"name": self.name, "description": self.description, "data": self.data.to_dict(), "class_map": class_map._id2class}
 
         json.dump(save_data, open(os.path.join(save_path, save_name), "w"), default=str)
 
@@ -160,7 +171,7 @@ class RecordDataset(GenericDataset):
     def create_new_from_mask(cls, cls_instance, mask):
         selection = cls_instance.data[mask]
         filepaths = np.unique(selection["filepath"]).tolist()
-        new_records = [record for record in cls_instance.records if str(record["filepath"]) in filepaths]
+        new_records = [record for record in cls_instance.records if str(record.filepath) in filepaths]
         return cls(new_records, cls_instance.class_map)
 
 # Cell
@@ -171,26 +182,27 @@ class DataDescriptorBbox(DatasetDescriptor):
         This depends on the OS, for more information see: https://docs.python.org/3/library/os.html#os.stat_result."""
         data = []
         for index,record in enumerate(obj.records):
-            for label, bbox in zip(record["labels"], record["bboxes"]):
-                file_stats = record["filepath"].stat()
-                bbox_widht = bbox.xmax - bbox.xmin
-                bbox_height = bbox.ymax - bbox.ymin
-                area = bbox_widht * bbox_height
-                area_normalized = area / (record["width"] * record["height"])
-                bbox_ratio = bbox_widht / bbox_height
+            record_commons, record_detections = record.as_dict()["common"], record.aggregate_objects()["detection"]
+            for label, bbox in zip(record_detections["labels"], record_detections["bboxes"]):
+                file_stats = record.filepath.stat()
+                bbox_width = bbox["bbox_width"]
+                bbox_height = bbox["bbox_height"]
+                area = bbox_width*bbox_height
+                area_normalized = area / (record.width * record.height)
+                bbox_ratio = bbox_width / bbox_height
                 data.append(
                     {
-                        "id": record["imageid"], "width": record["width"], "height": record["height"], "label": label, "area_square_root": area**2, "area_square_root_normalized": area_normalized**2,
-                        "bbox_xmin": bbox.xmin, "bbox_xmax": bbox.xmax, "bbox_ymin": bbox.ymin, "bbox_ymax": bbox.ymax, "area": area,
-                        "area_normalized": area_normalized, "bbox_ratio": bbox_ratio, "record_index": index, "bbox_width": bbox_widht,
-                        "bbox_height": bbox_height, "filepath": str(record["filepath"]), "creation_date": datetime.datetime.fromtimestamp(file_stats.st_ctime),
-                        "modification_date": datetime.datetime.fromtimestamp(file_stats.st_mtime), "num_annotations": len(record["bboxes"])
+                        "id": record_commons["record_id"], "width": record.width, "height": record.height, "label": label, "area_square_root": bbox["bbox_sqrt_area"], "area_square_root_normalized": area_normalized**0.5,
+                        "bbox_xmin": bbox["bbox_x"], "bbox_xmax": bbox["bbox_x"]+bbox["bbox_width"], "bbox_ymin": bbox["bbox_y"], "bbox_ymax": bbox["bbox_y"]+bbox["bbox_height"], "area": area,
+                        "area_normalized": area_normalized, "bbox_ratio": bbox_ratio, "record_index": index, "bbox_width": bbox_width,
+                        "bbox_height": bbox_height, "filepath": str(record.filepath), "creation_date": datetime.datetime.fromtimestamp(file_stats.st_ctime),
+                        "modification_date": datetime.datetime.fromtimestamp(file_stats.st_mtime), "num_annotations": len(record_detections["bboxes"])
                     }
                 )
         data = pd.DataFrame(data)
         data["label_num"] = data["label"]
         if obj.class_map is not None:
-            data["label"] = data["label"].apply(obj.class_map.get_id)
+            data["label"] = data["label"].apply(obj.class_map.get_by_id)
         return data
 
 # Cell
@@ -255,7 +267,7 @@ class BboxRecordDataset(RecordDataset):
 
     def __init__(self, records: Union[List[BaseRecord], ObservableList, str], class_map=None, name=None, description=None):
         super().__init__(records, class_map, name, description)
-        self.record_index_image_id_map = {str(record["filepath"]): index for index, record in enumerate(self.records)}
+        self.record_index_image_id_map = {str(record.filepath): index for index, record in enumerate(self.records)}
         self.data = None
         self.gallery_data = None
         self.stats_dataset = None
@@ -342,16 +354,16 @@ class ObjectDetectionResultsDataset(GenericDataset):
             for label, bbox, score in zip(prediction["labels"], prediction["bboxes"], prediction["scores"]):
                 xmin, xmax, ymin, ymax = correct_x(bbox.xmin), correct_x(bbox.xmax), correct_y(bbox.ymin), correct_y(bbox.ymax)
                 file_stats = sample_plus_loss["filepath"].stat()
-                bbox_widht = xmax - xmin
+                bbox_width = xmax - xmin
                 bbox_height = ymax - ymin
-                area = bbox_widht * bbox_height
+                area = bbox_width * bbox_height
                 area_normalized = area / (width * height)
-                bbox_ratio = bbox_widht / bbox_height
+                bbox_ratio = bbox_width / bbox_height
                 data.append(
                     {
                         "id": sample_plus_loss["imageid"], "width": width, "height": height, "label": label, "area_square_root": area**2, "area_square_root_normalized": area_normalized**2,
                         "score": score, "bbox_xmin": xmin, "bbox_xmax": xmax, "bbox_ymin": ymin, "bbox_ymax": ymax, "area": area,
-                        "area_normalized": area_normalized, "bbox_ratio": bbox_ratio, "record_index": index, "bbox_width": bbox_widht,
+                        "area_normalized": area_normalized, "bbox_ratio": bbox_ratio, "record_index": index, "bbox_width": bbox_width,
                         "bbox_height": bbox_height, "filepath": str(sample_plus_loss["filepath"]), "filename": str(sample_plus_loss["filepath"]).split("/")[-1], "creation_date": datetime.datetime.fromtimestamp(file_stats.st_ctime),
                         "modification_date": datetime.datetime.fromtimestamp(file_stats.st_mtime), "num_annotations": len(prediction["bboxes"]), "is_prediction": True,
                         "loss_classifier": sample_plus_loss["loss_classifier"], "loss_box_reg": sample_plus_loss["loss_box_reg"], "loss_objectness": sample_plus_loss["loss_objectness"],
@@ -361,16 +373,16 @@ class ObjectDetectionResultsDataset(GenericDataset):
             for label, bbox in zip(sample_plus_loss["labels"], sample_plus_loss["bboxes"]):
                 xmin, xmax, ymin, ymax = correct_x(bbox.xmin), correct_x(bbox.xmax), correct_y(bbox.ymin), correct_y(bbox.ymax)
                 file_stats = sample_plus_loss["filepath"].stat()
-                bbox_widht = xmax - xmin
+                bbox_width = xmax - xmin
                 bbox_height = ymax - ymin
-                area = bbox_widht * bbox_height
+                area = bbox_width * bbox_height
                 area_normalized = area / (width * height)
-                bbox_ratio = bbox_widht / bbox_height
+                bbox_ratio = bbox_width / bbox_height
                 data.append(
                     {
                         "id": sample_plus_loss["imageid"], "width": width, "height": height, "label": label,
                         "score": 999, "bbox_xmin": xmin, "bbox_xmax": xmax, "bbox_ymin": ymin, "bbox_ymax": ymax, "area": area, "area_square_root": area**2, "area_square_root_normalized": area_normalized**2,
-                        "area_normalized": area_normalized, "bbox_ratio": bbox_ratio, "record_index": index, "bbox_width": bbox_widht,
+                        "area_normalized": area_normalized, "bbox_ratio": bbox_ratio, "record_index": index, "bbox_width": bbox_width,
                         "bbox_height": bbox_height, "filepath": str(sample_plus_loss["filepath"]), "filename": str(sample_plus_loss["filepath"]).split("/")[-1], "creation_date": datetime.datetime.fromtimestamp(file_stats.st_ctime),
                         "modification_date": datetime.datetime.fromtimestamp(file_stats.st_mtime), "num_annotations": len(prediction["bboxes"]), "is_prediction": False,
                         "loss_classifier": sample_plus_loss["loss_classifier"], "loss_box_reg": sample_plus_loss["loss_box_reg"], "loss_objectness": sample_plus_loss["loss_objectness"],
