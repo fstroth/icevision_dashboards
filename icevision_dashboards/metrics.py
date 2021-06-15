@@ -408,7 +408,7 @@ class APObjectDetectionFast:
                 if not row["filename"] in gt_dict[row["label"]].keys():
                     gt_dict[row["label"]][row["filename"]] = [[row["bbox_xmin"], row["bbox_ymin"], row["bbox_xmax"], row["bbox_ymax"]]]
                 else:
-                    gt_dict[row["label"]]["filename"].append([row["bbox_xmin"], row["bbox_ymin"], row["bbox_xmax"], row["bbox_ymax"]])
+                    gt_dict[row["label"]][row["filename"]].append([row["bbox_xmin"], row["bbox_ymin"], row["bbox_xmax"], row["bbox_ymax"]])
         return gt_dict, pred_dict
 
     @staticmethod
