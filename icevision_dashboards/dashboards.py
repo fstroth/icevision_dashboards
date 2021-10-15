@@ -53,14 +53,14 @@ class ObjectDetectionDatasetOverview(DatasetOverview):
         return pn.Column("<b>Dataset stats</b>", dataset_overview_table, "<b>Image stats</b>", images_overview_table, "<b>Class stats</b>", classes_overview_table, pn.Row(class_occurance_barplot, align="center"))
 
     def _generate_annotations_tab(self):
-        plot_size = floor(min(self.height, self.width)*0.45)
+        plot_width, plot_height = floor(self.width*0.45), floor(self.height*0.45)
         # mixing of classes
         mixing_matrix_classes_in_images = utils.calculate_mixing_matrix(getattr(self.dataset, self.DESCRIPTOR_DATA), self.IMAGE_IDENTIFIER_COL, self.ANNOTATON_LABEL_COL)
-        self.class_mixing_matrix_plot = pn.Column("<b>Class mixing</b>", heatmap(mixing_matrix_classes_in_images, "row_name", "col_name", "values", width=plot_size, height=plot_size), height=self.height)
+        self.class_mixing_matrix_plot = pn.Column("<b>Class mixing</b>", heatmap(mixing_matrix_classes_in_images, "row_name", "col_name", "values", width=plot_width, height=plot_height), height=self.height)
         # number of object per image, stacked hist
         self.classes_for_objects_per_image_stacked_hist = pn.Column(
             "<b>Objects per Image</b>",
-            stacked_hist(getattr(self.dataset, self.DESCRIPTOR_DATA), self.OBJECTS_PER_IMAGE_COL, self.ANNOTATON_LABEL_COL, "Objects per Image", width=plot_size, height=plot_size)
+            stacked_hist(getattr(self.dataset, self.DESCRIPTOR_DATA), self.OBJECTS_PER_IMAGE_COL, self.ANNOTATON_LABEL_COL, "Objects per Image", width=plot_width, height=plot_height)
         )
         # categorical overview
         self.categorical_2d_histogram = categorical_2d_histogram_with_gui(
@@ -149,7 +149,7 @@ class ObjectDetectionDatasetComparison(DatasetComparison):
             hist_cols=["num_annotations", "area", "area_normalized", "area_square_root", "area_square_root_normalized", "bbox_ratio", "bbox_xmin", "bbox_xmax", "bbox_ymin", "bbox_ymax", "bbox_width", "bbox_height", "width", "height"],
             height=floor(plot_size*1.5), width=floor(plot_size*1.5)
         )
-        return pn.Column(_mixing_plots, self.categorical_2d_histogram, align="center")
+        return pn.Row(_mixing_plots, self.categorical_2d_histogram, align="center")
 
     def _generate_gallery_tab(self):
         return pn.Row(*[Gallery(dataset, "data", "filepath", ["num_annotations", "width", "height", "label", "area", "bbox_ratio", "bbox_width", "bbox_height"], width=floor(self.width/len(self.datasets))).show() for dataset in self.datasets], align="start", sizing_mode="stretch_both")
@@ -178,10 +178,9 @@ class ObjectDetectionDatasetGeneratorRange(DatasetGenerator):
 # Cell
 class ObjectDetectionResultOverview(Dashboard):
     """Overview dashboard """
-    def __init__(self, dataset, plotting_backend="matplotlib", height=700, width=1000):
+    def __init__(self, dataset, height=700, width=1000):
         self.dataset= dataset
-        self.plotting_backend = plotting_backend
-
+        self.accordion_active = [0]
         self.loss_keys = [key for key in self.dataset.base_data.columns if "loss" in key]
         super().__init__(width=width, height=height)
 
@@ -201,34 +200,19 @@ class ObjectDetectionResultOverview(Dashboard):
 
     def build_loss_tab(self):
         # loss hists
-        if self.plotting_backend == "bokeh":
-            bins_input = pnw.IntInput(name="Bins", start=1, end=100, value=10)
-
-            @pn.depends(bins_input.param.value)
-            def loss_hists(bins):
-                unique_losses = self.dataset.base_data[["filepath"] + self.loss_keys].drop_duplicates()
-                hist_line = plots_as_matrix(
-                    histogram(
-                        [unique_losses[loss] for loss in self.loss_keys],
-                        title=self.loss_keys,
-                        bins=bins, linked_axis=False), 5, 1, width=self.width, height=200
-                )
-                return hist_line
-            loss_hists_col = pn.Column(bins_input, loss_hists)
-        if self.plotting_backend == "matplotlib":
-            fig_loss_hists, ax_loss_hists = plt.subplots(1, len(self.loss_keys), figsize=(16*5,9))
-            unique_losses = self.dataset.base_data[["filepath"] + self.loss_keys].drop_duplicates()
-            for single_ax, key in zip(ax_loss_hists, self.loss_keys):
-                single_ax.hist(unique_losses[key].values, bins=20)
-                single_ax.set_title(" ".join(key.split("_")).title(), fontsize=40)
-                for tick in single_ax.xaxis.get_major_ticks():
-                    tick.label.set_fontsize(34)
-                    tick.label.set_rotation(45)
-                for tick in single_ax.yaxis.get_major_ticks():
-                    tick.label.set_fontsize(34)
-            plt.tight_layout()
-            plt.close()
-            loss_hists_col = pn.pane.Matplotlib(fig_loss_hists, width=self.width)
+        fig_loss_hists, ax_loss_hists = plt.subplots(1, len(self.loss_keys), figsize=(16*5,9))
+        unique_losses = self.dataset.base_data[["filepath"] + self.loss_keys].drop_duplicates()
+        for single_ax, key in zip(ax_loss_hists, self.loss_keys):
+            single_ax.hist(unique_losses[key].values, bins=20)
+            single_ax.set_title(" ".join(key.split("_")).title(), fontsize=40)
+            for tick in single_ax.xaxis.get_major_ticks():
+                tick.label.set_fontsize(34)
+                tick.label.set_rotation(45)
+            for tick in single_ax.yaxis.get_major_ticks():
+                tick.label.set_fontsize(34)
+        plt.tight_layout()
+        plt.close()
+        loss_hists_col = pn.pane.Matplotlib(fig_loss_hists, width=self.width)
         axis_cols = ['score', 'area_normalized', 'area', 'bbox_ratio', 'bbox_width', 'bbox_height', 'num_annotations'] + self.loss_keys + ['width', 'height']
         scatter_overview = scatter_plot_with_gui(
             self.dataset.base_data[self.dataset.base_data["is_prediction"] == True],
@@ -332,15 +316,15 @@ class ObjectDetectionResultOverview(Dashboard):
         return pn.pane.Matplotlib(fig, width=self.width)
 
     @staticmethod
-    def histogramm_plot(fig, data, hist_key, bottom, top, left, right):
+    def histogramm_plot(fig, data, hist_key, bottom, top, left, right, bins=25):
         gs = fig.add_gridspec(nrows=1, ncols=1, left=left, right=right, bottom=bottom, top=top, hspace=0)
         ax = fig.add_subplot(gs[:, :])
         # ax.set_title(hist_key)
         if hist_key != "used_scatter" and hist_key != "unused_scatter":
             if "normalized" in hist_key:
-                ax.hist(data[hist_key][0], bins=20, range=(0,1))
+                ax.hist(data[hist_key][0], bins=bins, range=(0,1))
             else:
-                ax.hist(data[hist_key][0], bins=20)
+                ax.hist(data[hist_key][0], bins=bins)
             ax.set_xlabel(" ".join(hist_key.split("_")).title())
             ax.set_ylabel("Counts")
         elif hist_key == "used_scatter":
@@ -388,15 +372,11 @@ class ObjectDetectionResultOverview(Dashboard):
             table_df.columns = [iou_key for iou_key in data[class_name].keys() if iou_key != "ap"]
             table_df.index.names = ["iou"]
             overview_table = table_from_dataframe(table_df)
-            if self.plotting_backend == "bokeh":
-                precision_recall_curves = self.plot_precision_recall_curves_for_class_bokeh(data[class_name], class_name)
-                additional_stats_plot = self.plot_additional_stats_bokeh(data[class_name], class_name)
-                return pn.Column(heading, pn.Row(overview_table, align="center"), precision_recall_curves, additional_stats_plot)
-            else:
-                precision_recall_curves = self.plot_precision_recall_curves_for_class_matplotlib(data[class_name], class_name)
-                additional_stats_plot = self.plot_additional_stats_matplotlib(data[class_name], class_name)
-                return pn.Column(heading, pn.Row(overview_table, align="center"), precision_recall_curves, additional_stats_plot)
-        return pn.Column(class_select, _plot, width=self.width)
+            precision_recall_curves = self.plot_precision_recall_curves_for_class_matplotlib(data[class_name], class_name)
+            additional_stats_plot = self.plot_additional_stats_matplotlib(data[class_name], class_name)
+            ap_and_additional_stats_accordion = pn.Accordion(("AP", pn.Column(class_select, heading, pn.Row(overview_table, align="center"), precision_recall_curves)), ("Additioanl stats", additional_stats_plot), active=self.accordion_active)
+            return pn.Column(ap_and_additional_stats_accordion)
+        return pn.Column(_plot, width=self.width)
 
     def build_precision_recall_tab(self):
         overview_tab = self.build_ap_overview(self.dataset.metric_data_ap)
