@@ -31,7 +31,6 @@ The output will look like this:
 ![dataset_overivew_0](imgs/dataset_overview_0.png)
 ![dataset_overivew_1](imgs/dataset_overview_1.png)
 <div style="text-align:center"><img src="imgs/dataset_overview_2.png" /></div>
-
 ![dataset_overivew_3](imgs/dataset_overview_3.png)
 
 ## Contributing

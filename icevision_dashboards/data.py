@@ -29,7 +29,7 @@ from icevision.core.class_map import ClassMap
 from fastprogress import master_bar, progress_bar
 
 from .plotting.utils import draw_record_with_bokeh
-from .metrics import APObjectDetectionFast, APObjectDetection
+from .metrics import APObjectDetectionFast
 from .core.data import *
 
 # Cell
@@ -303,7 +303,7 @@ class ObjectDetectionResultsDataset(GenericDataset):
         super().__init__(dataframe, name, description)
         # instanciate metric data and preload it
         self.metric_data_ap = None
-        self.class_map = ClassMap(self.base_data[["label", "label_num"]].drop_duplicates().sort_values("label_num")["label"].tolist())
+        self.class_map = ClassMap([str(i) for i in self.base_data[["label", "label_num"]].drop_duplicates().sort_values("label_num")["label"].tolist()])
 
     def save(self, path):
         if not os.path.exists(os.path.join(*path.split("/")[:-1])):
@@ -339,64 +339,70 @@ class ObjectDetectionResultsDataset(GenericDataset):
         """The input_records are required because they are the only information source with the image stats(width, etc.) for the image on the disk."""
         data = []
         for index, (prediction, sample_plus_loss) in enumerate(zip(predictions, samples_plus_losses)):
-            # TODO: At the moment only resize_and_pad or resize are handelt. Check if there are other edge cases that need to be included
+            # TODO: At the moment only resize_and_pad or resize are handeled. Check if there are other edge cases that need to be included
             # The correction requires that the sample_plus_loss has the scaled image sizes (not the padded ones or the original ones)
             # correct the width and height to the values of the original image
             prediction = prediction.pred.as_dict()["detection"]
-            if len(prediction["labels"]) == 0:
-                raise ValueError("Not predictions, can't build dashboard")
             losses = sample_plus_loss.losses
             sample_plus_loss = sample_plus_loss.as_dict()
+            # bbox correction
             img = Image.open(sample_plus_loss["common"]["filepath"])
-            width = img.size[0]
-            height = img.size[1]
+            width, height = img.size[0], img.size[1]
             # use bool to int for padded_along_shortest and int(sample_plus_loss["width"] < sample_plus_loss["height"]) to avoid if branches
-            factor = max(width, height)/max(sample_plus_loss["common"]["width"], sample_plus_loss["common"]["height"])
-            padding = max(sample_plus_loss["common"]["width"], sample_plus_loss["common"]["height"]) - min(sample_plus_loss["common"]["width"], sample_plus_loss["common"]["height"])
-            # at the end /2 due to symmetric padding
-            correct_x = lambda x: factor * (x - int(padded_along_shortest) * int(sample_plus_loss["common"]["width"] < sample_plus_loss["common"]["height"]) * padding/2)
-            correct_y = lambda y: factor * (y - int(padded_along_shortest) * int(sample_plus_loss["common"]["width"] > sample_plus_loss["common"]["height"]) * padding/2)
-            for label, bbox, score in zip(prediction["labels"], prediction["bboxes"], prediction["scores"]):
-                xmin, xmax, ymin, ymax = correct_x(bbox.xmin), correct_x(bbox.xmax), correct_y(bbox.ymin), correct_y(bbox.ymax)
-                file_stats = sample_plus_loss["common"]["filepath"].stat()
-                bbox_width = xmax - xmin
-                bbox_height = ymax - ymin
-                area = bbox_width * bbox_height
-                area_normalized = area / (width * height)
-                bbox_ratio = bbox_width / bbox_height
-                data.append(
-                    {
-                        "id": sample_plus_loss["common"]["record_id"], "width": width, "height": height, "label": label, "area_square_root": area**2, "area_square_root_normalized": area_normalized**2,
-                        "score": score, "bbox_xmin": xmin, "bbox_xmax": xmax, "bbox_ymin": ymin, "bbox_ymax": ymax, "area": area,
-                        "area_normalized": area_normalized, "bbox_ratio": bbox_ratio, "record_index": index, "bbox_width": bbox_width,
-                        "bbox_height": bbox_height, "filepath": str(sample_plus_loss["common"]["filepath"]), "filename": str(sample_plus_loss["common"]["filepath"]).split("/")[-1], "creation_date": datetime.datetime.fromtimestamp(file_stats.st_ctime),
-                        "modification_date": datetime.datetime.fromtimestamp(file_stats.st_mtime), "num_annotations": len(prediction["bboxes"]), "is_prediction": True,
-                        "loss_classifier": losses["loss_classifier"], "loss_box_reg": losses["loss_box_reg"], "loss_objectness": losses["loss_objectness"],
-                        "loss_rpn_box_reg": losses["loss_rpn_box_reg"], "loss_total": losses["loss_total"]
-                    }
-                )
-            for label, bbox in zip(sample_plus_loss["detection"]["labels"], sample_plus_loss["detection"]["bboxes"]):
-                xmin, xmax, ymin, ymax = correct_x(bbox.xmin), correct_x(bbox.xmax), correct_y(bbox.ymin), correct_y(bbox.ymax)
-                file_stats = sample_plus_loss["common"]["filepath"].stat()
-                bbox_width = xmax - xmin
-                bbox_height = ymax - ymin
-                area = bbox_width * bbox_height
-                area_normalized = area / (width * height)
-                bbox_ratio = bbox_width / bbox_height
-                data.append(
-                    {
-                        "id": sample_plus_loss["common"]["record_id"], "width": width, "height": height, "label": label,
-                        "score": 999, "bbox_xmin": xmin, "bbox_xmax": xmax, "bbox_ymin": ymin, "bbox_ymax": ymax, "area": area, "area_square_root": area**2, "area_square_root_normalized": area_normalized**2,
-                        "area_normalized": area_normalized, "bbox_ratio": bbox_ratio, "record_index": index, "bbox_width": bbox_width,
-                        "bbox_height": bbox_height, "filepath": str(sample_plus_loss["common"]["filepath"]), "filename": str(sample_plus_loss["common"]["filepath"]).split("/")[-1], "creation_date": datetime.datetime.fromtimestamp(file_stats.st_ctime),
-                        "modification_date": datetime.datetime.fromtimestamp(file_stats.st_mtime), "num_annotations": len(prediction["bboxes"]), "is_prediction": False,
-                        "loss_classifier": losses["loss_classifier"], "loss_box_reg": losses["loss_box_reg"], "loss_objectness": losses["loss_objectness"],
-                        "loss_rpn_box_reg": losses["loss_rpn_box_reg"], "loss_total": losses["loss_total"]
-                    }
-                )
+            resize_factor = sample_plus_loss["common"]["width"]/width if width > height else sample_plus_loss["common"]["height"]/height
+            resized_x = resize_factor * width
+            resized_y = resize_factor * height
+            pad_x = sample_plus_loss["common"]["width"]-resized_x
+            pad_y = sample_plus_loss["common"]["height"]-resized_y
+            correct_x = lambda x: (x-pad_x/2)/resize_factor
+            correct_y = lambda y: (y-pad_y/2)/resize_factor
+
+            if len(prediction["labels"]) > 0:
+                for label, bbox, score in zip(prediction["labels"], prediction["bboxes"], prediction["scores"]):
+                    xmin, xmax, ymin, ymax = correct_x(bbox.xmin), correct_x(bbox.xmax), correct_y(bbox.ymin), correct_y(bbox.ymax)
+                    file_stats = sample_plus_loss["common"]["filepath"].stat()
+                    bbox_width = xmax - xmin
+                    bbox_height = ymax - ymin
+                    area = bbox_width * bbox_height
+                    area_normalized = area / (width * height)
+                    bbox_ratio = bbox_width / bbox_height
+                    image_data = {
+                            "id": sample_plus_loss["common"]["record_id"], "width": width, "height": height, "label": label, "area_square_root": area**2, "area_square_root_normalized": area_normalized**2,
+                            "score": score, "bbox_xmin": xmin, "bbox_xmax": xmax, "bbox_ymin": ymin, "bbox_ymax": ymax, "area": area,
+                            "area_normalized": area_normalized, "bbox_ratio": bbox_ratio, "record_index": index, "bbox_width": bbox_width,
+                            "bbox_height": bbox_height, "filepath": str(sample_plus_loss["common"]["filepath"]), "filename": str(sample_plus_loss["common"]["filepath"]).split("/")[-1], "creation_date": datetime.datetime.fromtimestamp(file_stats.st_ctime),
+                            "modification_date": datetime.datetime.fromtimestamp(file_stats.st_mtime), "num_annotations": len(prediction["bboxes"]), "is_prediction": True,
+                        }
+                    for key, value in losses.items():
+                        image_data[key] = value
+                    data.append(image_data)
+
+            if len(sample_plus_loss["detection"]["labels"]) > 0:
+                for label, bbox in zip(sample_plus_loss["detection"]["labels"], sample_plus_loss["detection"]["bboxes"]):
+                    xmin, xmax, ymin, ymax = correct_x(bbox.xmin), correct_x(bbox.xmax), correct_y(bbox.ymin), correct_y(bbox.ymax)
+                    file_stats = sample_plus_loss["common"]["filepath"].stat()
+                    bbox_width = xmax - xmin
+                    bbox_height = ymax - ymin
+                    area = bbox_width * bbox_height
+                    area_normalized = area / (width * height)
+                    bbox_ratio = bbox_width / bbox_height
+                    image_data = {
+                            "id": sample_plus_loss["common"]["record_id"], "width": width, "height": height, "label": label,
+                            "score": 999, "bbox_xmin": xmin, "bbox_xmax": xmax, "bbox_ymin": ymin, "bbox_ymax": ymax, "area": area, "area_square_root": area**2, "area_square_root_normalized": area_normalized**2,
+                            "area_normalized": area_normalized, "bbox_ratio": bbox_ratio, "record_index": index, "bbox_width": bbox_width,
+                            "bbox_height": bbox_height, "filepath": str(sample_plus_loss["common"]["filepath"]), "filename": str(sample_plus_loss["common"]["filepath"]).split("/")[-1], "creation_date": datetime.datetime.fromtimestamp(file_stats.st_ctime),
+                            "modification_date": datetime.datetime.fromtimestamp(file_stats.st_mtime), "num_annotations": len(prediction["bboxes"]), "is_prediction": False,
+                        }
+                    for key, value in losses.items():
+                        image_data[key] = value
+                    data.append(image_data)
+
         data = pd.DataFrame(data)
         data["label_num"] = data["label"]
         if class_map is not None:
             data["label"] = data["label"].apply(class_map.get_by_id)
+
+        if not any(data["is_prediction"] == True):
+            raise ValueError("No predictions found.")
 
         return cls(data, name, description)

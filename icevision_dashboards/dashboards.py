@@ -181,6 +181,8 @@ class ObjectDetectionResultOverview(Dashboard):
     def __init__(self, dataset, plotting_backend="matplotlib", height=700, width=1000):
         self.dataset= dataset
         self.plotting_backend = plotting_backend
+
+        self.loss_keys = [key for key in self.dataset.base_data.columns if "loss" in key]
         super().__init__(width=width, height=height)
 
     def build_gui(self):
@@ -204,19 +206,19 @@ class ObjectDetectionResultOverview(Dashboard):
 
             @pn.depends(bins_input.param.value)
             def loss_hists(bins):
-                unique_losses = self.dataset.base_data[["filepath", "loss_classifier", "loss_box_reg", "loss_objectness", "loss_rpn_box_reg", "loss_total"]].drop_duplicates()
+                unique_losses = self.dataset.base_data[["filepath"] + self.loss_keys].drop_duplicates()
                 hist_line = plots_as_matrix(
                     histogram(
-                        [unique_losses[loss] for loss in ["loss_total", "loss_classifier", "loss_box_reg", "loss_objectness", "loss_rpn_box_reg"]],
-                        title=["loss_total", "loss_classifier", "loss_box_reg", "loss_objectness", "loss_rpn_box_reg"],
+                        [unique_losses[loss] for loss in self.loss_keys],
+                        title=self.loss_keys,
                         bins=bins, linked_axis=False), 5, 1, width=self.width, height=200
                 )
                 return hist_line
             loss_hists_col = pn.Column(bins_input, loss_hists)
         if self.plotting_backend == "matplotlib":
-            fig_loss_hists, ax_loss_hists = plt.subplots(1, 5, figsize=(16*5,9))
-            unique_losses = self.dataset.base_data[["filepath", "loss_classifier", "loss_box_reg", "loss_objectness", "loss_rpn_box_reg", "loss_total"]].drop_duplicates()
-            for single_ax, key in zip(ax_loss_hists, ["loss_classifier", "loss_box_reg", "loss_objectness", "loss_rpn_box_reg", "loss_total"]):
+            fig_loss_hists, ax_loss_hists = plt.subplots(1, len(self.loss_keys), figsize=(16*5,9))
+            unique_losses = self.dataset.base_data[["filepath"] + self.loss_keys].drop_duplicates()
+            for single_ax, key in zip(ax_loss_hists, self.loss_keys):
                 single_ax.hist(unique_losses[key].values, bins=20)
                 single_ax.set_title(" ".join(key.split("_")).title(), fontsize=40)
                 for tick in single_ax.xaxis.get_major_ticks():
@@ -224,9 +226,10 @@ class ObjectDetectionResultOverview(Dashboard):
                     tick.label.set_rotation(45)
                 for tick in single_ax.yaxis.get_major_ticks():
                     tick.label.set_fontsize(34)
+            plt.tight_layout()
             plt.close()
             loss_hists_col = pn.pane.Matplotlib(fig_loss_hists, width=self.width)
-        axis_cols = ['score', 'area_normalized', 'area', 'bbox_ratio', 'bbox_width', 'bbox_height', 'num_annotations', 'loss_classifier', 'loss_box_reg', 'loss_objectness', 'loss_rpn_box_reg', 'loss_total', 'width', 'height']
+        axis_cols = ['score', 'area_normalized', 'area', 'bbox_ratio', 'bbox_width', 'bbox_height', 'num_annotations'] + self.loss_keys + ['width', 'height']
         scatter_overview = scatter_plot_with_gui(
             self.dataset.base_data[self.dataset.base_data["is_prediction"] == True],
             x_cols=axis_cols[1:] + [axis_cols[0]],
@@ -237,12 +240,12 @@ class ObjectDetectionResultOverview(Dashboard):
         cat_2d_hist = categorical_2d_histogram_with_gui(
             self.dataset.base_data[self.dataset.base_data["is_prediction"] == True],
             category_cols=["label", "num_annotations", "filename"],
-            hist_cols=['loss_total', 'loss_classifier', 'loss_box_reg', 'loss_objectness', 'loss_rpn_box_reg', 'score', 'area_normalized', 'area', 'bbox_ratio', 'bbox_width', 'bbox_height', 'num_annotations', 'width', 'height', 'label']
+            hist_cols=self.loss_keys + ['score', 'area_normalized', 'area', 'bbox_ratio', 'bbox_width', 'bbox_height', 'num_annotations', 'width', 'height', 'label']
         )
 
         sub_tabs = pn.Tabs(
             ("Histograms", pn.Row(pn.Spacer(sizing_mode="stretch_width"), scatter_overview, pn.Spacer(sizing_mode="stretch_width"), cat_2d_hist, pn.Spacer(sizing_mode="stretch_width"), align="center")),
-            ("Gallery", Gallery(self.dataset, "base_data", "filepath", sort_cols=["loss_total", "loss_classifier", "loss_box_reg", "loss_objectness", "loss_rpn_box_reg"], height=self.height).show())
+            ("Gallery", Gallery(self.dataset, "base_data", "filepath", sort_cols=self.loss_keys, height=self.height).show())
         )
 
         return pn.Column(loss_hists_col, sub_tabs)
@@ -328,25 +331,50 @@ class ObjectDetectionResultOverview(Dashboard):
         plt.close()
         return pn.pane.Matplotlib(fig, width=self.width)
 
+    @staticmethod
+    def histogramm_plot(fig, data, hist_key, bottom, top, left, right):
+        gs = fig.add_gridspec(nrows=1, ncols=1, left=left, right=right, bottom=bottom, top=top, hspace=0)
+        ax = fig.add_subplot(gs[:, :])
+        # ax.set_title(hist_key)
+        if hist_key != "used_scatter" and hist_key != "unused_scatter":
+            if "normalized" in hist_key:
+                ax.hist(data[hist_key][0], bins=20, range=(0,1))
+            else:
+                ax.hist(data[hist_key][0], bins=20)
+            ax.set_xlabel(" ".join(hist_key.split("_")).title())
+            ax.set_ylabel("Counts")
+        elif hist_key == "used_scatter":
+            ax.plot(data["used_gt_box_areas_normalized"][0], data["used_pred_box_areas_normalized"][0], ".")
+            ax.set_xlabel(" ".join("used_gt_box_areas_normalized".split("_")).title())
+            ax.set_ylabel(" ".join("used_pred_box_areas_normalized".split("_")).title())
+        elif hist_key == "unused_scatter":
+            ax.plot(data["unused_gt_box_areas_normalized"][0], data["unused_pred_box_areas_normalized"][0], ".")
+            ax.set_xlabel(" ".join("unused_gt_box_areas_normalized".split("_")).title())
+            ax.set_ylabel(" ".join("unused_pred_box_areas_normalized".split("_")).title())
+
+
     def plot_additional_stats_matplotlib(self, class_data, class_name):
         # histograms
-        class_data[0.5]["additional_stats"]
-        hist_fig, hist_ax = plt.subplots(1, len(class_data[0.5]["additional_stats"]), figsize=(9*len(class_data[0.5]["additional_stats"]), 9))
-        for ax, (stat_name, stat_data) in zip(hist_ax, class_data[0.5]["additional_stats"].items()):
-            ax.hist(stat_data, bins=20)
-            ax.set_xlabel(" ".join(stat_name.split("_")).title(), fontsize=32)
-            ax.set_ylabel("Counts", fontsize=32)
-            ax.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
-            ax.xaxis.offsetText.set_fontsize(34)
-            for x_tick, y_tick in zip(ax.xaxis.get_major_ticks(),  ax.yaxis.get_major_ticks()):
-                x_tick.label.set_fontsize(34)
-                y_tick.label.set_fontsize(34)
-            for x_tick, y_tick in zip(ax.xaxis.get_minor_ticks(),  ax.yaxis.get_minor_ticks()):
-                x_tick.label.set_fontsize(34)
-                y_tick.label.set_fontsize(34)
-        plt.tight_layout()
-        plt.close()
-        return pn.pane.Matplotlib(hist_fig, width=self.width)
+        ious = sorted([iou for iou in class_data.keys() if iou != "ap"])
+        iou_selector = pnw.Select(name="IOU", options=ious, value=0.5)
+
+        @pn.depends(iou_selector.param.value)
+        def _plot_additional_stats_matplotlib(iou):
+            nonlocal class_data
+            nonlocal self
+            data = class_data[iou]
+            fig = plt.figure(constrained_layout=False, figsize=(16,9))
+            row_coords = [(0.69, 0.95), (0.37, 0.63), (0.05, 0.31)]
+            col_coords = [(0.69, 0.95), (0.37, 0.63), (0.05, 0.31)]
+            coord_combinations = list(itertools.product(row_coords, col_coords))
+
+            for index, hist_key in enumerate(['center_distances', 'y_center_offsets', 'x_center_offsets',  'used_scatter', 'unused_gt_box_areas_normalized', 'used_gt_box_areas_normalized',  'unused_scatter', 'unused_pred_box_areas_normalized', 'used_pred_box_areas_normalized']):
+                row_coord = coord_combinations[index][0]
+                col_coord = coord_combinations[index][1]
+                self.histogramm_plot(fig, data, hist_key, row_coord[0], row_coord[1], col_coord[0], col_coord[1])
+            plt.close()
+            return pn.pane.Matplotlib(fig, width=self.width)
+        return pn.Column(iou_selector, _plot_additional_stats_matplotlib)
 
     def build_precison_recall_overview(self, data):
         if len(data) == 1:
@@ -362,15 +390,12 @@ class ObjectDetectionResultOverview(Dashboard):
             overview_table = table_from_dataframe(table_df)
             if self.plotting_backend == "bokeh":
                 precision_recall_curves = self.plot_precision_recall_curves_for_class_bokeh(data[class_name], class_name)
-                if "additional_stats" in next(iter(data[class_name].values())).keys():
-                    additional_stats_plot = self.plot_additional_stats_bokeh(data[class_name], class_name)
-                    return pn.Column(heading, pn.Row(overview_table, align="center"), precision_recall_curves, additional_stats_plot)
+                additional_stats_plot = self.plot_additional_stats_bokeh(data[class_name], class_name)
+                return pn.Column(heading, pn.Row(overview_table, align="center"), precision_recall_curves, additional_stats_plot)
             else:
                 precision_recall_curves = self.plot_precision_recall_curves_for_class_matplotlib(data[class_name], class_name)
-                if "additional_stats" in next(iter(data[class_name].values())).keys():
-                    additional_stats_plot = self.plot_additional_stats_matplotlib(data[class_name], class_name)
-                    return pn.Column(heading, pn.Row(overview_table, align="center"), precision_recall_curves, additional_stats_plot)
-            return pn.Column(heading, pn.Row(overview_table, align="center"), precision_recall_curves)
+                additional_stats_plot = self.plot_additional_stats_matplotlib(data[class_name], class_name)
+                return pn.Column(heading, pn.Row(overview_table, align="center"), precision_recall_curves, additional_stats_plot)
         return pn.Column(class_select, _plot, width=self.width)
 
     def build_precision_recall_tab(self):
