@@ -193,9 +193,11 @@ class DataDescriptorBbox(DatasetDescriptor):
                 data.append(
                     {
                         "id": record_commons["record_id"], "width": record.width, "height": record.height, "label": label, "area_square_root": bbox["bbox_sqrt_area"], "area_square_root_normalized": area_normalized**0.5,
-                        "bbox_xmin": bbox["bbox_x"], "bbox_xmax": bbox["bbox_x"]+bbox["bbox_width"], "bbox_ymin": bbox["bbox_y"], "bbox_ymax": bbox["bbox_y"]+bbox["bbox_height"], "area": area,
-                        "area_normalized": area_normalized, "bbox_ratio": bbox_ratio, "record_index": index, "bbox_width": bbox_width,
-                        "bbox_height": bbox_height, "filepath": str(record.filepath), "creation_date": datetime.datetime.fromtimestamp(file_stats.st_ctime),
+                        "bbox_xmin": bbox["bbox_x"], "bbox_xmax": bbox["bbox_x"]+bbox["bbox_width"], "bbox_ymin": bbox["bbox_y"], "bbox_ymax": bbox["bbox_y"]+bbox["bbox_height"],
+                        "bbox_xmin_normalized": bbox["bbox_x"]/record.width, "bbox_xmax_normalized": (bbox["bbox_x"]+bbox["bbox_width"])/record.width, "bbox_ymin_normalized": bbox["bbox_y"]/record.height,
+                        "bbox_ymax_normalized": (bbox["bbox_y"]+bbox["bbox_height"])/record.height, "area": area, "area_normalized": area_normalized, "bbox_ratio": bbox_ratio, "bbox_ratio_normalized": bbox_ratio*(record.height/record.width),
+                        "record_index": index, "bbox_width": bbox_width, "bbox_height": bbox_height, "bbox_width_normalized": bbox_width/record.width, "bbox_height_normalized": bbox_height/record.height,
+                        "filepath": str(record.filepath), "creation_date": datetime.datetime.fromtimestamp(file_stats.st_ctime),
                         "modification_date": datetime.datetime.fromtimestamp(file_stats.st_mtime), "num_annotations": len(record_detections["bboxes"])
                     }
                 )
@@ -369,8 +371,10 @@ class ObjectDetectionResultsDataset(GenericDataset):
                     image_data = {
                             "id": sample_plus_loss["common"]["record_id"], "width": width, "height": height, "label": label, "area_square_root": area**2, "area_square_root_normalized": area_normalized**2,
                             "score": score, "bbox_xmin": xmin, "bbox_xmax": xmax, "bbox_ymin": ymin, "bbox_ymax": ymax, "area": area,
-                            "area_normalized": area_normalized, "bbox_ratio": bbox_ratio, "record_index": index, "bbox_width": bbox_width,
-                            "bbox_height": bbox_height, "filepath": str(sample_plus_loss["common"]["filepath"]), "filename": str(sample_plus_loss["common"]["filepath"]).split("/")[-1], "creation_date": datetime.datetime.fromtimestamp(file_stats.st_ctime),
+                            "bbox_xmin_normalized": xmin/width, "bbox_xmax_normalized": xmax/width, "bbox_ymin_normalized": ymin/height, "bbox_ymax_normalized": ymax/height,
+                            "area_normalized": area_normalized, "bbox_ratio": bbox_ratio, "bbox_ratio_normalized": bbox_ratio*(height/width), "record_index": index,
+                            "bbox_width": bbox_width, "bbox_height": bbox_height, "bbox_width_normalized": bbox_width/width, "bbox_height_normalized": bbox_height/height,
+                            "filepath": str(sample_plus_loss["common"]["filepath"]), "filename": str(sample_plus_loss["common"]["filepath"]).split("/")[-1], "creation_date": datetime.datetime.fromtimestamp(file_stats.st_ctime),
                             "modification_date": datetime.datetime.fromtimestamp(file_stats.st_mtime), "num_annotations": len(prediction["bboxes"]), "is_prediction": True,
                         }
                     for key, value in losses.items():
@@ -389,8 +393,10 @@ class ObjectDetectionResultsDataset(GenericDataset):
                     image_data = {
                             "id": sample_plus_loss["common"]["record_id"], "width": width, "height": height, "label": label,
                             "score": 999, "bbox_xmin": xmin, "bbox_xmax": xmax, "bbox_ymin": ymin, "bbox_ymax": ymax, "area": area, "area_square_root": area**2, "area_square_root_normalized": area_normalized**2,
-                            "area_normalized": area_normalized, "bbox_ratio": bbox_ratio, "record_index": index, "bbox_width": bbox_width,
-                            "bbox_height": bbox_height, "filepath": str(sample_plus_loss["common"]["filepath"]), "filename": str(sample_plus_loss["common"]["filepath"]).split("/")[-1], "creation_date": datetime.datetime.fromtimestamp(file_stats.st_ctime),
+                            "area_normalized": area_normalized, "bbox_ratio": bbox_ratio, "record_index": index,
+                            "bbox_xmin_normalized": xmin/width, "bbox_xmax_normalized": xmax/width, "bbox_ymin_normalized": ymin/height, "bbox_ymax_normalized": ymax/height,
+                            "bbox_width": bbox_width, "bbox_height": bbox_height,  "bbox_width_normalized": bbox_width/width, "bbox_height_normalized": bbox_height/height,
+                            "filepath": str(sample_plus_loss["common"]["filepath"]), "filename": str(sample_plus_loss["common"]["filepath"]).split("/")[-1], "creation_date": datetime.datetime.fromtimestamp(file_stats.st_ctime),
                             "modification_date": datetime.datetime.fromtimestamp(file_stats.st_mtime), "num_annotations": len(prediction["bboxes"]), "is_prediction": False,
                         }
                     for key, value in losses.items():

@@ -11,6 +11,7 @@ from math import ceil, floor
 import itertools
 
 import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
 
 from bokeh.plotting import show, output_notebook, gridplot, figure
 from bokeh.models.widgets import DataTable, TableColumn, HTMLTemplateFormatter
@@ -41,6 +42,40 @@ class ObjectDetectionDatasetOverview(DatasetOverview):
     ANNOTATON_LABEL_COL = "label"
     OBJECTS_PER_IMAGE_COL = "num_annotations"
     AREA_COL = "area"
+
+    def __init__(self, dataset: GenericDataset, height: int = 500, width: int = 500):
+        super().__init__(dataset, height, width)
+        _, cluster_centers, _ = self._run_kmeans_clustering(3)
+        self.aspect_ratios = cluster_centers
+
+    def _run_kmeans_clustering(self, number_of_clusters, max_iter=1000):
+        normalized_aspect_ratios = self.dataset.data["bbox_ratio"].values
+        kmeans = KMeans(init='random', n_clusters=number_of_clusters, random_state=0, max_iter=max_iter)
+        predictions = kmeans.fit_predict(X=np.expand_dims(normalized_aspect_ratios, -1))
+        cluster_centers = kmeans.cluster_centers_
+        return predictions, cluster_centers, normalized_aspect_ratios
+
+    def _generate_anchor_tab(self):
+        num_clusters = pnw.NumberInput(name="Number of aspect ratios", value=3, width=self.width, height=50)
+        num_bins = pnw.NumberInput(name="Bins", value=30, width=self.width, height=50)
+
+        @pn.depends(num_clusters.param.value, num_bins.param.value)
+        def _plot(num_clusters, bins):
+            nonlocal self
+            predictions, cluster_centers, normalized_aspect_ratios = self._run_kmeans_clustering(num_clusters)
+            self.aspect_ratios = cluster_centers
+            fig, ax = plt.subplots(1,1, figsize=(16,9))
+            for pred_label, center in enumerate(cluster_centers):
+                ax.hist(normalized_aspect_ratios[predictions==pred_label], bins=bins, range=(normalized_aspect_ratios.min(), normalized_aspect_ratios.max()), label=f"Center: {round(float(center), 2)}")
+                ax.set_xlabel("Aspect ratios", fontsize=24)
+                ax. tick_params(axis='both', labelsize=20)
+            ax.legend(fontsize=25)
+            plt.close()
+            return pn.Column(
+                pnw.TextInput(name="Aspect Ratios", value=f"{[round(float(i), 2) for i in cluster_centers]}", align="center", disabled=True, width=self.width, height=50),
+                pn.pane.Matplotlib(fig, width=int((self.height-150)*(16/9)), height=self.height-150, align="center")
+            )
+        return pn.Column(num_clusters, num_bins, _plot)
 
     def _generate_datset_stats_tab(self):
         dataset_overview_table = table_from_dataframe(getattr(self.dataset, self.DESCRIPTOR_STATS_DATASET), width=self.width, height=self.height//7)
@@ -83,8 +118,9 @@ class ObjectDetectionDatasetOverview(DatasetOverview):
         dataset_tab = super()._generate_dataset_tab()
         dataset_stats_tab = self._generate_datset_stats_tab()
         annotations_tab = self._generate_annotations_tab()
+        anchor_tab = self._generate_anchor_tab()
         gallery_tab = self._generate_gallery_tab()
-        self.gui = pn.Tabs(("Dataset stats", dataset_stats_tab), ("Annotations", annotations_tab), ("Gallery", gallery_tab), ("Dataset", dataset_tab), align="start")
+        self.gui = pn.Tabs(("Dataset stats", dataset_stats_tab), ("Annotations", annotations_tab), ("Aspect Ratios", anchor_tab), ("Gallery", gallery_tab), ("Dataset", dataset_tab), align="start")
 
 # Cell
 class ObjectDetectionDatasetComparison(DatasetComparison):
