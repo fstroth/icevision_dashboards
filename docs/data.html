@@ -96,6 +96,46 @@ nb_path: "nbs/data.ipynb"
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_data_path_instance_segmentation</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">pennfudan</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
+<span class="n">test_instance_segmentation_parser</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">pennfudan</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="n">test_data_path_instance_segmentation</span><span class="p">)</span>
+<span class="n">test_instance_segmentation_train_records</span><span class="p">,</span> <span class="n">test_instance_segmentation_valid_records</span> <span class="o">=</span> <span class="n">test_instance_segmentation_parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+<span class="n">test_instance_segmentation_class_map</span> <span class="o">=</span> <span class="n">test_instance_segmentation_train_records</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">detection</span><span class="o">.</span><span class="n">class_map</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre><span class="ansi-bold">INFO    </span> - <span class="ansi-blue-intense-fg ansi-bold">Autofixing records</span> | <span class="ansi-cyan-fg">icevision.parsers.parser</span>:<span class="ansi-cyan-fg">parse</span>:<span class="ansi-cyan-fg">136</span>
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="General">General<a class="anchor-link" href="#General"> </a></h2>
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
 <div class="output">
@@ -104,9 +144,9 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="RecordDataframeParser" class="doc_header"><code>class</code> <code>RecordDataframeParser</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L36" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>RecordDataframeParser</code>(<strong><code>record_template</code></strong>) :: <code>Parser</code></p>
+<h2 id="RecordDataframeParser" class="doc_header"><code>class</code> <code>RecordDataframeParser</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L44" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>RecordDataframeParser</code>(<strong><code>record_template</code></strong>) :: <code>Parser</code></p>
 </blockquote>
-<p>IceVision parser for pandas datagrames. This parser is mostly used by the RecordDataset to load records from a saved RecordDataset.</p>
+<p>IceVision parser for pandas dataframes. This parser is mostly used by the RecordDataset to load records from a saved RecordDataset.</p>
 
 </div>
 
@@ -136,71 +176,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="BboxRecordDataframeParser" class="doc_header"><code>class</code> <code>BboxRecordDataframeParser</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L59" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BboxRecordDataframeParser</code>(<strong><code>record_dataframe</code></strong>, <strong><code>class_map</code></strong>) :: <a href="/icevision_dashboards/data.html#RecordDataframeParser"><code>RecordDataframeParser</code></a></p>
-</blockquote>
-<p>Extends the RecordDataframeParser for object detection</p>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h2 id="MaskRecordDataframeParser" class="doc_header"><code>class</code> <code>MaskRecordDataframeParser</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L71" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MaskRecordDataframeParser</code>(<strong><code>record_dataframe</code></strong>, <strong><code>class_map</code></strong>) :: <a href="/icevision_dashboards/data.html#RecordDataframeParser"><code>RecordDataframeParser</code></a></p>
-</blockquote>
-<p>Extends the RecordDataframeParser for instance segmentation</p>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h2 id="RecordDataset" class="doc_header"><code>class</code> <code>RecordDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L85" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>RecordDataset</code>(<strong><code>records</code></strong>:<code>Union</code>[<code>List</code>[<code>BaseRecord</code>], <a href="/icevision_dashboards/core.data.html#ObservableList"><code>ObservableList</code></a>, <code>str</code>], <strong><code>class_map</code></strong>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/core.data.html#GenericDataset"><code>GenericDataset</code></a></p>
+<h2 id="RecordDataset" class="doc_header"><code>class</code> <code>RecordDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L67" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>RecordDataset</code>(<strong><code>records</code></strong>:<code>Union</code>[<code>List</code>[<code>BaseRecord</code>], <a href="/icevision_dashboards/core.data.html#ObservableList"><code>ObservableList</code></a>, <code>str</code>], <strong><code>class_map</code></strong>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/core.data.html#GenericDataset"><code>GenericDataset</code></a></p>
 </blockquote>
 <p>Base class dashboard datasets that are based on IceVision records.</p>
 
@@ -232,7 +208,77 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="DataDescriptorBbox" class="doc_header"><code>class</code> <code>DataDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L178" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>DataDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="ResultsDataset" class="doc_header"><code>class</code> <code>ResultsDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L160" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ResultsDataset</code>(<strong><code>dataframe</code></strong>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/core.data.html#GenericDataset"><code>GenericDataset</code></a></p>
+</blockquote>
+<p>Dashboard dataset for the results of and object detection system.</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Object-detection">Object detection<a class="anchor-link" href="#Object-detection"> </a></h2>
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h2 id="BboxRecordDataframeParser" class="doc_header"><code>class</code> <code>BboxRecordDataframeParser</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L201" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BboxRecordDataframeParser</code>(<strong><code>record_dataframe</code></strong>, <strong><code>class_map</code></strong>) :: <a href="/icevision_dashboards/data.html#RecordDataframeParser"><code>RecordDataframeParser</code></a></p>
+</blockquote>
+<p>Extends the RecordDataframeParser for object detection</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h2 id="DataDescriptorBbox" class="doc_header"><code>class</code> <code>DataDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L213" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>DataDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
 <p>Dashboard dataset for object detection</p>
 
@@ -264,7 +310,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="StatsDescriptorBbox" class="doc_header"><code>class</code> <code>StatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L211" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>StatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="StatsDescriptorBbox" class="doc_header"><code>class</code> <code>StatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L246" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>StatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
 <p>Abstract base class for descriptors of datasets</p>
 
@@ -296,7 +342,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ImageStatsDescriptorBbox" class="doc_header"><code>class</code> <code>ImageStatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L226" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ImageStatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="ImageStatsDescriptorBbox" class="doc_header"><code>class</code> <code>ImageStatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L261" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ImageStatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
 <p>Abstract base class for descriptors of datasets</p>
 
@@ -328,7 +374,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ClassStatsDescriptorBbox" class="doc_header"><code>class</code> <code>ClassStatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L238" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ClassStatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="ClassStatsDescriptorBbox" class="doc_header"><code>class</code> <code>ClassStatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L273" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ClassStatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
 <p>Abstract base class for descriptors of datasets</p>
 
@@ -360,7 +406,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="GalleryStatsDescriptorBbox" class="doc_header"><code>class</code> <code>GalleryStatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L255" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GalleryStatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="GalleryStatsDescriptorBbox" class="doc_header"><code>class</code> <code>GalleryStatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L290" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GalleryStatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
 <p>Abstract base class for descriptors of datasets</p>
 
@@ -392,7 +438,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="BboxRecordDataset" class="doc_header"><code>class</code> <code>BboxRecordDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L262" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BboxRecordDataset</code>(<strong><code>records</code></strong>:<code>Union</code>[<code>List</code>[<code>BaseRecord</code>], <a href="/icevision_dashboards/core.data.html#ObservableList"><code>ObservableList</code></a>, <code>str</code>], <strong><code>class_map</code></strong>=<em><code>None</code></em>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/data.html#RecordDataset"><code>RecordDataset</code></a></p>
+<h2 id="BboxRecordDataset" class="doc_header"><code>class</code> <code>BboxRecordDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L297" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BboxRecordDataset</code>(<strong><code>records</code></strong>:<code>Union</code>[<code>List</code>[<code>BaseRecord</code>], <a href="/icevision_dashboards/core.data.html#ObservableList"><code>ObservableList</code></a>, <code>str</code>], <strong><code>class_map</code></strong>=<em><code>None</code></em>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/data.html#RecordDataset"><code>RecordDataset</code></a></p>
 </blockquote>
 <p>Base class dashboard datasets that are based on IceVision records.</p>
 
@@ -530,72 +576,72 @@ nb_path: "nbs/data.ipynb"
   <tbody>
     <tr>
       <th>0</th>
-      <td>23</td>
-      <td>499</td>
-      <td>666</td>
-      <td>carton</td>
-      <td>229.259678</td>
-      <td>...</td>
-      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/12.jpg</td>
-      <td>2021-05-27 13:06:56.839067</td>
-      <td>2021-05-27 13:06:56.839067</td>
-      <td>2</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>23</td>
+      <td>49</td>
       <td>499</td>
       <td>666</td>
       <td>water_bottle</td>
-      <td>210.428135</td>
+      <td>200.039996</td>
       <td>...</td>
-      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/12.jpg</td>
-      <td>2021-05-27 13:06:56.839067</td>
-      <td>2021-05-27 13:06:56.839067</td>
-      <td>2</td>
+      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/28.jpg</td>
+      <td>2021-05-27 13:06:56.847067</td>
+      <td>2021-05-27 13:06:56.847067</td>
+      <td>3</td>
       <td>4</td>
     </tr>
     <tr>
-      <th>2</th>
-      <td>6</td>
+      <th>1</th>
+      <td>49</td>
       <td>499</td>
       <td>666</td>
       <td>milk_bottle</td>
-      <td>171.289229</td>
+      <td>155.306149</td>
       <td>...</td>
-      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/104.jpg</td>
-      <td>2021-05-27 13:06:56.823067</td>
-      <td>2021-05-27 13:06:56.823067</td>
-      <td>1</td>
+      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/28.jpg</td>
+      <td>2021-05-27 13:06:56.847067</td>
+      <td>2021-05-27 13:06:56.847067</td>
+      <td>3</td>
       <td>3</td>
     </tr>
     <tr>
-      <th>3</th>
-      <td>96</td>
+      <th>2</th>
+      <td>49</td>
       <td>499</td>
       <td>666</td>
       <td>can</td>
-      <td>195.345847</td>
+      <td>221.296182</td>
       <td>...</td>
-      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/70.jpg</td>
+      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/28.jpg</td>
+      <td>2021-05-27 13:06:56.847067</td>
+      <td>2021-05-27 13:06:56.847067</td>
+      <td>3</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>80</td>
+      <td>499</td>
+      <td>666</td>
+      <td>can</td>
+      <td>170.082333</td>
+      <td>...</td>
+      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/56.jpg</td>
       <td>2021-05-27 13:06:56.811067</td>
       <td>2021-05-27 13:06:56.811067</td>
-      <td>4</td>
+      <td>3</td>
       <td>1</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>96</td>
+      <td>80</td>
       <td>499</td>
       <td>666</td>
       <td>carton</td>
-      <td>236.124967</td>
+      <td>226.916284</td>
       <td>...</td>
-      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/70.jpg</td>
+      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/56.jpg</td>
       <td>2021-05-27 13:06:56.811067</td>
       <td>2021-05-27 13:06:56.811067</td>
-      <td>4</td>
+      <td>3</td>
       <td>2</td>
     </tr>
     <tr>
@@ -613,78 +659,78 @@ nb_path: "nbs/data.ipynb"
       <td>...</td>
     </tr>
     <tr>
-      <th>259</th>
-      <td>46</td>
-      <td>499</td>
-      <td>666</td>
-      <td>milk_bottle</td>
-      <td>154.123327</td>
-      <td>...</td>
-      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/25.jpg</td>
-      <td>2021-05-27 13:06:56.823067</td>
-      <td>2021-05-27 13:06:56.823067</td>
-      <td>2</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>260</th>
-      <td>105</td>
-      <td>499</td>
-      <td>666</td>
-      <td>milk_bottle</td>
-      <td>181.559907</td>
-      <td>...</td>
-      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/79.jpg</td>
-      <td>2021-05-27 13:06:56.807067</td>
-      <td>2021-05-27 13:06:56.807067</td>
-      <td>4</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>261</th>
-      <td>105</td>
-      <td>499</td>
-      <td>666</td>
-      <td>water_bottle</td>
-      <td>161.762171</td>
-      <td>...</td>
-      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/79.jpg</td>
-      <td>2021-05-27 13:06:56.807067</td>
-      <td>2021-05-27 13:06:56.807067</td>
-      <td>4</td>
-      <td>4</td>
-    </tr>
-    <tr>
-      <th>262</th>
-      <td>105</td>
-      <td>499</td>
-      <td>666</td>
-      <td>carton</td>
-      <td>205.844602</td>
-      <td>...</td>
-      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/79.jpg</td>
-      <td>2021-05-27 13:06:56.807067</td>
-      <td>2021-05-27 13:06:56.807067</td>
-      <td>4</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>263</th>
-      <td>105</td>
+      <th>268</th>
+      <td>121</td>
       <td>499</td>
       <td>666</td>
       <td>can</td>
-      <td>165.951800</td>
+      <td>117.830387</td>
       <td>...</td>
-      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/79.jpg</td>
-      <td>2021-05-27 13:06:56.807067</td>
-      <td>2021-05-27 13:06:56.807067</td>
+      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/93.jpg</td>
+      <td>2021-05-27 13:06:56.819067</td>
+      <td>2021-05-27 13:06:56.819067</td>
       <td>4</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>269</th>
+      <td>121</td>
+      <td>499</td>
+      <td>666</td>
+      <td>carton</td>
+      <td>207.074866</td>
+      <td>...</td>
+      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/93.jpg</td>
+      <td>2021-05-27 13:06:56.819067</td>
+      <td>2021-05-27 13:06:56.819067</td>
+      <td>4</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>270</th>
+      <td>58</td>
+      <td>499</td>
+      <td>666</td>
+      <td>water_bottle</td>
+      <td>223.781143</td>
+      <td>...</td>
+      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/36.jpg</td>
+      <td>2021-05-27 13:06:56.831067</td>
+      <td>2021-05-27 13:06:56.831067</td>
+      <td>3</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>271</th>
+      <td>58</td>
+      <td>499</td>
+      <td>666</td>
+      <td>carton</td>
+      <td>206.012136</td>
+      <td>...</td>
+      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/36.jpg</td>
+      <td>2021-05-27 13:06:56.831067</td>
+      <td>2021-05-27 13:06:56.831067</td>
+      <td>3</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>272</th>
+      <td>58</td>
+      <td>499</td>
+      <td>666</td>
+      <td>can</td>
+      <td>139.287473</td>
+      <td>...</td>
+      <td>/home/frederik/.icevision/data/fridge/odFridgeObjects/images/36.jpg</td>
+      <td>2021-05-27 13:06:56.831067</td>
+      <td>2021-05-27 13:06:56.831067</td>
+      <td>3</td>
       <td>1</td>
     </tr>
   </tbody>
 </table>
-<p>264 rows × 25 columns</p>
+<p>273 rows × 28 columns</p>
 </div>
 </div>
 
@@ -779,7 +825,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="PrecisionRecallMetricsDescriptorObjectDetection" class="doc_header"><code>class</code> <code>PrecisionRecallMetricsDescriptorObjectDetection</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L289" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>PrecisionRecallMetricsDescriptorObjectDetection</code>(<strong><code>ious</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="PrecisionRecallMetricsDescriptorObjectDetection" class="doc_header"><code>class</code> <code>PrecisionRecallMetricsDescriptorObjectDetection</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L324" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>PrecisionRecallMetricsDescriptorObjectDetection</code>(<strong><code>ious</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
 <p>Abstract base class for descriptors of datasets</p>
 
@@ -811,7 +857,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ObjectDetectionResultsDataset" class="doc_header"><code>class</code> <code>ObjectDetectionResultsDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L300" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ObjectDetectionResultsDataset</code>(<strong><code>dataframe</code></strong>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/core.data.html#GenericDataset"><code>GenericDataset</code></a></p>
+<h2 id="ObjectDetectionResultsDataset" class="doc_header"><code>class</code> <code>ObjectDetectionResultsDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L335" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ObjectDetectionResultsDataset</code>(<strong><code>dataframe</code></strong>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/data.html#ResultsDataset"><code>ResultsDataset</code></a></p>
 </blockquote>
 <p>Dashboard dataset for the results of and object detection system.</p>
 
@@ -840,6 +886,544 @@ nb_path: "nbs/data.ipynb"
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_odrd</span> <span class="o">=</span> <span class="n">ObjectDetectionResultsDataset</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;test_data/fridge_valid.dat&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Instance-segmentation">Instance segmentation<a class="anchor-link" href="#Instance-segmentation"> </a></h2>
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="erles_to_string" class="doc_header"><code>erles_to_string</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L418" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>erles_to_string</code>(<strong><code>erles</code></strong>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="erles_to_counts_to_utf8" class="doc_header"><code>erles_to_counts_to_utf8</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L424" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>erles_to_counts_to_utf8</code>(<strong><code>erles</code></strong>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="string_to_erles" class="doc_header"><code>string_to_erles</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L431" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>string_to_erles</code>(<strong><code>erles_string</code></strong>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h2 id="InstanceSegmentationRecordDataframeParser" class="doc_header"><code>class</code> <code>InstanceSegmentationRecordDataframeParser</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L437" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>InstanceSegmentationRecordDataframeParser</code>(<strong><code>record_dataframe</code></strong>, <strong><code>class_map</code></strong>) :: <a href="/icevision_dashboards/data.html#RecordDataframeParser"><code>RecordDataframeParser</code></a></p>
+</blockquote>
+<p>Extends the RecordDataframeParser for instance segmentation</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h2 id="DataDescriptorInstanceSegmentation" class="doc_header"><code>class</code> <code>DataDescriptorInstanceSegmentation</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L455" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>DataDescriptorInstanceSegmentation</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+</blockquote>
+<p>Dashboard dataset for object detection</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h2 id="StatsDescriptorInstanceSegmentation" class="doc_header"><code>class</code> <code>StatsDescriptorInstanceSegmentation</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L488" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>StatsDescriptorInstanceSegmentation</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+</blockquote>
+<p>Abstract base class for descriptors of datasets</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h2 id="ImageStatsDescriptorInstanceSegmentation" class="doc_header"><code>class</code> <code>ImageStatsDescriptorInstanceSegmentation</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L503" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ImageStatsDescriptorInstanceSegmentation</code>() :: <a href="/icevision_dashboards/data.html#ImageStatsDescriptorBbox"><code>ImageStatsDescriptorBbox</code></a></p>
+</blockquote>
+<p>Abstract base class for descriptors of datasets</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h2 id="ClassStatsDescriptorInstanceSegmentation" class="doc_header"><code>class</code> <code>ClassStatsDescriptorInstanceSegmentation</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L507" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ClassStatsDescriptorInstanceSegmentation</code>() :: <a href="/icevision_dashboards/data.html#ClassStatsDescriptorBbox"><code>ClassStatsDescriptorBbox</code></a></p>
+</blockquote>
+<p>Abstract base class for descriptors of datasets</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h2 id="GalleryStatsDescriptorInstanceSegmentation" class="doc_header"><code>class</code> <code>GalleryStatsDescriptorInstanceSegmentation</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L524" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GalleryStatsDescriptorInstanceSegmentation</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+</blockquote>
+<p>Abstract base class for descriptors of datasets</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h2 id="InstanceSegmentationRecordDataset" class="doc_header"><code>class</code> <code>InstanceSegmentationRecordDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L531" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>InstanceSegmentationRecordDataset</code>(<strong><code>records</code></strong>:<code>Union</code>[<code>List</code>[<code>BaseRecord</code>], <a href="/icevision_dashboards/core.data.html#ObservableList"><code>ObservableList</code></a>, <code>str</code>], <strong><code>class_map</code></strong>=<em><code>None</code></em>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/data.html#RecordDataset"><code>RecordDataset</code></a></p>
+</blockquote>
+<p>Base class dashboard datasets that are based on IceVision records.</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_instance_segmentation_record_dataset</span> <span class="o">=</span> <span class="n">InstanceSegmentationRecordDataset</span><span class="p">(</span><span class="n">test_instance_segmentation_train_records</span><span class="p">,</span> <span class="n">test_instance_segmentation_train_records</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">detection</span><span class="o">.</span><span class="n">class_map</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">test_instance_segmentation_record_dataset</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">test_instance_segmentation_record_dataset</span><span class="o">.</span><span class="n">stats_dataset</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">test_instance_segmentation_record_dataset</span><span class="o">.</span><span class="n">stats_class</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">test_instance_segmentation_record_dataset</span><span class="o">.</span><span class="n">stats_image</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">test_instance_segmentation_record_dataset</span><span class="o">.</span><span class="n">stats</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_instance_segmentation_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="kc">False</span><span class="p">]</span><span class="o">*</span><span class="n">test_instance_segmentation_record_dataset</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">test_instance_segmentation_mask</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">test_instance_segmentation_masked_test_record</span> <span class="o">=</span> <span class="n">test_instance_segmentation_record_dataset</span><span class="o">.</span><span class="n">create_new_from_mask</span><span class="p">(</span><span class="n">test_instance_segmentation_record_dataset</span><span class="p">,</span> <span class="n">test_instance_segmentation_mask</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_instance_segmentation_masked_test_record</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_old_record_dataset_stats</span> <span class="o">=</span> <span class="n">test_instance_segmentation_record_dataset</span><span class="o">.</span><span class="n">stats_dataset</span>
+<span class="n">test_instance_segmentation_record_dataset</span><span class="o">.</span><span class="n">records</span><span class="o">.</span><span class="n">list</span> <span class="o">=</span> <span class="n">test_instance_segmentation_train_records</span>
+<span class="n">test_new_record_dataset_stats</span> <span class="o">=</span> <span class="n">test_instance_segmentation_record_dataset</span><span class="o">.</span><span class="n">stats_dataset</span>
+<span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">test_old_record_dataset_stats</span> <span class="o">!=</span> <span class="n">test_new_record_dataset_stats</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_instance_segmentation_regenerated_record_dataset</span> <span class="o">=</span> <span class="n">InstanceSegmentationRecordDataset</span><span class="o">.</span><span class="n">load_from_record_dataframe</span><span class="p">(</span><span class="n">test_instance_segmentation_record_dataset</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">test_instance_segmentation_class_map</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_instance_segmentation_regenerated_record_dataset</span><span class="o">.</span><span class="n">records</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_instance_segmentation_record_dataset</span><span class="o">.</span><span class="n">records</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre><span class="ansi-bold">INFO    </span> - <span class="ansi-blue-intense-fg ansi-bold">Autofixing records</span> | <span class="ansi-cyan-fg">icevision.parsers.parser</span>:<span class="ansi-cyan-fg">parse</span>:<span class="ansi-cyan-fg">136</span>
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="s2">&quot;dump_dir&quot;</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s2">&quot;dump_dir&quot;</span><span class="p">)</span>
+<span class="n">test_instance_segmentation_record_dataset</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;dataset_instance_segmentation&quot;</span>
+<span class="n">test_instance_segmentation_record_dataset</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;dump_dir&quot;</span><span class="p">)</span>
+<span class="n">test_instance_segmentation_record_dataset</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;dump_dir&quot;</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s2">&quot;dump_dir&quot;</span><span class="p">))</span> <span class="o">==</span> <span class="mi">2</span>
+<span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s2">&quot;dump_dir/dataset_instance_segmentation.json&quot;</span><span class="p">)</span>
+<span class="n">test_instance_segmentation_loaded_record_dataset</span> <span class="o">=</span> <span class="n">InstanceSegmentationRecordDataset</span><span class="p">(</span><span class="s2">&quot;dump_dir/dataset_instance_segmentation.json&quot;</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">test_instance_segmentation_record_dataset</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;mask_area&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">test_instance_segmentation_loaded_record_dataset</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
+<span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="s2">&quot;dump_dir&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre><span class="ansi-bold">INFO    </span> - <span class="ansi-blue-intense-fg ansi-bold">Autofixing records</span> | <span class="ansi-cyan-fg">icevision.parsers.parser</span>:<span class="ansi-cyan-fg">parse</span>:<span class="ansi-cyan-fg">136</span>
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h2 id="PrecisionRecallMetricsDescriptorInstanceSegmentation" class="doc_header"><code>class</code> <code>PrecisionRecallMetricsDescriptorInstanceSegmentation</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L558" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>PrecisionRecallMetricsDescriptorInstanceSegmentation</code>(<strong><code>ious</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+</blockquote>
+<p>Abstract base class for descriptors of datasets</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h2 id="InstanceSegmentationResultsDataset" class="doc_header"><code>class</code> <code>InstanceSegmentationResultsDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L569" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>InstanceSegmentationResultsDataset</code>(<strong><code>dataframe</code></strong>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/data.html#ResultsDataset"><code>ResultsDataset</code></a></p>
+</blockquote>
+<p>Dashboard dataset for the results of and object detection system.</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_instance_segmentation_odrd</span> <span class="o">=</span> <span class="n">InstanceSegmentationResultsDataset</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;test_data/fridge_valid.dat&quot;</span><span class="p">)</span>
 </pre></div>
 
     </div>

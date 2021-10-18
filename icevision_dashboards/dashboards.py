@@ -2,7 +2,9 @@
 
 __all__ = ['ObjectDetectionDatasetOverview', 'ObjectDetectionDatasetComparison',
            'ObjectDetectionDatasetGeneratorScatter', 'ObjectDetectionDatasetGeneratorRange',
-           'ObjectDetectionResultOverview']
+           'ObjectDetectionResultOverview', 'InstanceSegmentationDatasetOverview',
+           'InstanceSegmentationDatasetComparison', 'InstanceSegmentationDatasetGeneratorScatter',
+           'InstanceSegmentationDatasetGeneratorRange', 'InstanceSegmentationResultOverview']
 
 # Cell
 from typing import Union, Optional, List
@@ -410,7 +412,241 @@ class ObjectDetectionResultOverview(Dashboard):
             overview_table = table_from_dataframe(table_df)
             precision_recall_curves = self.plot_precision_recall_curves_for_class_matplotlib(data[class_name], class_name)
             additional_stats_plot = self.plot_additional_stats_matplotlib(data[class_name], class_name)
-            ap_and_additional_stats_accordion = pn.Accordion(("AP", pn.Column(class_select, heading, pn.Row(overview_table, align="center"), precision_recall_curves)), ("Additioanl stats", additional_stats_plot), active=self.accordion_active)
+            ap_and_additional_stats_accordion = pn.Accordion(("AP", pn.Column(class_select, heading, pn.Row(overview_table, align="center"), precision_recall_curves)), ("Additioanl3 stats", additional_stats_plot), active=self.accordion_active)
+            return pn.Column(ap_and_additional_stats_accordion)
+        return pn.Column(_plot, width=self.width)
+
+    def build_precision_recall_tab(self):
+        overview_tab = self.build_ap_overview(self.dataset.metric_data_ap)
+        ap_tab = self.build_precison_recall_overview(self.dataset.metric_data_ap["AP"])
+        ap_small_tab = self.build_precison_recall_overview(self.dataset.metric_data_ap["AP_small"])
+        ap_medium_tab = self.build_precison_recall_overview(self.dataset.metric_data_ap["AP_medium"])
+        ap_large_tab = self.build_precison_recall_overview(self.dataset.metric_data_ap["AP_large"])
+
+        return pn.Tabs(("Overview", overview_tab), ("AP", ap_tab), ("AP_small", ap_small_tab), ("AP_medium", ap_medium_tab), ("AP_large", ap_large_tab))
+
+# Cell
+class InstanceSegmentationDatasetOverview(ObjectDetectionDatasetOverview):
+    pass
+
+# Cell
+class InstanceSegmentationDatasetComparison(ObjectDetectionDatasetComparison):
+    pass
+
+# Cell
+class InstanceSegmentationDatasetGeneratorScatter(DatasetGeneratorScatter):
+    """Dataset generator for object detection"""
+    DESCRIPTOR_STATS = "stats_dataset"
+    DATASET_OVERVIEW = InstanceSegmentationDatasetOverview
+    DATASET_FILTER_COLUMNS = ["width", "height", "label", "mask_area", "bbox_area", "bbox_ratio", "bbox_width", "bbox_height", "num_annotations"]
+
+# Cell
+class InstanceSegmentationDatasetGeneratorRange(DatasetGenerator):
+    """Dataset generator for object detection"""
+    DESCRIPTOR_STATS = "stats_dataset"
+    DATASET_OVERVIEW = InstanceSegmentationDatasetOverview
+    DATASET_FILTER_COLUMNS = ["width", "height", "label", "mask_area", "bbox_area", "bbox_ratio", "bbox_width", "bbox_height", "num_annotations"]
+
+# Cell
+class InstanceSegmentationResultOverview(Dashboard):
+    """Overview dashboard """
+    def __init__(self, dataset, height=700, width=1000):
+        self.dataset= dataset
+        self.accordion_active = [0]
+        self.loss_keys = [key for key in self.dataset.base_data.columns if "loss" in key]
+        super().__init__(width=width, height=height)
+
+    def build_gui(self):
+        self.loss_tab = self.build_loss_tab()
+        self.ap_tab = self.build_precision_recall_tab()
+        self.gui = pn.Tabs(("Loss", self.loss_tab), ("Precision-Recall", self.ap_tab))
+
+    def show(self):
+        return self.gui
+
+    def show_loss_tab(self):
+        return self.loss_tab
+
+    def show_ap_tab(self):
+        return self.ap_tab
+
+    def build_loss_tab(self):
+        # loss hists
+        fig_loss_hists, ax_loss_hists = plt.subplots(1, len(self.loss_keys), figsize=(16*5,9))
+        unique_losses = self.dataset.base_data[["filepath"] + self.loss_keys].drop_duplicates()
+        for single_ax, key in zip(ax_loss_hists, self.loss_keys):
+            single_ax.hist(unique_losses[key].values, bins=20)
+            single_ax.set_title(" ".join(key.split("_")).title(), fontsize=40)
+            for tick in single_ax.xaxis.get_major_ticks():
+                tick.label.set_fontsize(34)
+                tick.label.set_rotation(45)
+            for tick in single_ax.yaxis.get_major_ticks():
+                tick.label.set_fontsize(34)
+        plt.tight_layout()
+        plt.close()
+        loss_hists_col = pn.pane.Matplotlib(fig_loss_hists, width=self.width)
+        axis_cols = ['score', 'area_normalized', 'area', 'bbox_ratio', 'bbox_width', 'bbox_height', 'num_annotations'] + self.loss_keys + ['width', 'height']
+        scatter_overview = scatter_plot_with_gui(
+            self.dataset.base_data[self.dataset.base_data["is_prediction"] == True],
+            x_cols=axis_cols[1:] + [axis_cols[0]],
+            y_cols=axis_cols,
+            color_cols=["label", "num_annotations", "filename"]
+        )
+
+        cat_2d_hist = categorical_2d_histogram_with_gui(
+            self.dataset.base_data[self.dataset.base_data["is_prediction"] == True],
+            category_cols=["label", "num_annotations", "filename"],
+            hist_cols=self.loss_keys + ['score', 'area_normalized', 'area', 'bbox_ratio', 'bbox_width', 'bbox_height', 'num_annotations', 'width', 'height', 'label']
+        )
+
+        sub_tabs = pn.Tabs(
+            ("Histograms", pn.Row(pn.Spacer(sizing_mode="stretch_width"), scatter_overview, pn.Spacer(sizing_mode="stretch_width"), cat_2d_hist, pn.Spacer(sizing_mode="stretch_width"), align="center")),
+            ("Gallery", Gallery(self.dataset, "base_data", "filepath", sort_cols=self.loss_keys, height=self.height).show())
+        )
+
+        return pn.Column(loss_hists_col, sub_tabs)
+
+    def build_ap_overview(self, metric_data):
+        map_data = {key: [metric_data[key]["map"], int(len(metric_data[key].keys())-1)] for key in metric_data.keys()}
+        map_table = table_from_dataframe(pd.DataFrame(map_data, index=["mAP", "Classes"]).round(4))
+
+        ap_data = {}
+        for metric_key, metric_value in metric_data.items():
+            if metric_key != "map":
+                ap_data[metric_key] = {"class": [], "ap": []}
+                for class_name, class_data in metric_value.items():
+                    if class_name != "map":
+                        ap_data[metric_key]["class"].append(class_name)
+                        ap_data[metric_key]["ap"].append(class_data["ap"])
+        ap_plots = []
+        for ap_key, ap_value in ap_data.items():
+            if len(ap_value["ap"]) > 0:
+                ap = np.array(ap_value["ap"])[np.array(ap_value["ap"]).argsort()]
+                class_names = np.array(ap_value["class"])[np.array(ap_value["ap"]).argsort()]
+                ap_plot = barplot(ap, class_names, bar_type="horizontal")
+                ap_plot.add_tools(HoverTool(tooltips = [("AP", "@y @right")]))
+                ap_plot.title = Title(text="mAP - " + str(metric_data[ap_key]["map"].round(4)), align="center")
+                ap_plots.append(pn.Column("<b>"+ap_key.replace("_", " ").title().replace("Ap", "AP")+"</b>", ap_plot))
+
+        return pn.Column(pn.Row(map_table, align="center"), pn.Row(*ap_plots, align="center"))
+
+    @staticmethod
+    def precision_recall_plot_bokeh(data, iou):
+        plot_data = pd.DataFrame({key: data[key] for key in ["recall", "precision", "scores", "tp", "fp", "fn"]})
+        source = ColumnDataSource(plot_data)
+        p = figure(x_axis_type=None, height=350, width=400, title="AP@"+str(iou)+" - "+str(round(data["ap"],4)), y_axis_label="precision", tools="")
+        p.line("recall", "precision", source=source, legend_label="Actual", color="black", line_width=2)
+        p.step(data["ap11_recalls"], data["ap11_precisions"], legend_label="AP11", color="green", line_width=2)
+        p.step(data["monotonic_recalls"], data["monotonic_precisions"], legend_label="Monotonic", color="firebrick", line_width=2)
+        p.add_tools(HoverTool(tooltips=[("Score", "@scores"), ("TP", "@tp"), ("FP", "@fp"), ("FN", "@fn")], mode="vline"))
+        p.js_on_event(events.DoubleTap, toggle_legend_js(p))
+        p.legend.click_policy="hide"
+        p_score = figure(x_range=p.x_range, height=150, width=400, x_axis_label="recall", y_axis_label="score", tools="")
+        p_score.scatter(data["recall"], data["scores"])
+        return pn.Row(gridplot([[p],[p_score]]))
+
+    def plot_precision_recall_curves_for_class_bokeh(self, data, class_key):
+        plot_list = []
+        for iou, plot_data in data.items():
+            if iou != "ap":
+                plot_list.append(self.precision_recall_plot_bokeh(plot_data, iou))
+        return plots_as_matrix(plot_list, 5, 2, width=400*5, height=500*2)
+
+    def plot_additional_stats_bokeh(self, class_data, class_name):
+        # histograms
+        hist = histogram(list(class_data.values()))
+        return pn.pane.Bokeh(hist)
+
+    @staticmethod
+    def precision_recall_plot_matplotlib(fig, data, iou, bottom, top, left, right):
+        gs = fig.add_gridspec(nrows=4, ncols=1, left=left, right=right, bottom=bottom, top=top, hspace=0)
+        ax1 = fig.add_subplot(gs[:3, :])
+        ax1.set_title("IOU: " + str(iou))
+        ax1.plot(data["recall"], data["precision"], label="Actual", color="black", lw=2)
+        ax1.plot(data["ap11_recalls"], data["ap11_precisions"], label="AP11", color="green", lw=2)
+        ax1.plot(data["monotonic_recalls"], data["monotonic_precisions"], label="Montonic", color="firebrick", lw=2)
+        ax1.set_xticks([])
+        ax1.set_ylabel("Precision")
+        ax1.legend()
+        ax2 = fig.add_subplot(gs[-1, :])
+        ax2.plot(data["recall"], data["scores"], ".")
+        ax2.set_xlabel("Recall")
+        ax2.set_ylabel("Score")
+
+    def plot_precision_recall_curves_for_class_matplotlib(self, data, class_key):
+        fig = plt.figure(constrained_layout=False, figsize=(16,9))
+        row_coords = [(0.55, 0.95), (0.05, 0.45)]
+        col_coords = [(0.05, 0.2), (0.25, 0.4), (0.45, 0.6), (0.65, 0.8), (0.85, 1)]
+        coord_combinations = list(itertools.product(row_coords, col_coords))
+        ious = sorted([iou for iou in data.keys() if iou != "ap"])
+        for index, iou in enumerate(ious):
+            if iou != "ap":
+                row_coord = coord_combinations[index][0]
+                col_coord = coord_combinations[index][1]
+                self.precision_recall_plot_matplotlib(fig, data[iou], iou, row_coord[0], row_coord[1], col_coord[0], col_coord[1])
+        plt.close()
+        return pn.pane.Matplotlib(fig, width=self.width)
+
+    @staticmethod
+    def histogramm_plot(fig, data, hist_key, bottom, top, left, right, bins=25):
+        gs = fig.add_gridspec(nrows=1, ncols=1, left=left, right=right, bottom=bottom, top=top, hspace=0)
+        ax = fig.add_subplot(gs[:, :])
+        # ax.set_title(hist_key)
+        if hist_key != "used_scatter" and hist_key != "unused_scatter":
+            if "normalized" in hist_key:
+                ax.hist(data[hist_key][0], bins=bins, range=(0,1))
+            else:
+                ax.hist(data[hist_key][0], bins=bins)
+            ax.set_xlabel(" ".join(hist_key.split("_")).title())
+            ax.set_ylabel("Counts")
+        elif hist_key == "used_scatter":
+            ax.plot(data["used_gt_box_areas_normalized"][0], data["used_pred_box_areas_normalized"][0], ".")
+            ax.set_xlabel(" ".join("used_gt_box_areas_normalized".split("_")).title())
+            ax.set_ylabel(" ".join("used_pred_box_areas_normalized".split("_")).title())
+        elif hist_key == "unused_scatter":
+            ax.plot(data["unused_gt_box_areas_normalized"][0], data["unused_pred_box_areas_normalized"][0], ".")
+            ax.set_xlabel(" ".join("unused_gt_box_areas_normalized".split("_")).title())
+            ax.set_ylabel(" ".join("unused_pred_box_areas_normalized".split("_")).title())
+
+
+    def plot_additional_stats_matplotlib(self, class_data, class_name):
+        # histograms
+        ious = sorted([iou for iou in class_data.keys() if iou != "ap"])
+        iou_selector = pnw.Select(name="IOU", options=ious, value=0.5)
+
+        @pn.depends(iou_selector.param.value)
+        def _plot_additional_stats_matplotlib(iou):
+            nonlocal class_data
+            nonlocal self
+            data = class_data[iou]
+            fig = plt.figure(constrained_layout=False, figsize=(16,9))
+            row_coords = [(0.69, 0.95), (0.37, 0.63), (0.05, 0.31)]
+            col_coords = [(0.69, 0.95), (0.37, 0.63), (0.05, 0.31)]
+            coord_combinations = list(itertools.product(row_coords, col_coords))
+
+            for index, hist_key in enumerate(['center_distances', 'y_center_offsets', 'x_center_offsets',  'used_scatter', 'unused_gt_box_areas_normalized', 'used_gt_box_areas_normalized',  'unused_scatter', 'unused_pred_box_areas_normalized', 'used_pred_box_areas_normalized']):
+                row_coord = coord_combinations[index][0]
+                col_coord = coord_combinations[index][1]
+                self.histogramm_plot(fig, data, hist_key, row_coord[0], row_coord[1], col_coord[0], col_coord[1])
+            plt.close()
+            return pn.pane.Matplotlib(fig, width=self.width)
+        return pn.Column(iou_selector, _plot_additional_stats_matplotlib)
+
+    def build_precison_recall_overview(self, data):
+        if len(data) == 1:
+            return pn.Column("<h1> No information available</h1>")
+        class_select = pnw.Select(options=[key for key in data.keys() if key != "map"])
+        @pn.depends(class_select.param.value)
+        def _plot(class_name):
+            heading = pn.Row("<h1>AP - "+str(data[class_name]["ap"].round(4))+"</h1>", align="center")
+            table_data = {"AP": [round(data[class_name][iou_key]["ap"],4) for iou_key in data[class_name].keys() if iou_key != "ap"]}
+            table_df = pd.DataFrame(table_data).T
+            table_df.columns = [iou_key for iou_key in data[class_name].keys() if iou_key != "ap"]
+            table_df.index.names = ["iou"]
+            overview_table = table_from_dataframe(table_df)
+            precision_recall_curves = self.plot_precision_recall_curves_for_class_matplotlib(data[class_name], class_name)
+            additional_stats_plot = self.plot_additional_stats_matplotlib(data[class_name], class_name)
+            ap_and_additional_stats_accordion = pn.Accordion(("AP", pn.Column(class_select, heading, pn.Row(overview_table, align="center"), precision_recall_curves)), ("Additioanl3 stats", additional_stats_plot), active=self.accordion_active)
             return pn.Column(ap_and_additional_stats_accordion)
         return pn.Column(_plot, width=self.width)
 
