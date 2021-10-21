@@ -8,6 +8,7 @@
     "metrics": "metrics.html",
     "plotting.controls": "plotting.controls.html",
     "plotting.core": "plotting.core.html",
-    "plotting.utils": "plotting.utils.html"
+    "plotting.utils": "plotting.utils.html",
+    "utils": "utils.html"
   }
 }

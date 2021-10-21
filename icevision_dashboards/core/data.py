@@ -82,13 +82,13 @@ class ObservableList(Observable):
         return self._list.count(item)
 
     def index(self, item, start=0, stop=9223372036854775807):
-        return self._list.index(item, start=start, stop=stop)
+        return self._list.index(item, start, stop)
 
     def reverse(self):
         self._list.reverse()
 
-    def sort(self, key, reverse=False):
-        self._list.sort(key, reverse=reverse)
+    def sort(self, key=float, reverse=False):
+        self._list.sort(key=key, reverse=reverse)
 
 # Cell
 class DatasetDescriptor(ABC):
@@ -107,7 +107,7 @@ class DatasetDescriptor(ABC):
         if value is None:
             setattr(obj, self.private_name, value)
         else:
-            raise ValueError("Attribute can externaly only be set to None")
+            raise ValueError("Attribute can only be set to None externaly.")
 
     @abstractmethod
     def calculate_description(self, obj):

@@ -182,6 +182,11 @@ class ScatterFilter(Filter):
         selection = [False if i not in selected_indices else True for i in range(len(self.data[0]))]
         return selection
 
+    def mask_callback(self, callback):
+        def new_callback(attr, new, old):
+            callback(self.get_selection())
+        return new_callback
+
     def register_callback(self, callback):
         callback = self.mask_callback(callback)
         self.source.selected.on_change("indices", callback)

@@ -39,9 +39,6 @@ index = {"Dashboard": "core.dashboards.ipynb",
          "BboxRecordDataset": "data.ipynb",
          "PrecisionRecallMetricsDescriptorObjectDetection": "data.ipynb",
          "ObjectDetectionResultsDataset": "data.ipynb",
-         "erles_to_string": "data.ipynb",
-         "erles_to_counts_to_utf8": "data.ipynb",
-         "string_to_erles": "data.ipynb",
          "InstanceSegmentationRecordDataframeParser": "data.ipynb",
          "DataDescriptorInstanceSegmentation": "data.ipynb",
          "StatsDescriptorInstanceSegmentation": "data.ipynb",
@@ -73,7 +70,11 @@ index = {"Dashboard": "core.dashboards.ipynb",
          "calculate_mixing_matrix": "plotting.utils.ipynb",
          "get_min_and_max_dates": "plotting.utils.ipynb",
          "convert_rgb_image_to_bokeh_rgb_image": "plotting.utils.ipynb",
-         "draw_record_with_bokeh": "plotting.utils.ipynb"}
+         "draw_record_with_bokeh": "plotting.utils.ipynb",
+         "erles_to_string": "utils.ipynb",
+         "erles_to_counts_to_utf8": "utils.ipynb",
+         "string_to_erles": "utils.ipynb",
+         "correct_mask": "utils.ipynb"}
 
 modules = ["core/dashboards.py",
            "core/data.py",
@@ -82,7 +83,8 @@ modules = ["core/dashboards.py",
            "metrics.py",
            "plotting/controls.py",
            "plotting/core.py",
-           "plotting/utils.py"]
+           "plotting/utils.py",
+           "utils.py"]
 
 doc_url = "https://fstroth.github.io/icevision_dashboards/"
 

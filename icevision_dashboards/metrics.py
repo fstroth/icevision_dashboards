@@ -7,9 +7,13 @@ from typing import Union, Optional, Any, Iterable, Callable
 import os
 import shutil
 from abc import ABC, abstractmethod
+from joblib import delayed, Parallel
 
 import numpy as np
-from shapely.geometry import Polygon
+
+from pycocotools import mask as mask_utils
+
+from .utils import string_to_erles
 
 # Cell
 class APObjectDetection:
@@ -234,7 +238,7 @@ class APObjectDetection:
                 if not row["filename"] in gt_dict[row["label"]].keys():
                     gt_dict[row["label"]][row["filename"]] = [[row["bbox_xmin"], row["bbox_ymin"], row["bbox_xmax"], row["bbox_ymax"]]]
                 else:
-                    gt_dict[row["label"]]["filename"].append([row["bbox_xmin"], row["bbox_ymin"], row["bbox_xmax"], row["bbox_ymax"]])
+                    gt_dict[row["label"]][row["filename"]].append([row["bbox_xmin"], row["bbox_ymin"], row["bbox_xmax"], row["bbox_ymax"]])
         return gt_dict, pred_dict
 
     @staticmethod
@@ -275,54 +279,43 @@ class APInstanceSegmentation:
         self.metric_data = self.get_metric_data()
 
     @staticmethod
-    def calculate_iou(pred_box, gt_box):
-        px1, py1, px2, py2 = pred_box
-        tx1, ty1, tx2, ty2 = gt_box
+    def calculate_iou(pred_mask, pred_area, gt_mask, gt_area):
+        pred_mask_array = pred_mask
+        gt_mask_array = gt_mask
+        mask_combination = pred_mask_array + gt_mask_array
+        intersection_area = (mask_combination == 2).sum()
+        iou = intersection_area / (pred_area + gt_area - intersection_area)
+        return iou, pred_area, gt_area, intersection_area
 
-        # return 0 if the boxes don't intersect
-        if (tx2 < px1 or px2 < tx1 or ty2 < py1 or py2 < ty1):
-            return 0, 0, 0, 0
-        else:
-            lower_x = max(tx1, px1)
-            upper_x = min(tx2, px2)
-            lower_y = max(ty1, py1)
-            upper_y = min(ty2, py2)
-            intersection_area = (upper_x-lower_x) * (upper_y-lower_y)
-            gt_box_area = (tx2-tx1) * (ty2-ty1)
-            pred_box_area = (px2-px1) * (py2-py1)
-            iou = intersection_area / (gt_box_area + pred_box_area - intersection_area)
-            return iou, pred_box_area, gt_box_area, intersection_area
-
-    def get_image_stats(self, gt_boxes, pred_boxes, iou_threshold):
+    def get_image_stats(self, gt_masks, pred_masks, iou_threshold):
         """
-        Returns: tp, fp, fn, :if additional_stats: x_center_offsets, y_center_offsets, center_distances, used_gt_box_areas_normalized, used_pred_box_areas_normalized, used_gt_box_areas_normalized, used_pred_box_areas_normalized
+        Returns: tp, fp, fn, :if additional_stats: x_center_offsets, y_center_offsets, center_distances, used_gt_mask_areas_normalized, used_pred_mask_areas_normalized, used_gt_mask_areas_normalized, used_pred_mask_areas_normalized
         """
-        if pred_boxes is None:
-            return 0,  0, len(gt_boxes), [], [], [], [], [], [], []
-        if len(gt_boxes) == 0:
-            return 0, len(pred_boxes), 0, [], [], [], [], [], [], []
+        if pred_masks is None:
+            return 0,  0, len(gt_masks), [], [], [], [], [], [], []
+        if len(gt_masks) == 0:
+            return 0, len(pred_masks), 0, [], [], [], [], [], [], []
         else:
-            # calculate ious and log their mapping with box indices
-            gt_box_indices = []
-            pred_box_indices = []
+            # calculate ious and log their mapping with mask indices
+            gt_mask_indices = []
+            pred_mask_indices = []
             ious = []
-            gt_box_areas = []
-            pred_box_areas = []
+            gt_mask_areas = []
+            pred_mask_areas = []
             intersection_areas = []
-            for pred_box_index, pred_box in enumerate(pred_boxes):
-                for gt_box_index, gt_box in enumerate(gt_boxes):
-                    iou, pred_box_area, gt_box_area, intersection_area = self.calculate_iou(pred_box, gt_box)
+            for pred_mask_index, (pred_mask, pred_area) in enumerate(zip(pred_masks["masks"], pred_masks["areas"])):
+                for gt_mask_index, (gt_mask, gt_area) in enumerate(zip(gt_masks["masks"], gt_masks["areas"])):
+                    iou, pred_mask_area, gt_mask_area, intersection_area = self.calculate_iou(pred_mask, pred_area, gt_mask, gt_area)
                     if iou >= iou_threshold:
-                        gt_box_indices.append(gt_box_index)
-                        pred_box_indices.append(pred_box_index)
+                        gt_mask_indices.append(gt_mask_index)
+                        pred_mask_indices.append(pred_mask_index)
                         ious.append(iou)
-                        pred_box_areas.append(pred_box_area)
-                        gt_box_areas.append(gt_box_area)
+                        pred_mask_areas.append(pred_mask_area)
+                        gt_mask_areas.append(gt_mask_area)
                         intersection_areas.append(intersection_area)
-
             # check if any hits happend
             if len(ious) == 0:
-                return 0, len(pred_boxes), len(gt_boxes), [], [], [], [], [], [], []
+                return 0, len(pred_masks), len(gt_masks), [], [], [], [], [], [], []
             else:
                 # select matches based on iou
                 indices_descending = np.argsort(ious)[::-1]
@@ -331,77 +324,83 @@ class APInstanceSegmentation:
                 x_center_offsets = []
                 y_center_offsets = []
                 center_distances = []
-                unused_gt_box_areas_normalized = []
-                unused_pred_box_areas_normalized = []
-                used_gt_box_areas_normalized = []
-                used_pred_box_areas_normalized = []
+                unused_gt_mask_areas_normalized = []
+                unused_pred_mask_areas_normalized = []
+                used_gt_mask_areas_normalized = []
+                used_pred_mask_areas_normalized = []
                 for index in indices_descending:
-                    gt_index = gt_box_indices[index]
-                    pred_index = pred_box_indices[index]
+                    gt_index = gt_mask_indices[index]
+                    pred_index = pred_mask_indices[index]
                     if (gt_index not in gt_match_indices) and (pred_index not in pred_match_indices):
                         gt_match_indices.append(gt_index)
                         pred_match_indices.append(pred_index)
                         # calculate additional stats
-                        pred_box_x1, pred_box_y1, pred_box_x2, pred_box_y2 = pred_boxes[pred_box_index]
-                        gt_box_x1, gt_box_y1, gt_box_x2, gt_box_y2 = gt_boxes[gt_box_index]
+                        pred_mask_array = pred_masks["masks"][pred_mask_index]
+                        pred_mask_y_indices, pred_mask_x_indices = np.where(pred_mask_array == 1)
+                        pred_mask_x1, pred_mask_y1, pred_mask_x2, pred_mask_y2 = pred_mask_x_indices[0], pred_mask_x_indices[-1], pred_mask_y_indices[0], pred_mask_y_indices[-1]
 
-                        x_center_offset = ((pred_box_x1+pred_box_x2)-(gt_box_x1+gt_box_x2))/2
-                        y_center_offset = ((pred_box_y1+pred_box_y2)-(gt_box_y1+gt_box_y2))/2
+                        gt_mask_array = gt_masks["masks"][gt_mask_index]
+                        gt_mask_y_indices, gt_mask_x_indices = np.where(gt_mask_array == 1)
+                        gt_mask_x1, gt_mask_y1, gt_mask_x2, gt_mask_y2 = gt_mask_x_indices[0], gt_mask_x_indices[-1], gt_mask_y_indices[0], gt_mask_y_indices[-1]
+
+                        x_center_offset = ((pred_mask_x1+pred_mask_x2)-(gt_mask_x1+gt_mask_x2))/2
+                        y_center_offset = ((pred_mask_y1+pred_mask_y2)-(gt_mask_y1+gt_mask_y2))/2
                         x_center_offsets.append(x_center_offset)
                         y_center_offsets.append(y_center_offset)
                         center_distances.append((x_center_offset**2+y_center_offset**2)**0.5)
-                        unused_gt_box_areas_normalized.append((gt_box_areas[index]-intersection_areas[index])/gt_box_areas[index])
-                        unused_pred_box_areas_normalized.append((pred_box_areas[index]-intersection_areas[index])/pred_box_areas[index])
-                        used_gt_box_areas_normalized.append(intersection_areas[index]/gt_box_areas[index])
-                        used_pred_box_areas_normalized.append(intersection_areas[index]/pred_box_areas[index])
+                        unused_gt_mask_areas_normalized.append((gt_mask_areas[index]-intersection_areas[index])/gt_mask_areas[index])
+                        unused_pred_mask_areas_normalized.append((pred_mask_areas[index]-intersection_areas[index])/pred_mask_areas[index])
+                        used_gt_mask_areas_normalized.append(intersection_areas[index]/gt_mask_areas[index])
+                        used_pred_mask_areas_normalized.append(intersection_areas[index]/pred_mask_areas[index])
 
-                return len(gt_match_indices), len(pred_boxes) - len(pred_match_indices), len(gt_boxes) - len(gt_match_indices), x_center_offsets, y_center_offsets, center_distances, unused_gt_box_areas_normalized, unused_pred_box_areas_normalized, used_gt_box_areas_normalized, used_pred_box_areas_normalized
+                return len(gt_match_indices), len(pred_masks["masks"]) - len(pred_match_indices), len(gt_masks["masks"]) - len(gt_match_indices), x_center_offsets, y_center_offsets, center_distances, unused_gt_mask_areas_normalized, unused_pred_mask_areas_normalized, used_gt_mask_areas_normalized, used_pred_mask_areas_normalized
 
     def get_precision_and_recall(self, gt, pred, iou):
         """gt and pred need to be sored dicts with the lowest score being the first entry"""
         tps, fps, fns = [], [], []
         precisions, recalls, score_thresholds = [], [], []
-        x_center_offsets, y_center_offsets, center_distances, unused_gt_box_areas_normalized, unused_pred_box_areas_normalized, used_gt_box_areas_normalized, used_pred_box_areas_normalized = [], [], [], [], [], [], []
+        x_center_offsets, y_center_offsets, center_distances, unused_gt_mask_areas_normalized, unused_pred_mask_areas_normalized, used_gt_mask_areas_normalized, used_pred_mask_areas_normalized = [], [], [], [], [], [], []
 
         if pred is None:
             return {
-                "tp": np.array([0]), "fp": [sum(len(gt_boxes) for gt_boxes in gt.values())], "fn": np.array([0]),
+                "tp": np.array([0]), "fp": [sum(len(gt_masks) for gt_masks in gt.values())], "fn": np.array([0]),
                 "precision": np.array([0]), "recall": np.array([0]), "scores": np.array([0]),
                 "ap11": 0, "ap": 0, "monotonic_recalls": np.array([0]), "monotonic_precisions": np.array([0]),
                 "ap11_recalls": np.array([0]), "ap11_precisions": np.array([0]), "x_center_offsets": np.array([0]),
                 "y_center_offsets": np.array([0]), "center_distances": np.array([0]),
-                "unused_gt_box_areas_normalized": np.array([0]), "unused_pred_box_areas_normalized": np.array([0]),
-                "used_gt_box_areas_normalized": np.array([0]), "used_pred_box_areas_normalized": np.array([0])
-            }
+                "unused_gt_mask_areas_normalized": np.array([0]), "unused_pred_mask_areas_normalized": np.array([0]),
+                "used_gt_mask_areas_normalized": np.array([0]), "used_pred_mask_areas_normalized": np.array([0])
+            }, iou
 
         scores = list(pred.keys())
-        pred_boxes = list(pred.values())
+        pred_masks = list(pred.values())
         # loop over scores to calculate statistics for the score
         for score_index, score in enumerate(scores):
             score_tp, score_fp, score_fn = 0, 0, 0
-            score_x_center_offsets, score_y_center_offsets, score_center_distances, score_unused_gt_box_areas_normalized, score_unused_pred_box_areas_normalized = [], [], [], [], []
-            score_used_gt_box_areas_normalized, score_used_pred_box_areas_normalized = [], []
+            score_x_center_offsets, score_y_center_offsets, score_center_distances, score_unused_gt_mask_areas_normalized, score_unused_pred_mask_areas_normalized = [], [], [], [], []
+            score_used_gt_mask_areas_normalized, score_used_pred_mask_areas_normalized = [], []
             # create dict with active predicitons (prediction with the same or higher score)
-            active_preds = {}
-            for pred_entry in pred_boxes[score_index:]:
-                for filename, bbox in zip(pred_entry["filename"], pred_entry["bboxes"]):
+            active_preds = {"masks": [], "areas": []}
+            for pred_entry in pred_masks[score_index:]:
+                for filename, mask, area in zip(pred_entry["filename"], pred_entry["masks"], pred_entry["areas"]):
                     if filename not in active_preds.keys():
-                        active_preds[filename] = [bbox]
+                        active_preds[filename] = {"masks": [mask], "areas": [area]}
                     else:
-                        active_preds[filename].append(bbox)
+                        active_preds[filename]["masks"].append(mask)
+                        active_preds[filename]["areas"].append(area)
             # loop over gt images
-            for filename, image_gt_boxes in gt.items():
-                img_tp, img_fp, img_fn, img_x_center_offsets, img_y_center_offsets, img_center_distances, img_unused_gt_box_areas_normalized, img_unused_pred_box_areas_normalized, img_used_gt_box_areas_normalized, img_used_pred_box_areas_normalized = self.get_image_stats(image_gt_boxes, active_preds.get(filename, None), iou)
+            for filename, image_gt_masks in gt.items():
+                img_tp, img_fp, img_fn, img_x_center_offsets, img_y_center_offsets, img_center_distances, img_unused_gt_mask_areas_normalized, img_unused_pred_mask_areas_normalized, img_used_gt_mask_areas_normalized, img_used_pred_mask_areas_normalized = self.get_image_stats(image_gt_masks, active_preds.get(filename, None), iou)
                 score_tp += img_tp
                 score_fp += img_fp
                 score_fn += img_fn
                 score_x_center_offsets += img_x_center_offsets
                 score_y_center_offsets += img_y_center_offsets
                 score_center_distances += img_center_distances
-                score_unused_gt_box_areas_normalized += img_unused_gt_box_areas_normalized
-                score_unused_pred_box_areas_normalized += img_unused_pred_box_areas_normalized
-                score_used_gt_box_areas_normalized += img_used_gt_box_areas_normalized
-                score_used_pred_box_areas_normalized += img_used_pred_box_areas_normalized
+                score_unused_gt_mask_areas_normalized += img_unused_gt_mask_areas_normalized
+                score_unused_pred_mask_areas_normalized += img_unused_pred_mask_areas_normalized
+                score_used_gt_mask_areas_normalized += img_used_gt_mask_areas_normalized
+                score_used_pred_mask_areas_normalized += img_used_pred_mask_areas_normalized
             # calculate precision and recall for the threshold
             score_precision = score_tp/(score_tp + score_fp) if score_tp + score_fp > 0 else 0
             score_recall = score_tp/(score_tp + score_fn) if score_tp + score_fn > 0 else 0
@@ -416,10 +415,10 @@ class APInstanceSegmentation:
             x_center_offsets.append(score_x_center_offsets)
             y_center_offsets.append(score_y_center_offsets)
             center_distances.append(score_center_distances)
-            unused_gt_box_areas_normalized.append(score_unused_gt_box_areas_normalized)
-            unused_pred_box_areas_normalized.append(score_unused_pred_box_areas_normalized)
-            used_gt_box_areas_normalized.append(score_used_gt_box_areas_normalized)
-            used_pred_box_areas_normalized.append(score_used_pred_box_areas_normalized)
+            unused_gt_mask_areas_normalized.append(score_unused_gt_mask_areas_normalized)
+            unused_pred_mask_areas_normalized.append(score_unused_pred_mask_areas_normalized)
+            used_gt_mask_areas_normalized.append(score_used_gt_mask_areas_normalized)
+            used_pred_mask_areas_normalized.append(score_used_pred_mask_areas_normalized)
 
         # convert data to np.arrays for further processing
         tps = np.array(tps)
@@ -443,7 +442,7 @@ class APInstanceSegmentation:
         sorted_indices = np.argsort(recalls)
         sorted_recalls = recalls[sorted_indices]
         sorted_precision = precisions[sorted_indices]
-        # make the precision values monotonically
+        # make the prefrom joblib import Parallel, delayedcision values monotonically
         calc_recalls = [0] + sorted_recalls.tolist() + [1]
         calc_precisions = [0] + sorted_precision.tolist() + [0]
         for i in range(len(calc_recalls)-2, -1, -1):
@@ -462,9 +461,9 @@ class APInstanceSegmentation:
             "ap11": ap11, "ap": ap, "monotonic_recalls": np.array(calc_recalls), "monotonic_precisions": np.array(calc_precisions),
             "ap11_recalls": np.linspace(0.0, 1.0, 11), "ap11_precisions": np.array(precisions_at_recall_value), "x_center_offsets": x_center_offsets,
             "y_center_offsets": y_center_offsets, "center_distances": center_distances,
-            "unused_gt_box_areas_normalized": unused_gt_box_areas_normalized, "unused_pred_box_areas_normalized": unused_pred_box_areas_normalized,
-            "used_gt_box_areas_normalized": used_gt_box_areas_normalized, "used_pred_box_areas_normalized": used_pred_box_areas_normalized
-        }
+            "unused_gt_mask_areas_normalized": unused_gt_mask_areas_normalized, "unused_pred_mask_areas_normalized": unused_pred_mask_areas_normalized,
+            "used_gt_mask_areas_normalized": used_gt_mask_areas_normalized, "used_pred_mask_areas_normalized": used_pred_mask_areas_normalized
+        }, iou
 
     @staticmethod
     def prepare_data(df):
@@ -473,23 +472,25 @@ class APInstanceSegmentation:
         pred_dict = {}
         for index, row in preds.iterrows():
             if row["label"] not in pred_dict.keys():
-                pred_dict[row["label"]] = {row["score"]: {"bboxes": [[row["bbox_xmin"], row["bbox_ymin"], row["bbox_xmax"], row["bbox_ymax"]]], "filename": [row["filename"]]}}
+                pred_dict[row["label"]] = {row["score"]: {"masks": [mask_utils.decode([string_to_erles(row["erles"])]).transpose(2, 0, 1)[0,:,:]], "filename": [row["filename"]], "areas": [row["mask_area"]]}}
             else:
                 if not row["filename"] in pred_dict[row["label"]].keys():
-                    pred_dict[row["label"]][row["score"]] = {"bboxes": [[row["bbox_xmin"], row["bbox_ymin"], row["bbox_xmax"], row["bbox_ymax"]]], "filename": [row["filename"]]}
+                    pred_dict[row["label"]][row["score"]] = {"masks": [mask_utils.decode([string_to_erles(row["erles"])]).transpose(2, 0, 1)[0,:,:]], "filename": [row["filename"]], "areas": [row["mask_area"]]}
                 else:
-                    pred_dict[row["label"]][row["score"]]["bboxes"].append([row["bbox_xmin"], row["bbox_ymin"], row["bbox_xmax"], row["bbox_ymax"]])
+                    pred_dict[row["label"]][row["score"]]["maskes"].append(mask_utils.decode([string_to_erles(row["erles"])]).transpose(2, 0, 1)[0,:,:])
                     pred_dict[row["label"]][row["score"]]["filename"].append(row["filename"])
+                    pred_dict[row["label"]][row["score"]]["areas"].append(row["mask_area"])
 
         gt_dict = {}
         for index, row in ground_truth.iterrows():
             if row["label"] not in gt_dict.keys():
-                gt_dict[row["label"]] = {row["filename"]: [[row["bbox_xmin"], row["bbox_ymin"], row["bbox_xmax"], row["bbox_ymax"]]]}
+                gt_dict[row["label"]] = {row["filename"]: {"masks": [mask_utils.decode([string_to_erles(row["erles"])]).transpose(2, 0, 1)[0,:,:]], "areas": [row["mask_area"]]}}
             else:
                 if not row["filename"] in gt_dict[row["label"]].keys():
-                    gt_dict[row["label"]][row["filename"]] = [[row["bbox_xmin"], row["bbox_ymin"], row["bbox_xmax"], row["bbox_ymax"]]]
+                    gt_dict[row["label"]][row["filename"]] = {"masks": [mask_utils.decode([string_to_erles(row["erles"])]).transpose(2, 0, 1)[0,:,:]], "areas": [row["mask_area"]]}
                 else:
-                    gt_dict[row["label"]]["filename"].append([row["bbox_xmin"], row["bbox_ymin"], row["bbox_xmax"], row["bbox_ymax"]])
+                    gt_dict[row["label"]][row["filename"]]["masks"].append(mask_utils.decode([string_to_erles(row["erles"])]).transpose(2, 0, 1)[0,:,:])
+                    gt_dict[row["label"]][row["filename"]]["areas"].append(row["mask_area"])
         return gt_dict, pred_dict
 
     @staticmethod
@@ -497,11 +498,11 @@ class APInstanceSegmentation:
         if filter_key_word == "AP":
             return df
         elif filter_key_word == "AP_small":
-            return df[(df["area"] < 32**2)]
+            return df[(df["bbox_area"] < 32**2)]
         elif filter_key_word == "AP_medium":
-            return df[((32**2 <= df["area"]) & (df["area"] < 96**2))]
+            return df[((32**2 <= df["bbox_area"]) & (df["bbox_area"] < 96**2))]
         elif filter_key_word == "AP_large":
-            return df[96**2 <= df["area"]]
+            return df[96**2 <= df["bbox_area"]]
 
     def get_metric_data(self):
         analysis_data = {}
@@ -512,9 +513,10 @@ class APInstanceSegmentation:
             class_data = {}
             for class_name in class_names:
                 iou_data = {}
-                for iou in self.ious:
-                    res = self.get_precision_and_recall(gt_dict[class_name], pred_dict.get(class_name, None), iou)
-                    iou_data[iou] = res
+                results = Parallel(n_jobs=10)(delayed(self.get_precision_and_recall)(gt_dict[class_name], pred_dict.get(class_name, None), iou) for iou in self.ious)
+                for res in results:
+                    iou_data[res[1]] = res[0]
+
                 iou_data["ap"] = np.array([iou["ap"] for iou in iou_data.values()]).mean()
                 class_data[class_name] = iou_data
             class_data["map"] = np.array([class_entry["ap"] for class_entry in class_data.values()]).mean() if len(class_data.values()) > 0 else 0

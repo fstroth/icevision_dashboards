@@ -3,21 +3,20 @@
 __all__ = ['RecordDataframeParser', 'RecordDataset', 'ResultsDataset', 'BboxRecordDataframeParser',
            'DataDescriptorBbox', 'StatsDescriptorBbox', 'ImageStatsDescriptorBbox', 'ClassStatsDescriptorBbox',
            'GalleryStatsDescriptorBbox', 'BboxRecordDataset', 'PrecisionRecallMetricsDescriptorObjectDetection',
-           'ObjectDetectionResultsDataset', 'erles_to_string', 'erles_to_counts_to_utf8', 'string_to_erles',
-           'InstanceSegmentationRecordDataframeParser', 'DataDescriptorInstanceSegmentation',
-           'StatsDescriptorInstanceSegmentation', 'ImageStatsDescriptorInstanceSegmentation',
-           'ClassStatsDescriptorInstanceSegmentation', 'GalleryStatsDescriptorInstanceSegmentation',
-           'InstanceSegmentationRecordDataset', 'PrecisionRecallMetricsDescriptorInstanceSegmentation',
-           'InstanceSegmentationResultsDataset']
+           'ObjectDetectionResultsDataset', 'InstanceSegmentationRecordDataframeParser',
+           'DataDescriptorInstanceSegmentation', 'StatsDescriptorInstanceSegmentation',
+           'ImageStatsDescriptorInstanceSegmentation', 'ClassStatsDescriptorInstanceSegmentation',
+           'GalleryStatsDescriptorInstanceSegmentation', 'InstanceSegmentationRecordDataset',
+           'PrecisionRecallMetricsDescriptorInstanceSegmentation', 'InstanceSegmentationResultsDataset']
 
 # Cell
 import datetime
 from typing import Union, Optional, List
 import os
-import shutil
 import json
 from copy import deepcopy
 import random
+from abc import ABC
 
 import numpy as np
 import pandas as pd
@@ -37,8 +36,9 @@ from pycocotools import mask as mask_utils
 from fastprogress import master_bar, progress_bar
 
 from .plotting.utils import draw_record_with_bokeh
-from .metrics import APObjectDetection
+from .metrics import APObjectDetection, APInstanceSegmentation
 from .core.data import *
+from .utils import erles_to_counts_to_utf8, erles_to_string, string_to_erles, correct_mask
 
 # Cell
 class RecordDataframeParser(parsers.Parser):
@@ -64,7 +64,7 @@ class RecordDataframeParser(parsers.Parser):
         record.detection.add_labels(o["label"])
 
 # Cell
-class RecordDataset(GenericDataset):
+class RecordDataset(GenericDataset, ABC):
     """Base class dashboard datasets that are based on IceVision records."""
     def __init__(self, records: Union[List[BaseRecord], ObservableList, str], class_map, name=None, description=None):
         if isinstance(records, str):
@@ -77,9 +77,10 @@ class RecordDataset(GenericDataset):
 
     def __repr__(self):
         base_string = ""
-        for col in self.stats_dataset.columns:
-            base_string += str(col) + ": " + str(self.stats_dataset[col][0]) + " | "
-        base_string = base_string[:-2]
+        if getattr(self, "stats_dataset", None) is not None:
+            for col in self.stats_dataset.columns:
+                base_string += str(col) + ": " + str(self.stats_dataset[col][0]) + " | "
+            base_string = base_string[:-2]
         return base_string
 
     def __getitem__(self, index):
@@ -101,17 +102,10 @@ class RecordDataset(GenericDataset):
 
     @classmethod
     def load_from_record_dataframe(cls, record_data_df: pd.DataFrame, class_map=None, name=None, description=None):
-        records = cls.parse_df_to_records(record_data_df, class_map)
         if class_map is None:
-            class_map = cls.create_class_map_from_record_df(record_data_df)
+            class_map = ClassMap(json.loads(record_data_df["class_map"].values[0])[1:])
+        records = cls.parse_df_to_records(record_data_df, class_map)
         return cls(records, class_map=class_map, name=name, description=description)
-
-    @staticmethod
-    def create_class_map_from_record_df(record_df):
-        sorted_labels = record_df["label"].unique()[np.argsort(record_df["label_num"].unique())].tolist()
-        sorted_label_nums = sorted(record_df["label_num"].unique())
-        label_map = {key: value for key, value in zip(sorted_label_nums, sorted_labels)}
-        return ClassMap([label_map[i] if i in label_map.keys() else "unknown_"+str(i) for i in range(max(sorted_label_nums))])
 
     @staticmethod
     def parse_df_to_records(record_data_df):
@@ -232,7 +226,7 @@ class DataDescriptorBbox(DatasetDescriptor):
                         "bbox_xmin_normalized": bbox["bbox_x"]/record.width, "bbox_xmax_normalized": (bbox["bbox_x"]+bbox["bbox_width"])/record.width, "bbox_ymin_normalized": bbox["bbox_y"]/record.height,
                         "bbox_ymax_normalized": (bbox["bbox_y"]+bbox["bbox_height"])/record.height, "area": area, "area_normalized": area_normalized, "bbox_ratio": bbox_ratio, "bbox_ratio_normalized": bbox_ratio*(record.height/record.width),
                         "record_index": index, "bbox_width": bbox_width, "bbox_height": bbox_height, "bbox_width_normalized": bbox_width/record.width, "bbox_height_normalized": bbox_height/record.height,
-                        "filepath": str(record.filepath), "creation_date": datetime.datetime.fromtimestamp(file_stats.st_ctime),
+                        "filepath": str(record.filepath), "creation_date": datetime.datetime.fromtimestamp(file_stats.st_ctime), "class_map": json.dumps(record.detection.class_map._id2class),
                         "modification_date": datetime.datetime.fromtimestamp(file_stats.st_mtime), "num_annotations": len(record_detections["bboxes"])
                     }
                 )
@@ -415,25 +409,6 @@ class ObjectDetectionResultsDataset(ResultsDataset):
         return cls(data, name, description)
 
 # Cell
-def erles_to_string(erles):
-    erles_copy = deepcopy(erles)
-    erles_copy["counts"] = erles_copy["counts"].decode("utf-8")
-    return json.dumps(erles_copy)
-
-# Cell
-def erles_to_counts_to_utf8(erles):
-    erles_copy = deepcopy(erles)
-    for entry in erles_copy:
-        entry["counts"] = entry["counts"].decode("utf-8")
-    return erles_copy
-
-# Cell
-def string_to_erles(erles_string):
-    erles = json.loads(erles_string)
-    erles["counts"] = erles["counts"].encode()
-    return erles
-
-# Cell
 class InstanceSegmentationRecordDataframeParser(RecordDataframeParser):
     """Extends the RecordDataframeParser for instance segmentation"""
     def __init__(self, record_dataframe, class_map):
@@ -447,7 +422,7 @@ class InstanceSegmentationRecordDataframeParser(RecordDataframeParser):
         masks  = []
         for annot in o.iterrows():
             bboxes.append(BBox(annot[1]["bbox_xmin"], annot[1]["bbox_ymin"], annot[1]["bbox_xmax"], annot[1]["bbox_ymax"]))
-            masks.append(EncodedRLEs([string_to_erles(annot[1]["erles"])]))
+            masks.append(EncodedRLEs([string_to_erles(annot[1]["erles_corrected"])]))
         record.detection.add_bboxes(bboxes)
         record.detection.add_masks(masks)
 
@@ -466,6 +441,7 @@ class DataDescriptorInstanceSegmentation(DatasetDescriptor):
                 area = bbox.width*bbox.height
                 area_normalized = area / (record.width * record.height)
                 bbox_ratio = bbox.width / bbox.height
+
                 data.append(
                     {
                         "id": record_commons["record_id"], "width": record.width, "height": record.height, "label": label, "bbox_area_square_root": bbox.area**0.5, "bbox_area_square_root_normalized": area_normalized**0.5,
@@ -475,7 +451,7 @@ class DataDescriptorInstanceSegmentation(DatasetDescriptor):
                         "record_index": index, "bbox_width": bbox.width, "bbox_height": bbox.height, "bbox_width_normalized": bbox.width/record.width, "bbox_height_normalized": bbox.height/record.height,
                         "filepath": str(record.filepath), "creation_date": datetime.datetime.fromtimestamp(file_stats.st_ctime),
                         "modification_date": datetime.datetime.fromtimestamp(file_stats.st_mtime), "num_annotations": len(record_detections["bboxes"]),
-                        "erles": erles_to_string(mask), "mask_area": mask_array.sum(), "mask_area_normalized": mask_array.sum()/mask_array.size, "mask_area_normalized_by_bbox_area": mask_array.sum()/area,
+                        "erles_corrected": erles_to_string(mask), "erles": erles_to_string(mask), "mask_area": mask_array.sum(), "mask_area_normalized": mask_array.sum()/mask_array.size, "mask_area_normalized_by_bbox_area": mask_array.sum()/area,
                     }
                 )
         data = pd.DataFrame(data)
@@ -524,7 +500,7 @@ class ClassStatsDescriptorInstanceSegmentation(ClassStatsDescriptorBbox):
 class GalleryStatsDescriptorInstanceSegmentation(DatasetDescriptor):
     def calculate_description(self, obj):
         """Creates a dataframe containing the data for a gallery."""
-        df = obj.data[["id", "area", "num_annotations", "label", "bbox_ratio", "bbox_width", "bbox_height", "mask_area", "mask_area_normalized", "width", "height"]].drop_duplicates().reset_index(drop=True)
+        df = obj.data[["id", "bbox_area", "num_annotations", "label", "bbox_ratio", "bbox_width", "bbox_height", "mask_area", "mask_area_normalized", "width", "height"]].drop_duplicates().reset_index(drop=True)
         return df
 
 # Cell
@@ -604,13 +580,17 @@ class InstanceSegmentationResultsDataset(ResultsDataset):
                     area = bbox_width * bbox_height
                     area_normalized = area / (width * height)
                     bbox_ratio = bbox_width / bbox_height
+                    # correct mask
+                    corrected_mask = correct_mask(mask_array, pad_x, pad_y, width, height)
+                    corrected_mask = corrected_mask.to_erles(None, None).erles[0]
+
                     image_data = {
-                        "id": sample_plus_loss["common"]["record_id"], "width": width, "height": height, "label": label, "area_square_root": area**2, "area_square_root_normalized": area_normalized**2,
-                        "score": score, "bbox_xmin": xmin, "bbox_xmax": xmax, "bbox_ymin": ymin, "bbox_ymax": ymax, "area": area,
+                        "id": sample_plus_loss["common"]["record_id"], "width": width, "height": height, "label": label, "bbox_area_square_root": area**2, "bbox_area_square_root_normalized": area_normalized**2,
+                        "score": score, "bbox_xmin": xmin, "bbox_xmax": xmax, "bbox_ymin": ymin, "bbox_ymax": ymax, "bbox_area": area,
                         "bbox_xmin_normalized": xmin/width, "bbox_xmax_normalized": xmax/width, "bbox_ymin_normalized": ymin/height, "bbox_ymax_normalized": ymax/height,
-                        "area_normalized": area_normalized, "bbox_ratio": bbox_ratio, "bbox_ratio_normalized": bbox_ratio*(height/width), "record_index": index,
+                        "bbox_area_normalized": area_normalized, "bbox_ratio": bbox_ratio, "bbox_ratio_normalized": bbox_ratio*(height/width), "record_index": index,
                         "bbox_width": bbox_width, "bbox_height": bbox_height, "bbox_width_normalized": bbox_width/width, "bbox_height_normalized": bbox_height/height,
-                        "erles": erles_to_string(mask), "mask_area": mask_array.sum(), "mask_area_normalized": mask_array.sum()/mask_array.size, "mask_area_normalized_by_bbox_area": mask_array.sum()/area,
+                        "erles_corrected": erles_to_string(corrected_mask), "erles": erles_to_string(mask), "mask_area": mask_array.sum(), "mask_area_normalized": mask_array.sum()/mask_array.size, "mask_area_normalized_by_bbox_area": mask_array.sum()/area,
                         "filepath": str(sample_plus_loss["common"]["filepath"]), "filename": str(sample_plus_loss["common"]["filepath"]).split("/")[-1], "creation_date": datetime.datetime.fromtimestamp(file_stats.st_ctime),
                         "modification_date": datetime.datetime.fromtimestamp(file_stats.st_mtime), "num_annotations": len(prediction["bboxes"]), "is_prediction": True,
                     }
@@ -628,13 +608,17 @@ class InstanceSegmentationResultsDataset(ResultsDataset):
                     area = bbox_width * bbox_height
                     area_normalized = area / (width * height)
                     bbox_ratio = bbox_width / bbox_height
+                    # correct mask
+                    corrected_mask = correct_mask(mask_array, pad_x, pad_y, width, height)
+                    corrected_mask = corrected_mask.to_erles(None, None).erles[0]
+
                     image_data = {
                         "id": sample_plus_loss["common"]["record_id"], "width": width, "height": height, "label": label,
-                        "score": 999, "bbox_xmin": xmin, "bbox_xmax": xmax, "bbox_ymin": ymin, "bbox_ymax": ymax, "area": area, "area_square_root": area**2, "area_square_root_normalized": area_normalized**2,
-                        "area_normalized": area_normalized, "bbox_ratio": bbox_ratio, "record_index": index,
+                        "score": 999, "bbox_xmin": xmin, "bbox_xmax": xmax, "bbox_ymin": ymin, "bbox_ymax": ymax, "bbox_area": area, "bbox_area_square_root": area**2, "bbox_area_square_root_normalized": area_normalized**2,
+                        "bbox_area_normalized": area_normalized, "bbox_ratio": bbox_ratio, "record_index": index,
                         "bbox_xmin_normalized": xmin/width, "bbox_xmax_normalized": xmax/width, "bbox_ymin_normalized": ymin/height, "bbox_ymax_normalized": ymax/height,
                         "bbox_width": bbox_width, "bbox_height": bbox_height,  "bbox_width_normalized": bbox_width/width, "bbox_height_normalized": bbox_height/height,
-                        "erles": erles_to_string(mask), "mask_area": mask_array.sum(), "mask_area_normalized": mask_array.sum()/mask_array.size, "mask_area_normalized_by_bbox_area": mask_array.sum()/area,
+                        "erles_corrected": erles_to_string(corrected_mask), "erles": erles_to_string(mask), "mask_area": mask_array.sum(), "mask_area_normalized": mask_array.sum()/mask_array.size, "mask_area_normalized_by_bbox_area": mask_array.sum()/area,
                         "filepath": str(sample_plus_loss["common"]["filepath"]), "filename": str(sample_plus_loss["common"]["filepath"]).split("/")[-1], "creation_date": datetime.datetime.fromtimestamp(file_stats.st_ctime),
                         "modification_date": datetime.datetime.fromtimestamp(file_stats.st_mtime), "num_annotations": len(prediction["bboxes"]), "is_prediction": False,
                     }

@@ -141,3 +141,4 @@ checklink/cookies.txt
 
 # custom
 examples/checkpoints
+test_nbs_for_coverage.py

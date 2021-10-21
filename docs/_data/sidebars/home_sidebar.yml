@@ -33,6 +33,9 @@ entries:
     - output: web,pdf
       title: plotting.utils
       url: plotting.utils.html
+    - output: web,pdf
+      title: utils
+      url: utils.html
     output: web
     title: icevision_dashboards
   output: web
