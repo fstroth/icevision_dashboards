@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - uses: actions/setup-python@v1
+    - uses: actions/setup-python@v2
       with:
         python-version: '3.8'
         architecture: 'x64'
@@ -13,6 +13,10 @@ jobs:
       run: |
         pip install nbdev jupyter pytest icedata==0.4.0
         pip install -e .
+    - name: Load test data
+      run: |
+        python -c "import icedata; icedata.fridge.load_data()"
+        python -c "import icedata; icedata.pennfudan.load_data()"
     - name: Read all notebooks
       run: |
         nbdev_read_nbs
@@ -30,4 +34,4 @@ jobs:
         if [ -n "$(nbdev_diff_nbs)" ]; then echo -e "!!! Detected difference between the notebooks and the library"; false; fi
     - name: Run tests
       run: |
-        nbdev_test_nbs
+        nbdev_test_nbs --verbose
