@@ -3,7 +3,8 @@
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
 index = {"Dashboard": "core.dashboards.ipynb",
-         "Gallery": "core.dashboards.ipynb",
+         "BaseGallery": "core.dashboards.ipynb",
+         "RecordDastasetGallery": "core.dashboards.ipynb",
          "DatasetOverview": "core.dashboards.ipynb",
          "MultiDatasetOverview": "core.dashboards.ipynb",
          "DatasetComparison": "core.dashboards.ipynb",

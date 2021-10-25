@@ -33,7 +33,7 @@ from .plotting.utils import toggle_legend_js
 
 # Cell
 class ObjectDetectionDatasetOverview(DatasetOverview):
-    """Dataset overview for object detection datasets"""
+    """Dataset overview for ObjectDetectionRecordDatasets"""
     DESCRIPTOR_DATA = "data"
     DESCRIPTOR_STATS_DATASET = "stats_dataset"
     DESCRIPTOR_STATS_IMAGES = "stats_image"
@@ -114,7 +114,7 @@ class ObjectDetectionDatasetOverview(DatasetOverview):
         return grid
 
     def _generate_gallery_tab(self):
-        return pn.Column(Gallery(self.dataset, "data", "filepath", ["num_annotations", "width", "height", "label", "area", "bbox_ratio", "bbox_width", "bbox_height"], height=self.height).show(), align="center", sizing_mode="stretch_both")
+        return pn.Column(RecordDastasetGallery(self.dataset, "data", "filepath", ["num_annotations", "width", "height", "label", "area", "bbox_ratio", "bbox_width", "bbox_height"], height=self.height).show(), align="center", sizing_mode="stretch_both")
 
     def build_gui(self):
         dataset_tab = super()._generate_dataset_tab()
@@ -126,7 +126,7 @@ class ObjectDetectionDatasetOverview(DatasetOverview):
 
 # Cell
 class ObjectDetectionDatasetComparison(DatasetComparison):
-    """Dataset comparison for object detection datasets."""
+    """Dataset comparison for ObjectDetectionRecordDatasets."""
     DESCRIPTOR_DATA = "data"
     DESCRIPTOR_STATS_DATASET = "stats_dataset"
     DESCRIPTOR_STATS_IMAGES = "stats_image"
@@ -190,7 +190,7 @@ class ObjectDetectionDatasetComparison(DatasetComparison):
         return pn.Row(_mixing_plots, self.categorical_2d_histogram, align="center")
 
     def _generate_gallery_tab(self):
-        return pn.Row(*[Gallery(dataset, "data", "filepath", ["num_annotations", "width", "height", "label", "area", "bbox_ratio", "bbox_width", "bbox_height"], width=floor(self.width/len(self.datasets))).show() for dataset in self.datasets], align="start", sizing_mode="stretch_both")
+        return pn.Row(*[RecordDastasetGallery(dataset, "data", "filepath", ["num_annotations", "width", "height", "label", "area", "bbox_ratio", "bbox_width", "bbox_height"], width=floor(self.width/len(self.datasets))).show() for dataset in self.datasets], align="start", sizing_mode="stretch_both")
 
     def build_gui(self):
         dataset_tab = self._generate_dataset_tab()
@@ -201,21 +201,21 @@ class ObjectDetectionDatasetComparison(DatasetComparison):
 
 # Cell
 class ObjectDetectionDatasetGeneratorScatter(DatasetGeneratorScatter):
-    """Dataset generator for object detection"""
+    """Dataset generator for ObjectDetectionRecordDatasets"""
     DESCRIPTOR_STATS = "stats_dataset"
     DATASET_OVERVIEW = ObjectDetectionDatasetOverview
     DATASET_FILTER_COLUMNS = ["width", "height", "label", "area_normalized", "bbox_ratio", "bbox_width", "bbox_height", "num_annotations"]
 
 # Cell
 class ObjectDetectionDatasetGeneratorRange(DatasetGenerator):
-    """Dataset generator for object detection"""
+    """Dataset generator for ObjectDetectionRecordDatasets"""
     DESCRIPTOR_STATS = "stats_dataset"
     DATASET_OVERVIEW = ObjectDetectionDatasetOverview
     DATASET_FILTER_COLUMNS = ["width", "height", "label", "area_normalized", "bbox_ratio", "bbox_width", "bbox_height", "num_annotations"]
 
 # Cell
 class ObjectDetectionResultOverview(Dashboard):
-    """Overview dashboard """
+    """Result dashboard for instance segmentation results. Init tasks an InstanceSegmentationResultDataset"""
     def __init__(self, dataset, height=700, width=1000):
         self.dataset= dataset
         self.accordion_active = [0]
@@ -283,7 +283,7 @@ class ObjectDetectionResultOverview(Dashboard):
 
         sub_tabs = pn.Tabs(
             ("Histograms", pn.Row(pn.Spacer(sizing_mode="stretch_width"), scatter_overview, pn.Spacer(sizing_mode="stretch_width"), cat_2d_hist, pn.Spacer(sizing_mode="stretch_width"), align="center")),
-            ("Gallery", Gallery(self.dataset, "base_data", "filepath", sort_cols=self.loss_keys, height=self.height).show())
+            ("Gallery", RecordDastasetGallery(self.dataset, "base_data", "filepath", sort_cols=self.loss_keys, height=self.height).show())
         )
 
         return pn.Column(loss_hists_col, sub_tabs)
@@ -442,21 +442,21 @@ class InstanceSegmentationDatasetComparison(ObjectDetectionDatasetComparison):
 
 # Cell
 class InstanceSegmentationDatasetGeneratorScatter(DatasetGeneratorScatter):
-    """Dataset generator for object detection"""
+    """Dataset generator for InstanceSgementationRecordDatasets"""
     DESCRIPTOR_STATS = "stats_dataset"
     DATASET_OVERVIEW = InstanceSegmentationDatasetOverview
     DATASET_FILTER_COLUMNS = ["width", "height", "label", "mask_area", "bbox_area", "bbox_ratio", "bbox_width", "bbox_height", "num_annotations"]
 
 # Cell
 class InstanceSegmentationDatasetGeneratorRange(DatasetGenerator):
-    """Dataset generator for object detection"""
+    """Dataset generator for InstanceSegmentationRecordDatasets"""
     DESCRIPTOR_STATS = "stats_dataset"
     DATASET_OVERVIEW = InstanceSegmentationDatasetOverview
     DATASET_FILTER_COLUMNS = ["width", "height", "label", "mask_area", "bbox_area", "bbox_ratio", "bbox_width", "bbox_height", "num_annotations"]
 
 # Cell
 class InstanceSegmentationResultOverview(ObjectDetectionResultOverview):
-    """Overview dashboard """
+    """Result dashboard for instance segmentation results. Init tasks an InstanceSegmentationResultDataset"""
     def build_loss_tab(self):
         # loss hists
         fig_loss_hists, ax_loss_hists = plt.subplots(1, len(self.loss_keys), figsize=(16*5,9))
@@ -488,7 +488,7 @@ class InstanceSegmentationResultOverview(ObjectDetectionResultOverview):
 
         sub_tabs = pn.Tabs(
             ("Histograms", pn.Row(pn.Spacer(sizing_mode="stretch_width"), scatter_overview, pn.Spacer(sizing_mode="stretch_width"), cat_2d_hist, pn.Spacer(sizing_mode="stretch_width"), align="center")),
-            ("Gallery", Gallery(self.dataset, "base_data", "filepath", sort_cols=self.loss_keys, height=self.height).show())
+            ("Gallery", RecordDastasetGallery(self.dataset, "base_data", "filepath", sort_cols=self.loss_keys, height=self.height).show())
         )
 
         return pn.Column(loss_hists_col, sub_tabs)

@@ -89,6 +89,13 @@ class RecordDataset(GenericDataset, ABC):
     def __len__(self):
         return len(self.records)
 
+    def __add__(self, other):
+        """Add two RecordDatases together but sets name and description to None for the new RecordDataset."""
+        if sorted(self.class_map._id2class) != sorted(other.class_map._id2class):
+            raise ValueError("The two RecordDatasets don't have the same class_map")
+        else:
+            return RecordDataset(self.records+other.records, class_map=self.class_map)
+
     def split_in_train_and_val(self, train_fraction):
         records = list(self.records)
         if train_fraction > 1:

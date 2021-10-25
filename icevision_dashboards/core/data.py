@@ -11,8 +11,8 @@ from abc import ABC, abstractmethod
 # Cell
 class Observable(ABC):
     """Simple implementation of the observer pattern."""
-    def __init__(self):
-        self._callbacks = []
+    def __init__(self, callbacks=None):
+        self._callbacks = [] if callbacks is None else callbacks
 
     def register_callback(self, callback: Callable):
         self._callbacks.append(callback)
@@ -24,9 +24,9 @@ class Observable(ABC):
 # Cell
 class ObservableList(Observable):
     """List with observer pattern. The internal list prepresentation can be accessed with the list attribute"""
-    def __init__(self, observable_list: list):
+    def __init__(self, observable_list: list, callbacks=None):
         self._list = observable_list
-        super().__init__()
+        super().__init__(callbacks)
 
     @property
     def list(self):
@@ -53,6 +53,11 @@ class ObservableList(Observable):
     def __setitem__(self, index: int, value: Any):
         self._list[index] = value
         self.trigger_callbacks()
+
+    def __add__(self, other):
+        # turn the callbacks first into a set and than back into a list to avoid callbacks being triggered multiple times
+        new_callbacks = list(set(self._callbacks+other._callbacks))
+        return ObservableList(self.list + other.list, new_callbacks)
 
     def append(self, item: Any):
         self._list.append(item)
@@ -92,18 +97,25 @@ class ObservableList(Observable):
 
 # Cell
 class DatasetDescriptor(ABC):
-    """Abstract base class for descriptors of datasets"""
+    """Abstract base class for descriptors of datasets.
+    The private name of the descriptor is the defined name with a prefix _.
+    The __get__ function will call the calculate_description function if the value of the descriptor is None and then return the value else it will just return the value of the descriptor.
+    The __set__ function only allows for the attribute to be set to None, which will trigger a recomputation the next time the __get__ function is called.
+    When inheriting this class the function calculate_description needs to be implemented, which defines how the private value should be calculated.
+    """
     def __set_name__(self, owner, name):
         owner._descriptors.append(self)
         self.private_name = '_' + name
 
     def __get__(self, obj, objtype=None):
+        "Attribute will be recomputed if it is None else the befor computed version will be returned."
         if getattr(obj, self.private_name) is None:
             value = self.calculate_description(obj)
             setattr(obj, self.private_name, value)
         return getattr(obj, self.private_name)
 
     def __set__(self, obj, value):
+        "Attribute can only be set to None externaly, otherwise an ValueError will be raised."
         if value is None:
             setattr(obj, self.private_name, value)
         else:
@@ -137,9 +149,8 @@ class GenericDataset:
         self.base_data = base_data
         self.name = name
         self.description = description
-        super().__init__()
 
     def reset_infered_data(self, new_data=None):
-        """Takes on argument to be compatible with panel."""
+        """Takes an argument to be compatible with callbacks."""
         for descriptor in self._descriptors:
             descriptor.__set__(self, None)

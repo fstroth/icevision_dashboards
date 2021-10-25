@@ -52,6 +52,7 @@ nb_path: "nbs/data.ipynb"
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">icedata</span>
 <span class="kn">import</span> <span class="nn">pickle</span>
 <span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 </pre></div>
 
     </div>
@@ -68,10 +69,10 @@ nb_path: "nbs/data.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_data_dir</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">fridge</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
-<span class="n">test_class_map</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">fridge</span><span class="o">.</span><span class="n">class_map</span><span class="p">()</span>
-<span class="n">test_parser</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">fridge</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="n">test_data_dir</span><span class="p">)</span>
-<span class="n">test_train_records</span><span class="p">,</span> <span class="n">test_valid_records</span> <span class="o">=</span> <span class="n">test_parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_object_detection_data_dir</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">fridge</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
+<span class="n">test_object_detection_class_map</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">fridge</span><span class="o">.</span><span class="n">class_map</span><span class="p">()</span>
+<span class="n">test_object_detection_parser</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">fridge</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="n">test_object_detection_data_dir</span><span class="p">)</span>
+<span class="n">test_object_detection_train_records</span><span class="p">,</span> <span class="n">test_object_detection_valid_records</span> <span class="o">=</span> <span class="n">test_object_detection_parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -102,8 +103,8 @@ nb_path: "nbs/data.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_data_path_instance_segmentation</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">pennfudan</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
-<span class="n">test_instance_segmentation_parser</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">pennfudan</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="n">test_data_path_instance_segmentation</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_instance_segmentation_data_path</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">pennfudan</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
+<span class="n">test_instance_segmentation_parser</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">pennfudan</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="n">test_instance_segmentation_data_path</span><span class="p">)</span>
 <span class="n">test_instance_segmentation_train_records</span><span class="p">,</span> <span class="n">test_instance_segmentation_valid_records</span> <span class="o">=</span> <span class="n">test_instance_segmentation_parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
 <span class="n">test_instance_segmentation_class_map</span> <span class="o">=</span> <span class="n">test_instance_segmentation_train_records</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">detection</span><span class="o">.</span><span class="n">class_map</span>
 </pre></div>
@@ -210,7 +211,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ResultsDataset" class="doc_header"><code>class</code> <code>ResultsDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L154" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ResultsDataset</code>(<strong><code>dataframe</code></strong>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/core.data.html#GenericDataset"><code>GenericDataset</code></a></p>
+<h2 id="ResultsDataset" class="doc_header"><code>class</code> <code>ResultsDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L161" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ResultsDataset</code>(<strong><code>dataframe</code></strong>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/core.data.html#GenericDataset"><code>GenericDataset</code></a></p>
 </blockquote>
 <p>Dashboard dataset for the results of and object detection system.</p>
 
@@ -248,7 +249,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="BboxRecordDataframeParser" class="doc_header"><code>class</code> <code>BboxRecordDataframeParser</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L195" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BboxRecordDataframeParser</code>(<strong><code>record_dataframe</code></strong>, <strong><code>class_map</code></strong>) :: <a href="/icevision_dashboards/data.html#RecordDataframeParser"><code>RecordDataframeParser</code></a></p>
+<h2 id="BboxRecordDataframeParser" class="doc_header"><code>class</code> <code>BboxRecordDataframeParser</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L202" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BboxRecordDataframeParser</code>(<strong><code>record_dataframe</code></strong>, <strong><code>class_map</code></strong>) :: <a href="/icevision_dashboards/data.html#RecordDataframeParser"><code>RecordDataframeParser</code></a></p>
 </blockquote>
 <p>Extends the RecordDataframeParser for object detection</p>
 
@@ -280,7 +281,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="DataDescriptorBbox" class="doc_header"><code>class</code> <code>DataDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L207" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>DataDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="DataDescriptorBbox" class="doc_header"><code>class</code> <code>DataDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L214" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>DataDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
 <p>Dashboard dataset for object detection</p>
 
@@ -312,9 +313,13 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="StatsDescriptorBbox" class="doc_header"><code>class</code> <code>StatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L240" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>StatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="StatsDescriptorBbox" class="doc_header"><code>class</code> <code>StatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L247" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>StatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
-<p>Abstract base class for descriptors of datasets</p>
+<p>Abstract base class for descriptors of datasets.
+The private name of the descriptor is the defined name with a prefix _.
+The <strong>get</strong> function will call the calculate_description function if the value of the descriptor is None and then return the value else it will just return the value of the descriptor.
+The <strong>set</strong> function only allows for the attribute to be set to None, which will trigger a recomputation the next time the <strong>get</strong> function is called.
+When inheriting this class the function calculate_description needs to be implemented, which defines how the private value should be calculated.</p>
 
 </div>
 
@@ -344,9 +349,13 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ImageStatsDescriptorBbox" class="doc_header"><code>class</code> <code>ImageStatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L255" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ImageStatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="ImageStatsDescriptorBbox" class="doc_header"><code>class</code> <code>ImageStatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L262" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ImageStatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
-<p>Abstract base class for descriptors of datasets</p>
+<p>Abstract base class for descriptors of datasets.
+The private name of the descriptor is the defined name with a prefix _.
+The <strong>get</strong> function will call the calculate_description function if the value of the descriptor is None and then return the value else it will just return the value of the descriptor.
+The <strong>set</strong> function only allows for the attribute to be set to None, which will trigger a recomputation the next time the <strong>get</strong> function is called.
+When inheriting this class the function calculate_description needs to be implemented, which defines how the private value should be calculated.</p>
 
 </div>
 
@@ -376,9 +385,13 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ClassStatsDescriptorBbox" class="doc_header"><code>class</code> <code>ClassStatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L267" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ClassStatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="ClassStatsDescriptorBbox" class="doc_header"><code>class</code> <code>ClassStatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L274" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ClassStatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
-<p>Abstract base class for descriptors of datasets</p>
+<p>Abstract base class for descriptors of datasets.
+The private name of the descriptor is the defined name with a prefix _.
+The <strong>get</strong> function will call the calculate_description function if the value of the descriptor is None and then return the value else it will just return the value of the descriptor.
+The <strong>set</strong> function only allows for the attribute to be set to None, which will trigger a recomputation the next time the <strong>get</strong> function is called.
+When inheriting this class the function calculate_description needs to be implemented, which defines how the private value should be calculated.</p>
 
 </div>
 
@@ -408,9 +421,13 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="GalleryStatsDescriptorBbox" class="doc_header"><code>class</code> <code>GalleryStatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L284" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GalleryStatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="GalleryStatsDescriptorBbox" class="doc_header"><code>class</code> <code>GalleryStatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L291" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GalleryStatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
-<p>Abstract base class for descriptors of datasets</p>
+<p>Abstract base class for descriptors of datasets.
+The private name of the descriptor is the defined name with a prefix _.
+The <strong>get</strong> function will call the calculate_description function if the value of the descriptor is None and then return the value else it will just return the value of the descriptor.
+The <strong>set</strong> function only allows for the attribute to be set to None, which will trigger a recomputation the next time the <strong>get</strong> function is called.
+When inheriting this class the function calculate_description needs to be implemented, which defines how the private value should be calculated.</p>
 
 </div>
 
@@ -440,7 +457,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="BboxRecordDataset" class="doc_header"><code>class</code> <code>BboxRecordDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L291" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BboxRecordDataset</code>(<strong><code>records</code></strong>:<code>Union</code>[<code>List</code>[<code>BaseRecord</code>], <a href="/icevision_dashboards/core.data.html#ObservableList"><code>ObservableList</code></a>, <code>str</code>], <strong><code>class_map</code></strong>=<em><code>None</code></em>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/data.html#RecordDataset"><code>RecordDataset</code></a></p>
+<h2 id="BboxRecordDataset" class="doc_header"><code>class</code> <code>BboxRecordDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L298" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BboxRecordDataset</code>(<strong><code>records</code></strong>:<code>Union</code>[<code>List</code>[<code>BaseRecord</code>], <a href="/icevision_dashboards/core.data.html#ObservableList"><code>ObservableList</code></a>, <code>str</code>], <strong><code>class_map</code></strong>=<em><code>None</code></em>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/data.html#RecordDataset"><code>RecordDataset</code></a></p>
 </blockquote>
 <p>Base class dashboard datasets that are based on IceVision records.</p>
 
@@ -468,17 +485,23 @@ nb_path: "nbs/data.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_record_dataset</span> <span class="o">=</span> <span class="n">BboxRecordDataset</span><span class="p">(</span><span class="n">test_valid_records</span><span class="p">,</span> <span class="n">test_class_map</span><span class="p">)</span>
-<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">test_record_dataset</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span>
-<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">test_record_dataset</span><span class="o">.</span><span class="n">stats_dataset</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span>
-<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">test_record_dataset</span><span class="o">.</span><span class="n">stats_class</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span>
-<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">test_record_dataset</span><span class="o">.</span><span class="n">stats_image</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span>
-<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">test_record_dataset</span><span class="o">.</span><span class="n">stats</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_object_detection_record_dataset</span> <span class="o">=</span> <span class="n">BboxRecordDataset</span><span class="p">(</span><span class="n">test_object_detection_valid_records</span><span class="p">,</span> <span class="n">test_object_detection_class_map</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">test_object_detection_record_dataset</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">test_object_detection_record_dataset</span><span class="o">.</span><span class="n">stats_dataset</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">test_object_detection_record_dataset</span><span class="o">.</span><span class="n">stats_class</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">test_object_detection_record_dataset</span><span class="o">.</span><span class="n">stats_image</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">test_object_detection_record_dataset</span><span class="o">.</span><span class="n">stats</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span>
 
-<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">test_record_dataset</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">(),</span> <span class="nb">str</span><span class="p">)</span>
-<span class="n">test_split_train_records</span><span class="p">,</span> <span class="n">test_split_valid_records</span> <span class="o">=</span> <span class="n">test_record_dataset</span><span class="o">.</span><span class="n">split_in_train_and_val</span><span class="p">(</span><span class="mf">0.8</span><span class="p">)</span>
-<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_record_dataset</span><span class="o">.</span><span class="n">base_data</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_split_train_records</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_split_valid_records</span><span class="p">)</span>
-<span class="k">assert</span> <span class="n">test_record_dataset</span><span class="o">.</span><span class="n">num_images</span> <span class="o">==</span> <span class="mi">26</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">test_object_detection_record_dataset</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">(),</span> <span class="nb">str</span><span class="p">)</span>
+<span class="n">test_object_detection_split_train_records</span><span class="p">,</span> <span class="n">test_object_detection_split_valid_records</span> <span class="o">=</span> <span class="n">test_object_detection_record_dataset</span><span class="o">.</span><span class="n">split_in_train_and_val</span><span class="p">(</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_object_detection_record_dataset</span><span class="o">.</span><span class="n">base_data</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_object_detection_split_train_records</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_object_detection_split_valid_records</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">test_object_detection_record_dataset</span><span class="o">.</span><span class="n">num_images</span> <span class="o">==</span> <span class="mi">26</span>
+
+<span class="n">test_object_detection_added_record_dataset</span> <span class="o">=</span> <span class="n">test_object_detection_record_dataset</span> <span class="o">+</span> <span class="n">test_object_detection_record_dataset</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_object_detection_added_record_dataset</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_object_detection_record_dataset</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span>
+<span class="k">assert</span> <span class="n">test_object_detection_added_record_dataset</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="kc">None</span>
+<span class="k">assert</span> <span class="n">test_object_detection_added_record_dataset</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="kc">None</span>
+<span class="k">assert</span> <span class="n">test_object_detection_added_record_dataset</span><span class="o">.</span><span class="n">class_map</span> <span class="o">==</span> <span class="n">test_object_detection_record_dataset</span><span class="o">.</span><span class="n">class_map</span>
 </pre></div>
 
     </div>
@@ -495,10 +518,10 @@ nb_path: "nbs/data.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="kc">False</span><span class="p">]</span><span class="o">*</span><span class="n">test_record_dataset</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">mask</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">masked_test_record</span> <span class="o">=</span> <span class="n">test_record_dataset</span><span class="o">.</span><span class="n">create_new_from_mask</span><span class="p">(</span><span class="n">test_record_dataset</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
-<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">masked_test_record</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_object_detection_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="kc">False</span><span class="p">]</span><span class="o">*</span><span class="n">test_object_detection_record_dataset</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">test_object_detection_mask</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">test_object_detection_masked_record</span> <span class="o">=</span> <span class="n">test_object_detection_record_dataset</span><span class="o">.</span><span class="n">create_new_from_mask</span><span class="p">(</span><span class="n">test_object_detection_record_dataset</span><span class="p">,</span> <span class="n">test_object_detection_mask</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_object_detection_masked_record</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
 </pre></div>
 
     </div>
@@ -515,10 +538,10 @@ nb_path: "nbs/data.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_old_record_dataset_stats</span> <span class="o">=</span> <span class="n">test_record_dataset</span><span class="o">.</span><span class="n">stats_dataset</span>
-<span class="n">test_record_dataset</span><span class="o">.</span><span class="n">records</span><span class="o">.</span><span class="n">list</span> <span class="o">=</span> <span class="n">test_train_records</span>
-<span class="n">test_new_record_dataset_stats</span> <span class="o">=</span> <span class="n">test_record_dataset</span><span class="o">.</span><span class="n">stats_dataset</span>
-<span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">test_old_record_dataset_stats</span> <span class="o">!=</span> <span class="n">test_new_record_dataset_stats</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_object_detection_old_record_dataset_stats</span> <span class="o">=</span> <span class="n">test_object_detection_record_dataset</span><span class="o">.</span><span class="n">stats_dataset</span>
+<span class="n">test_object_detection_record_dataset</span><span class="o">.</span><span class="n">records</span><span class="o">.</span><span class="n">list</span> <span class="o">=</span> <span class="n">test_object_detection_train_records</span>
+<span class="n">test_object_detection_new_record_dataset_stats</span> <span class="o">=</span> <span class="n">test_object_detection_record_dataset</span><span class="o">.</span><span class="n">stats_dataset</span>
+<span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">test_object_detection_new_record_dataset_stats</span> <span class="o">!=</span> <span class="n">test_object_detection_old_record_dataset_stats</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -535,10 +558,10 @@ nb_path: "nbs/data.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_regenerated_record_dataset</span> <span class="o">=</span> <span class="n">BboxRecordDataset</span><span class="o">.</span><span class="n">load_from_record_dataframe</span><span class="p">(</span><span class="n">test_record_dataset</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">test_class_map</span><span class="p">)</span>
-<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_regenerated_record_dataset</span><span class="o">.</span><span class="n">records</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_record_dataset</span><span class="o">.</span><span class="n">records</span><span class="p">)</span>
-<span class="n">test_regenerated_record_dataset_no_class_map</span> <span class="o">=</span> <span class="n">BboxRecordDataset</span><span class="o">.</span><span class="n">load_from_record_dataframe</span><span class="p">(</span><span class="n">test_record_dataset</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-<span class="k">assert</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">test_regenerated_record_dataset_no_class_map</span><span class="o">.</span><span class="n">class_map</span><span class="o">.</span><span class="n">_id2class</span><span class="p">)</span> <span class="o">==</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">test_class_map</span><span class="o">.</span><span class="n">_id2class</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_object_detection_regenerated_record_dataset</span> <span class="o">=</span> <span class="n">BboxRecordDataset</span><span class="o">.</span><span class="n">load_from_record_dataframe</span><span class="p">(</span><span class="n">test_object_detection_record_dataset</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">test_object_detection_class_map</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_object_detection_regenerated_record_dataset</span><span class="o">.</span><span class="n">records</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_object_detection_record_dataset</span><span class="o">.</span><span class="n">records</span><span class="p">)</span>
+<span class="n">test_object_detection_regenerated_record_dataset_no_class_map</span> <span class="o">=</span> <span class="n">BboxRecordDataset</span><span class="o">.</span><span class="n">load_from_record_dataframe</span><span class="p">(</span><span class="n">test_object_detection_record_dataset</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">test_object_detection_regenerated_record_dataset_no_class_map</span><span class="o">.</span><span class="n">class_map</span><span class="o">.</span><span class="n">_id2class</span><span class="p">)</span> <span class="o">==</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">test_object_detection_class_map</span><span class="o">.</span><span class="n">_id2class</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -572,13 +595,13 @@ nb_path: "nbs/data.ipynb"
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="s2">&quot;dump_dir&quot;</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s2">&quot;dump_dir&quot;</span><span class="p">)</span>
-<span class="n">test_record_dataset</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-<span class="n">test_record_dataset</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;dump_dir&quot;</span><span class="p">)</span>
-<span class="n">test_record_dataset</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;dump_dir&quot;</span><span class="p">)</span>
+<span class="n">test_object_detection_record_dataset</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">test_object_detection_record_dataset</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;dump_dir&quot;</span><span class="p">)</span>
+<span class="n">test_object_detection_record_dataset</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;dump_dir&quot;</span><span class="p">)</span>
 <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s2">&quot;dump_dir&quot;</span><span class="p">))</span> <span class="o">==</span> <span class="mi">2</span>
 <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s2">&quot;dump_dir/dataset.json&quot;</span><span class="p">)</span>
-<span class="n">test_loaded_record_dataset</span> <span class="o">=</span> <span class="n">BboxRecordDataset</span><span class="p">(</span><span class="s2">&quot;dump_dir/dataset.json&quot;</span><span class="p">)</span>
-<span class="k">assert</span> <span class="n">test_record_dataset</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;area&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">test_loaded_record_dataset</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
+<span class="n">test_object_detection_loaded_record_dataset</span> <span class="o">=</span> <span class="n">BboxRecordDataset</span><span class="p">(</span><span class="s2">&quot;dump_dir/dataset.json&quot;</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">test_object_detection_record_dataset</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;area&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">test_object_detection_loaded_record_dataset</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
 <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="s2">&quot;dump_dir&quot;</span><span class="p">)</span>
 </pre></div>
 
@@ -614,9 +637,13 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="PrecisionRecallMetricsDescriptorObjectDetection" class="doc_header"><code>class</code> <code>PrecisionRecallMetricsDescriptorObjectDetection</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L318" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>PrecisionRecallMetricsDescriptorObjectDetection</code>(<strong><code>ious</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="PrecisionRecallMetricsDescriptorObjectDetection" class="doc_header"><code>class</code> <code>PrecisionRecallMetricsDescriptorObjectDetection</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L325" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>PrecisionRecallMetricsDescriptorObjectDetection</code>(<strong><code>ious</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
-<p>Abstract base class for descriptors of datasets</p>
+<p>Abstract base class for descriptors of datasets.
+The private name of the descriptor is the defined name with a prefix _.
+The <strong>get</strong> function will call the calculate_description function if the value of the descriptor is None and then return the value else it will just return the value of the descriptor.
+The <strong>set</strong> function only allows for the attribute to be set to None, which will trigger a recomputation the next time the <strong>get</strong> function is called.
+When inheriting this class the function calculate_description needs to be implemented, which defines how the private value should be calculated.</p>
 
 </div>
 
@@ -646,7 +673,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ObjectDetectionResultsDataset" class="doc_header"><code>class</code> <code>ObjectDetectionResultsDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L329" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ObjectDetectionResultsDataset</code>(<strong><code>dataframe</code></strong>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/data.html#ResultsDataset"><code>ResultsDataset</code></a></p>
+<h2 id="ObjectDetectionResultsDataset" class="doc_header"><code>class</code> <code>ObjectDetectionResultsDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L336" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ObjectDetectionResultsDataset</code>(<strong><code>dataframe</code></strong>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/data.html#ResultsDataset"><code>ResultsDataset</code></a></p>
 </blockquote>
 <p>Dashboard dataset for the results of and object detection system.</p>
 
@@ -677,6 +704,11 @@ nb_path: "nbs/data.ipynb"
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_odrd</span> <span class="o">=</span> <span class="n">ObjectDetectionResultsDataset</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;test_data/object_detection_result_ds.dat&quot;</span><span class="p">)</span>
 <span class="n">test_object_detection_preds</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;test_data/object_detection_preds.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
 <span class="n">test_object_detection_samples</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;test_data/object_detection_samples.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
+
+<span class="c1"># make the saved samples indipendent of the saved enviroment</span>
+<span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="n">test_object_detection_samples</span><span class="p">:</span>
+    <span class="n">sample</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">filepath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">test_object_detection_data_dir</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.icevision&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;.icevision&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">filepath</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.icevision&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
 <span class="n">test_odrd_from_samples</span> <span class="o">=</span> <span class="n">ObjectDetectionResultsDataset</span><span class="o">.</span><span class="n">init_from_preds_and_samples</span><span class="p">(</span><span class="n">test_object_detection_preds</span><span class="p">,</span> <span class="n">test_object_detection_samples</span><span class="p">)</span>
 </pre></div>
 
@@ -704,7 +736,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="InstanceSegmentationRecordDataframeParser" class="doc_header"><code>class</code> <code>InstanceSegmentationRecordDataframeParser</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L412" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>InstanceSegmentationRecordDataframeParser</code>(<strong><code>record_dataframe</code></strong>, <strong><code>class_map</code></strong>) :: <a href="/icevision_dashboards/data.html#RecordDataframeParser"><code>RecordDataframeParser</code></a></p>
+<h2 id="InstanceSegmentationRecordDataframeParser" class="doc_header"><code>class</code> <code>InstanceSegmentationRecordDataframeParser</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L419" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>InstanceSegmentationRecordDataframeParser</code>(<strong><code>record_dataframe</code></strong>, <strong><code>class_map</code></strong>) :: <a href="/icevision_dashboards/data.html#RecordDataframeParser"><code>RecordDataframeParser</code></a></p>
 </blockquote>
 <p>Extends the RecordDataframeParser for instance segmentation</p>
 
@@ -736,7 +768,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="DataDescriptorInstanceSegmentation" class="doc_header"><code>class</code> <code>DataDescriptorInstanceSegmentation</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L430" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>DataDescriptorInstanceSegmentation</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="DataDescriptorInstanceSegmentation" class="doc_header"><code>class</code> <code>DataDescriptorInstanceSegmentation</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L437" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>DataDescriptorInstanceSegmentation</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
 <p>Dashboard dataset for object detection</p>
 
@@ -768,9 +800,13 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="StatsDescriptorInstanceSegmentation" class="doc_header"><code>class</code> <code>StatsDescriptorInstanceSegmentation</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L464" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>StatsDescriptorInstanceSegmentation</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="StatsDescriptorInstanceSegmentation" class="doc_header"><code>class</code> <code>StatsDescriptorInstanceSegmentation</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L471" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>StatsDescriptorInstanceSegmentation</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
-<p>Abstract base class for descriptors of datasets</p>
+<p>Abstract base class for descriptors of datasets.
+The private name of the descriptor is the defined name with a prefix _.
+The <strong>get</strong> function will call the calculate_description function if the value of the descriptor is None and then return the value else it will just return the value of the descriptor.
+The <strong>set</strong> function only allows for the attribute to be set to None, which will trigger a recomputation the next time the <strong>get</strong> function is called.
+When inheriting this class the function calculate_description needs to be implemented, which defines how the private value should be calculated.</p>
 
 </div>
 
@@ -800,9 +836,13 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ImageStatsDescriptorInstanceSegmentation" class="doc_header"><code>class</code> <code>ImageStatsDescriptorInstanceSegmentation</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L479" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ImageStatsDescriptorInstanceSegmentation</code>() :: <a href="/icevision_dashboards/data.html#ImageStatsDescriptorBbox"><code>ImageStatsDescriptorBbox</code></a></p>
+<h2 id="ImageStatsDescriptorInstanceSegmentation" class="doc_header"><code>class</code> <code>ImageStatsDescriptorInstanceSegmentation</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L486" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ImageStatsDescriptorInstanceSegmentation</code>() :: <a href="/icevision_dashboards/data.html#ImageStatsDescriptorBbox"><code>ImageStatsDescriptorBbox</code></a></p>
 </blockquote>
-<p>Abstract base class for descriptors of datasets</p>
+<p>Abstract base class for descriptors of datasets.
+The private name of the descriptor is the defined name with a prefix _.
+The <strong>get</strong> function will call the calculate_description function if the value of the descriptor is None and then return the value else it will just return the value of the descriptor.
+The <strong>set</strong> function only allows for the attribute to be set to None, which will trigger a recomputation the next time the <strong>get</strong> function is called.
+When inheriting this class the function calculate_description needs to be implemented, which defines how the private value should be calculated.</p>
 
 </div>
 
@@ -832,9 +872,13 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ClassStatsDescriptorInstanceSegmentation" class="doc_header"><code>class</code> <code>ClassStatsDescriptorInstanceSegmentation</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L483" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ClassStatsDescriptorInstanceSegmentation</code>() :: <a href="/icevision_dashboards/data.html#ClassStatsDescriptorBbox"><code>ClassStatsDescriptorBbox</code></a></p>
+<h2 id="ClassStatsDescriptorInstanceSegmentation" class="doc_header"><code>class</code> <code>ClassStatsDescriptorInstanceSegmentation</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L490" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ClassStatsDescriptorInstanceSegmentation</code>() :: <a href="/icevision_dashboards/data.html#ClassStatsDescriptorBbox"><code>ClassStatsDescriptorBbox</code></a></p>
 </blockquote>
-<p>Abstract base class for descriptors of datasets</p>
+<p>Abstract base class for descriptors of datasets.
+The private name of the descriptor is the defined name with a prefix _.
+The <strong>get</strong> function will call the calculate_description function if the value of the descriptor is None and then return the value else it will just return the value of the descriptor.
+The <strong>set</strong> function only allows for the attribute to be set to None, which will trigger a recomputation the next time the <strong>get</strong> function is called.
+When inheriting this class the function calculate_description needs to be implemented, which defines how the private value should be calculated.</p>
 
 </div>
 
@@ -864,9 +908,13 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="GalleryStatsDescriptorInstanceSegmentation" class="doc_header"><code>class</code> <code>GalleryStatsDescriptorInstanceSegmentation</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L500" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GalleryStatsDescriptorInstanceSegmentation</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="GalleryStatsDescriptorInstanceSegmentation" class="doc_header"><code>class</code> <code>GalleryStatsDescriptorInstanceSegmentation</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L507" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GalleryStatsDescriptorInstanceSegmentation</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
-<p>Abstract base class for descriptors of datasets</p>
+<p>Abstract base class for descriptors of datasets.
+The private name of the descriptor is the defined name with a prefix _.
+The <strong>get</strong> function will call the calculate_description function if the value of the descriptor is None and then return the value else it will just return the value of the descriptor.
+The <strong>set</strong> function only allows for the attribute to be set to None, which will trigger a recomputation the next time the <strong>get</strong> function is called.
+When inheriting this class the function calculate_description needs to be implemented, which defines how the private value should be calculated.</p>
 
 </div>
 
@@ -896,7 +944,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="InstanceSegmentationRecordDataset" class="doc_header"><code>class</code> <code>InstanceSegmentationRecordDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L507" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>InstanceSegmentationRecordDataset</code>(<strong><code>records</code></strong>:<code>Union</code>[<code>List</code>[<code>BaseRecord</code>], <a href="/icevision_dashboards/core.data.html#ObservableList"><code>ObservableList</code></a>, <code>str</code>], <strong><code>class_map</code></strong>=<em><code>None</code></em>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/data.html#RecordDataset"><code>RecordDataset</code></a></p>
+<h2 id="InstanceSegmentationRecordDataset" class="doc_header"><code>class</code> <code>InstanceSegmentationRecordDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L514" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>InstanceSegmentationRecordDataset</code>(<strong><code>records</code></strong>:<code>Union</code>[<code>List</code>[<code>BaseRecord</code>], <a href="/icevision_dashboards/core.data.html#ObservableList"><code>ObservableList</code></a>, <code>str</code>], <strong><code>class_map</code></strong>=<em><code>None</code></em>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/data.html#RecordDataset"><code>RecordDataset</code></a></p>
 </blockquote>
 <p>Base class dashboard datasets that are based on IceVision records.</p>
 
@@ -1062,9 +1110,13 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="PrecisionRecallMetricsDescriptorInstanceSegmentation" class="doc_header"><code>class</code> <code>PrecisionRecallMetricsDescriptorInstanceSegmentation</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L534" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>PrecisionRecallMetricsDescriptorInstanceSegmentation</code>(<strong><code>ious</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="PrecisionRecallMetricsDescriptorInstanceSegmentation" class="doc_header"><code>class</code> <code>PrecisionRecallMetricsDescriptorInstanceSegmentation</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L541" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>PrecisionRecallMetricsDescriptorInstanceSegmentation</code>(<strong><code>ious</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
-<p>Abstract base class for descriptors of datasets</p>
+<p>Abstract base class for descriptors of datasets.
+The private name of the descriptor is the defined name with a prefix _.
+The <strong>get</strong> function will call the calculate_description function if the value of the descriptor is None and then return the value else it will just return the value of the descriptor.
+The <strong>set</strong> function only allows for the attribute to be set to None, which will trigger a recomputation the next time the <strong>get</strong> function is called.
+When inheriting this class the function calculate_description needs to be implemented, which defines how the private value should be calculated.</p>
 
 </div>
 
@@ -1094,7 +1146,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="InstanceSegmentationResultsDataset" class="doc_header"><code>class</code> <code>InstanceSegmentationResultsDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L545" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>InstanceSegmentationResultsDataset</code>(<strong><code>dataframe</code></strong>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/data.html#ResultsDataset"><code>ResultsDataset</code></a></p>
+<h2 id="InstanceSegmentationResultsDataset" class="doc_header"><code>class</code> <code>InstanceSegmentationResultsDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L552" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>InstanceSegmentationResultsDataset</code>(<strong><code>dataframe</code></strong>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/data.html#ResultsDataset"><code>ResultsDataset</code></a></p>
 </blockquote>
 <p>Dashboard dataset for the results of and object detection system.</p>
 
@@ -1125,6 +1177,11 @@ nb_path: "nbs/data.ipynb"
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_instance_segmentation_odrd</span> <span class="o">=</span> <span class="n">InstanceSegmentationResultsDataset</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;test_data/instance_segmentation_result_ds_valid.dat&quot;</span><span class="p">)</span>
 <span class="n">test_instance_segmentation_preds</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;test_data/instance_segmentation_preds.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
 <span class="n">test_instance_segmentation_samples</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;test_data/instance_segmentation_samples.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
+
+<span class="c1"># make the saved samples indipendent of the saved enviroment</span>
+<span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="n">test_instance_segmentation_samples</span><span class="p">:</span>
+    <span class="n">sample</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">filepath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">test_instance_segmentation_data_path</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.icevision&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;.icevision&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">filepath</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.icevision&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
 <span class="n">test_odrd_from_samples</span> <span class="o">=</span> <span class="n">InstanceSegmentationResultsDataset</span><span class="o">.</span><span class="n">init_from_preds_and_samples</span><span class="p">(</span><span class="n">test_instance_segmentation_preds</span><span class="p">,</span> <span class="n">test_instance_segmentation_samples</span><span class="p">)</span>
 </pre></div>
 

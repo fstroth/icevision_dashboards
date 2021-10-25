@@ -25,7 +25,9 @@ from .utils import *
 
 # Cell
 def barplot(counts: Union[np.ndarray, List[np.ndarray]], values: Union[np.ndarray, List[np.ndarray]], bar_type: Literal["horizontal", "vertical"] = "horizontal", linked_axis=True, width: int = 500, height: int = 500, **kwargs) -> bokeh.plotting.Figure:
-    """Creates a figure with a barplot, were the counts is the bar height and values are the labels for the bars."""
+    """Creates a figure with a barplot, were the counts is the bar height and values are the labels for the bars.
+    Input can be a numpy array or a list of numpy array to create multiple plots.
+    """
     if isinstance(counts, list) and isinstance(values, list):
         plot_list = []
         for counts_element, values_element in zip(counts, values):
@@ -34,7 +36,6 @@ def barplot(counts: Union[np.ndarray, List[np.ndarray]], values: Union[np.ndarra
                 if len(plot_list) == 0:
                     p = figure(width=width, height=height, y_range=values_element)
                     p.hbar(y=values_element, left=0, right=counts_element, height=0.9)
-                    display(pn.Row(p))
                 else:
                     if linked_axis:
                         p = figure(width=width, height=height, y_range=plot_list[0].y_range, x_range=plot_list[0].x_range)
