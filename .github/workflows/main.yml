@@ -1,25 +1,37 @@
 name: CI
 on: [push, pull_request]
+
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python-version: [3.7, 3.8]
+
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/setup-python@v2
+    - uses: actions/checkout@v2
+    - name: Testing for Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
       with:
-        python-version: "3.8"
+        python-version: ${{ matrix.python-version }}
         architecture: 'x64'
+
     - name: Install the library
       run: |
         pip install nbdev jupyter pytest icedata==0.4.0 typing
         pip install -e .
+
     - name: Load test data
       run: |
         python -c "import icedata; icedata.fridge.load_data()"
         python -c "import icedata; icedata.pennfudan.load_data()"
+
     - name: Read all notebooks
       run: |
         nbdev_read_nbs
+
     - name: Check if all notebooks are cleaned
       run: |
         echo "Check we are starting with clean git checkout"
@@ -29,9 +41,11 @@ jobs:
         echo "Check that strip out was unnecessary"
         git status -s # display the status to see which nbs need cleaning up
         if [ -n "$(git status -uno -s)" ]; then echo -e "!!! Detected unstripped out notebooks\n!!!Remember to run nbdev_install_git_hooks"; false; fi
+
     - name: Check if there is no diff library/notebooks
       run: |
         if [ -n "$(nbdev_diff_nbs)" ]; then echo -e "!!! Detected difference between the notebooks and the library"; false; fi
+
     - name: Run tests
       run: |
         nbdev_test_nbs --verbose

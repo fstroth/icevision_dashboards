@@ -5,7 +5,7 @@ __all__ = ['barplot', 'histogram', 'heatmap', 'time_arc_plot', 'table_from_dataf
 
 # Cell
 import datetime
-from typing import Literal, List, Union, Iterable, Tuple, Optional
+from typing import List, Union, Iterable, Tuple, Optional
 
 import numpy as np
 import pandas as pd
@@ -24,7 +24,7 @@ import panel.widgets as pnw
 from .utils import *
 
 # Cell
-def barplot(counts: Union[np.ndarray, List[np.ndarray]], values: Union[np.ndarray, List[np.ndarray]], bar_type: Literal["horizontal", "vertical"] = "horizontal", linked_axis=True, width: int = 500, height: int = 500, **kwargs) -> bokeh.plotting.Figure:
+def barplot(counts: Union[np.ndarray, List[np.ndarray]], values: Union[np.ndarray, List[np.ndarray]], bar_type: Union["horizontal", "vertical"] = "horizontal", linked_axis=True, width: int = 500, height: int = 500, **kwargs) -> bokeh.plotting.Figure:
     """Creates a figure with a barplot, were the counts is the bar height and values are the labels for the bars.
     Input can be a numpy array or a list of numpy array to create multiple plots.
     """

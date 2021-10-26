@@ -4,7 +4,7 @@ __all__ = ['Filter', 'RangeFilter', 'CategoricalFilter', 'TimeFilter', 'ScatterF
 
 # Cell
 import datetime
-from typing import Any, Iterable, Union, Tuple, List, Optional, Literal
+from typing import Any, Iterable, Union, Tuple, List, Optional
 from abc import ABCMeta, abstractmethod
 from inspect import signature
 
