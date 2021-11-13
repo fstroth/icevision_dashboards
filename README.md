@@ -2,10 +2,6 @@
 
 
 
-IceVisionDashboard is an extension to the [IceVision](https://github.com/airctic/icevision) object detection framework. This extension provides different `dashboards` to investigate datasets, create new datasets and analyse the results of a training.
-
-The libary provides dashboards to inspect datasets, create new datasets, investigate the results of a training and much more.
-
 ## Examples
 
 ```python
@@ -25,11 +21,10 @@ overview_dashboard.show()
 
 The output will look like this:
 
-![dataset_overivew_0](imgs/dataset_overview_0.png)
-![dataset_overivew_1](imgs/dataset_overview_1.png)
+<div style="text-align:center"><img src="imgs/dataset_overview_0.png" /></div>
+<div style="text-align:center"><img src="imgs/dataset_overview_1.png" /></div>
 <div style="text-align:center"><img src="imgs/dataset_overview_2.png" /></div>
-
-![dataset_overivew_3](imgs/dataset_overview_3.png)
+<div style="text-align:center"><img src="imgs/dataset_overview_3.png" /></div>
 
 ## Contributing
 
@@ -38,5 +33,18 @@ If you want to contribute add the following lines to your `pre-commit` file to e
 ```bash
 # ensure the oupt of the notebooks is empty
 jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace nbs/*.ipynb
+git add .
+```
+
+# Contributing
+
+If you want to contribute add the following lines to your `pre-commit` file to ensure the notebook cell output don't get pushed into the repo.
+
+```bash
+# ensure the oupt of the notebooks is empty
+jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace nbs/*.ipynb
+jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace examples/*.ipynb
+jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace test_data_generation/*.ipynb
+nbdev_build_lib
 git add .
 ```

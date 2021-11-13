@@ -43,9 +43,10 @@ class Dashboard(ABC):
 # Cell
 class BaseGallery(Dashboard, ABC):
     """Base class for galleries that provieds the provides the basic interface for creating a gallery. Inheritied classes need to define at least two functions `get_image_by_image_id` and `get_num_entries`."""
-    def __init__(self, data, width=500, height=500):
+    def __init__(self, data, sort_cols=None, width=500, height=500):
         """Data can be anyting, the handling of the data is done via the functions `get_image_by_image_id` and `get_num_entries`"""
         self.data = data
+        self.sort_cols = sort_cols
         self.num_entries = self.get_num_entries()
         self.UPDATING = False
         super().__init__(width, height)
@@ -64,13 +65,25 @@ class BaseGallery(Dashboard, ABC):
         self.btn_next = pnw.Button(name=">", width=int(2*self.width/6))
         self.current = pnw.TextInput(value="1", width=int(self.width/6))
         self.image_count = pn.Row("/" + str(self.num_entries), width=int(self.width/6))
-        self.gui_controlls = pn.Row(self.btn_prev, self.current, self.image_count, self.btn_next, align="center", height=50)
-        self._image = pn.Row(self.get_image_by_index(int(self.current.value)-1), align="center")
-        self.gui = pn.Column(self.gui_controlls, self.image)
+        self.gui_image_selection_controlls = pn.Row(self.btn_prev, self.current, self.image_count, self.btn_next, align="center", height=50)
+
+        if self.sort_cols is not None:
+            self.sorter = pnw.Select(name="Sort by", options=self.sort_cols)
+            self.sorter.param.watch(self.update_sorting, "value")
+            self.sort_order = pnw.CheckButtonGroup(name="Options", options=["Desc.", "Drop duplicates"])
+            self.sort_order.param.watch(self.update_sorting, "value")
+            self.sort_gui = pn.Row(self.sorter, self.sort_order)
+        if self.sort_cols is not None:
+            self.gui_controlls = pn.Column(self.sort_gui, self.gui_image_selection_controlls)
+        else:
+            self.gui_controlls = self.gui_image_selection_controlls
 
         self.btn_prev.on_click(self._previous)
         self.btn_next.on_click(self._next)
         self.current.param.watch(self._number_input, "value")
+
+        self._image = pn.Row(self.get_image_by_index(int(self.current.value)-1), align="center")
+        self.gui = pn.Column(self.gui_controlls, self.image)
 
     @property
     def image(self):
@@ -130,7 +143,7 @@ class RecordDastasetGallery(BaseGallery):
             self.index_mapping = getattr(dataset, self.gallery_desciptor).sort_values(img_id_col).drop_duplicates(self.img_id_col).reset_index(drop=True)
         else:
             self.index_mapping = getattr(dataset, self.gallery_desciptor).sort_values(sort_cols[0]).drop_duplicates(self.img_id_col).reset_index(drop=True)
-        super().__init__(dataset, width, height)
+        super().__init__(dataset, sort_cols, width, height)
 
     def get_num_entries(self):
         return getattr(self.data, self.gallery_desciptor).sort_values(self.img_id_col).drop_duplicates(self.img_id_col).shape[0]
@@ -148,20 +161,8 @@ class RecordDastasetGallery(BaseGallery):
             data = data.drop_duplicates(self.img_id_col)
         self.num_entries = data.shape[0]
         self.image_count = pn.Row("/" + str(self.num_entries), width=int(self.width/6))
-        self.gui[0][2] = self.image_count
+        self.gui_image_selection_controlls[2] = self.image_count
         self.index_mapping = data.reset_index(drop=True)
-
-    def build_gui(self):
-        super().build_gui()
-        # add sorting elements to the gui
-        if self.sort_cols is not None:
-            self.sorter = pnw.Select(name="Sort by", options=self.sort_cols)
-            self.sorter.param.watch(self.update_sorting, "value")
-            self.sort_order = pnw.CheckButtonGroup(name="Options", options=["Desc.", "Drop duplicates"])
-            self.sort_order.param.watch(self.update_sorting, "value")
-            self.sort_gui = pn.Row(self.sorter, self.sort_order)
-        if self.sort_cols is not None:
-            self.gui_controlls = pn.Column(self.sort_gui, pn.Row(self.btn_prev, self.current, self.image_count, self.btn_next, align="center", height=50))
 
 # Cell
 class DatasetOverview(Dashboard):
@@ -287,7 +288,7 @@ class DatasetFilter(Dashboard, ABC):
 
     @abstractmethod
     def generate_filters(self, dataselection):
-        """Write handler for the different column types of the datagrame."""
+        """Write handler for the different column types of the dataframe."""
         pass
 
     def _update_plots(self, current_selection):

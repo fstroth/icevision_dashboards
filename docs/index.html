@@ -31,7 +31,34 @@ nb_path: "nbs/index.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>IceVisionDashboard is an extension to the <a href="https://github.com/airctic/icevision">IceVision</a> object detection framework. This extension provides different <a href="/icevision_dashboards/dashboards.html"><code>dashboards</code></a> to investigate datasets, create new datasets and analyse the results of a training.</p>
+<h2 id="Examples">Examples<a class="anchor-link" href="#Examples"> </a></h2><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">icevision_dashboards.data</span> <span class="kn">import</span> <span class="n">BboxRecordDataset</span>
+<span class="kn">from</span> <span class="nn">icevision_dashboards.dashboards</span> <span class="kn">import</span> <span class="n">ObjectDetectionDatasetOverview</span>
+<span class="c1"># load some data from the icedata</span>
+<span class="n">data_dir</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">fridge</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
+<span class="n">class_map</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">fridge</span><span class="o">.</span><span class="n">class_map</span><span class="p">()</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">fridge</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
+<span class="n">train_records</span><span class="p">,</span> <span class="n">valid_records</span> <span class="o">=</span> <span class="n">test_parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+<span class="c1"># create a dataset that can be consumed by the dashboards</span>
+<span class="n">train_dash_ds</span> <span class="o">=</span> <span class="n">BboxRecordDataset</span><span class="p">(</span><span class="n">train_records</span><span class="p">,</span> <span class="n">class_map</span><span class="p">)</span>
+<span class="c1"># create a new dashboard instance and display it with the .show() function</span>
+<span class="n">overview_dashboard</span> <span class="o">=</span> <span class="n">ObjectDetectionDatasetOverview</span><span class="p">(</span><span class="n">train_dash_ds</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1500</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">900</span><span class="p">)</span>
+<span class="n">overview_dashboard</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<p>The output will look like this:</p>
+<div style="text-align:center"><img src="imgs/dataset_overview_0.png" /></div>
+<div style="text-align:center"><img src="imgs/dataset_overview_1.png" /></div>
+<div style="text-align:center"><img src="imgs/dataset_overview_2.png" /></div>
+<div style="text-align:center"><img src="imgs/dataset_overview_3.png" /></div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Contributing">Contributing<a class="anchor-link" href="#Contributing"> </a></h2><p>If you want to contribute add the following lines to your <code>pre-commit</code> file to ensure the notebook cell output don't get pushed into the repo.</p>
+<div class="highlight"><pre><span></span><span class="c1"># ensure the oupt of the notebooks is empty</span>
+jupyter nbconvert --ClearOutputPreprocessor.enabled<span class="o">=</span>True --inplace nbs/*.ipynb
+git add .
+</pre></div>
 
 </div>
 </div>
@@ -41,6 +68,9 @@ nb_path: "nbs/index.ipynb"
 <h1 id="Contributing">Contributing<a class="anchor-link" href="#Contributing"> </a></h1><p>If you want to contribute add the following lines to your <code>pre-commit</code> file to ensure the notebook cell output don't get pushed into the repo.</p>
 <div class="highlight"><pre><span></span><span class="c1"># ensure the oupt of the notebooks is empty</span>
 jupyter nbconvert --ClearOutputPreprocessor.enabled<span class="o">=</span>True --inplace nbs/*.ipynb
+jupyter nbconvert --ClearOutputPreprocessor.enabled<span class="o">=</span>True --inplace examples/*.ipynb
+jupyter nbconvert --ClearOutputPreprocessor.enabled<span class="o">=</span>True --inplace test_data_generation/*.ipynb
+nbdev_build_lib
 git add .
 </pre></div>
 

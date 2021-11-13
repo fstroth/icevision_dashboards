@@ -15,7 +15,7 @@ from typing import Union, Optional, List
 import os
 import json
 from copy import deepcopy
-import random
+from random import shuffle
 from abc import ABC
 
 import numpy as np
@@ -23,12 +23,13 @@ import pandas as pd
 from PIL import Image
 import panel as pn
 
+import icevision
 from icevision.core.record import BaseRecord
 from icevision.core.record_defaults import ObjectDetectionRecord, InstanceSegmentationRecord
 import icevision.parsers as parsers
-from icevision.data.data_splitter import RandomSplitter
+from icevision.data.data_splitter import SingleSplitSplitter
 from icevision.core.bbox import BBox
-from icevision.core.mask import EncodedRLEs
+from icevision.core.mask import EncodedRLEs, MaskArray
 from icevision.core.class_map import ClassMap
 
 from pycocotools import mask as mask_utils
@@ -38,7 +39,7 @@ from fastprogress import master_bar, progress_bar
 from .plotting.utils import draw_record_with_bokeh
 from .metrics import APObjectDetection, APInstanceSegmentation
 from .core.data import *
-from .utils import erles_to_counts_to_utf8, erles_to_string, string_to_erles, correct_mask
+from .utils import erles_to_counts_to_utf8, erles_to_string, string_to_erles, correct_mask, decorrect_mask
 
 # Cell
 class RecordDataframeParser(parsers.Parser):
@@ -70,6 +71,8 @@ class RecordDataset(GenericDataset, ABC):
         if isinstance(records, str):
             self.load_from_file(records)
         else:
+            if isinstance(records, icevision.data.record_collection.RecordCollection):
+                records = records._records._list
             self.records = records if isinstance(records, ObservableList) else ObservableList(records)
             self.class_map = class_map
         super().__init__(self.records, name=name, description=description)
@@ -98,9 +101,12 @@ class RecordDataset(GenericDataset, ABC):
 
     def split_in_train_and_val(self, train_fraction):
         records = list(self.records)
+        indices = list(range(len(records)))
+        shuffle(indices)
         if train_fraction > 1:
             train_fraction /= len(records)
-        train, val = records[:int(len(records)*train_fraction)], records[int(len(records)*train_fraction):]
+        train = [records[index] for index in indices[:int(len(records)*train_fraction)]]
+        val = [records[index] for index in indices[int(len(records)*train_fraction):]]
         return train, val
 
     @property
@@ -315,7 +321,7 @@ class BboxRecordDataset(RecordDataset):
 
     @staticmethod
     def parse_df_to_records(record_data_df, class_map):
-        return BboxRecordDataframeParser(record_data_df, class_map).parse(RandomSplitter([1]))[0]
+        return BboxRecordDataframeParser(record_data_df, class_map).parse(SingleSplitSplitter())[0]
 
     def get_image_by_image_id(self, image_id, width, height):
         index = self.record_index_image_id_map[image_id]
@@ -347,21 +353,22 @@ class ObjectDetectionResultsDataset(ResultsDataset):
             # The correction requires that the sample_plus_loss has the scaled image sizes (not the padded ones or the original ones)
             # correct the width and height to the values of the original image
             prediction = prediction.pred.as_dict()["detection"]
-            losses = sample_plus_loss.losses
-            sample_plus_loss_dict = sample_plus_loss.as_dict()
-            # bbox correction
-            img = Image.open(str(sample_plus_loss.common.filepath))
-            width, height = img.size[0], img.size[1]
-            # use bool to int for padded_along_shortest and int(sample_plus_loss["width"] < sample_plus_loss["height"]) to avoid if branches
-            resize_factor = sample_plus_loss_dict["common"]["width"]/width if width > height else sample_plus_loss_dict["common"]["height"]/height
-            resized_x = resize_factor * width
-            resized_y = resize_factor * height
-            pad_x = sample_plus_loss_dict["common"]["width"]-resized_x
-            pad_y = sample_plus_loss_dict["common"]["height"]-resized_y
-            correct_x = lambda x: (x-pad_x/2)/resize_factor
-            correct_y = lambda y: (y-pad_y/2)/resize_factor
 
             if len(prediction["labels"]) > 0:
+                losses = sample_plus_loss.losses
+                sample_plus_loss_dict = sample_plus_loss.as_dict()
+                # bbox correction
+                img = Image.open(str(sample_plus_loss.common.filepath))
+                width, height = img.size[0], img.size[1]
+                # use bool to int for padded_along_shortest and int(sample_plus_loss["width"] < sample_plus_loss["height"]) to avoid if branches
+                resize_factor = sample_plus_loss_dict["common"]["width"]/width if width > height else sample_plus_loss_dict["common"]["height"]/height
+                resized_x = resize_factor * width
+                resized_y = resize_factor * height
+                pad_x = sample_plus_loss_dict["common"]["width"]-resized_x
+                pad_y = sample_plus_loss_dict["common"]["height"]-resized_y
+                correct_x = lambda x: (x-pad_x/2)/resize_factor
+                correct_y = lambda y: (y-pad_y/2)/resize_factor
+
                 for label, bbox, score in zip(prediction["labels"], prediction["bboxes"], prediction["scores"]):
                     xmin, xmax, ymin, ymax = correct_x(bbox.xmin), correct_x(bbox.xmax), correct_y(bbox.ymin), correct_y(bbox.ymax)
                     file_stats = sample_plus_loss.common.filepath.stat()
@@ -406,9 +413,10 @@ class ObjectDetectionResultsDataset(ResultsDataset):
                     data.append(image_data)
 
         data = pd.DataFrame(data)
+
         data["label_num"] = data["label"]
         if class_map is not None:
-            data["label"] = data["label"].apply(class_map.get_by_id)
+            data["label_num"] = data["label"].apply(class_map.get_by_name)
 
         if not any(data["is_prediction"] == True):
             raise ValueError("No predictions found.")
@@ -440,9 +448,16 @@ class DataDescriptorInstanceSegmentation(DatasetDescriptor):
         """Aggregates stats from a list of records and returns a pandas dataframe with the aggregated stats. The creation time is not necessarily the real creation time.
         This depends on the OS, for more information see: https://docs.python.org/3/library/os.html#os.stat_result."""
         data = []
+        summe = 0
         for index,record in enumerate(obj.records):
             record_commons, record_detections = record.as_dict()["common"], record.as_dict()["detection"]
-            for label, bbox, mask in zip(record_detections["labels"], record_detections["bboxes"], record_detections["masks"].erles):
+
+            if isinstance(record_detections["masks"][0], EncodedRLEs):
+                masks_to_iterate_over = [entry.erles[0] for entry in record_detections["masks"]]
+            else:
+                masks_to_iterate_over = record_detections["masks"][0].to_erles(None,None).erles
+
+            for label, bbox, mask in zip(record_detections["labels"], record_detections["bboxes"], masks_to_iterate_over):
                 mask_array = mask_utils.decode([mask])
                 file_stats = record.filepath.stat()
                 area = bbox.width*bbox.height
@@ -461,10 +476,11 @@ class DataDescriptorInstanceSegmentation(DatasetDescriptor):
                         "erles_corrected": erles_to_string(mask), "erles": erles_to_string(mask), "mask_area": mask_array.sum(), "mask_area_normalized": mask_array.sum()/mask_array.size, "mask_area_normalized_by_bbox_area": mask_array.sum()/area,
                     }
                 )
+
         data = pd.DataFrame(data)
         data["label_num"] = data["label"]
         if obj.class_map is not None:
-            data["label"] = data["label"].apply(obj.class_map.get_by_id)
+            data["label_num"] = data["label"].apply(obj.class_map.get_by_name)
         return data
 
 # Cell
@@ -531,7 +547,7 @@ class InstanceSegmentationRecordDataset(RecordDataset):
 
     @staticmethod
     def parse_df_to_records(record_data_df, class_map):
-        return InstanceSegmentationRecordDataframeParser(record_data_df, class_map).parse(RandomSplitter([1]))[0]
+        return InstanceSegmentationRecordDataframeParser(record_data_df, class_map).parse(SingleSplitSplitter())[0]
 
     def get_image_by_image_id(self, image_id, width, height):
         index = self.record_index_image_id_map[image_id]
@@ -553,6 +569,19 @@ class InstanceSegmentationResultsDataset(ResultsDataset):
     """Dashboard dataset for the results of and object detection system."""
     metric_data_ap = PrecisionRecallMetricsDescriptorInstanceSegmentation()
     df_parser = InstanceSegmentationRecordDataframeParser
+
+    @staticmethod
+    def get_masks_to_iterate_over(prediction):
+        if len(prediction["masks"]) > 0:
+            if isinstance(prediction["masks"][0], EncodedRLEs):
+                masks_to_iterate_over = [entry.erles[0] for entry in prediction["masks"]]
+            elif isinstance(prediction["masks"][0], MaskArray):
+                masks_to_iterate_over = [entry.to_erles(None, None).erles[0] for entry in prediction["masks"]]
+            else:
+                masks_to_iterate_over = prediction["masks"][0].to_erles(None,None).erles
+        else:
+            masks_to_iterate_over = prediction["mask_array"].to_erles(None,None).erles
+        return masks_to_iterate_over
 
     @classmethod
     def init_from_preds_and_samples(cls, predictions, samples_plus_losses, padded_along_shortest=True, class_map=None, name=None, description=None):
@@ -578,7 +607,9 @@ class InstanceSegmentationResultsDataset(ResultsDataset):
             correct_y = lambda y: (y-pad_y/2)/resize_factor
 
             if len(prediction["labels"]) > 0:
-                for label, bbox, score, mask in zip(prediction["labels"], prediction["bboxes"], prediction["scores"], prediction["masks"].to_erles(None, None).erles):
+                masks_to_iterate_over = cls.get_masks_to_iterate_over(prediction)
+
+                for label, bbox, score, mask in zip(prediction["labels"], prediction["bboxes"], prediction["scores"], masks_to_iterate_over):
                     mask_array = mask_utils.decode([mask])
                     xmin, xmax, ymin, ymax = correct_x(bbox.xmin), correct_x(bbox.xmax), correct_y(bbox.ymin), correct_y(bbox.ymax)
                     file_stats = sample_plus_loss.common.filepath.stat()
@@ -606,7 +637,8 @@ class InstanceSegmentationResultsDataset(ResultsDataset):
                     data.append(image_data)
 
             if len(sample_plus_loss_dict["detection"]["labels"]) > 0:
-                for label, bbox, mask in zip(sample_plus_loss_dict["detection"]["labels"], sample_plus_loss_dict["detection"]["bboxes"], sample_plus_loss_dict["detection"]["masks"].to_erles(None, None).erles):
+                masks_to_iterate_over = cls.get_masks_to_iterate_over(sample_plus_loss_dict["detection"])
+                for label, bbox, mask in zip(sample_plus_loss_dict["detection"]["labels"], sample_plus_loss_dict["detection"]["bboxes"], masks_to_iterate_over):
                     mask_array = mask_utils.decode([mask])
                     xmin, xmax, ymin, ymax = correct_x(bbox.xmin), correct_x(bbox.xmax), correct_y(bbox.ymin), correct_y(bbox.ymax)
                     file_stats = sample_plus_loss.common.filepath.stat()
@@ -616,16 +648,17 @@ class InstanceSegmentationResultsDataset(ResultsDataset):
                     area_normalized = area / (width * height)
                     bbox_ratio = bbox_width / bbox_height
                     # correct mask
-                    corrected_mask = correct_mask(mask_array, pad_x, pad_y, width, height)
-                    corrected_mask = corrected_mask.to_erles(None, None).erles[0]
+                    decorrected_mask = decorrect_mask(mask_array, int(pad_x/2), int(pad_y/2), width, height)
+                    decorrected_mask = decorrected_mask.to_erles(None, None).erles[0]
 
+                    # Below the erles_corrected is set to the mask and not the mask_corrected because atm icevision does not transform the masks in the record. Only in the output of the data loader is transformed
                     image_data = {
                         "id": sample_plus_loss_dict["common"]["record_id"], "width": width, "height": height, "label": label,
                         "score": 999, "bbox_xmin": xmin, "bbox_xmax": xmax, "bbox_ymin": ymin, "bbox_ymax": ymax, "bbox_area": area, "bbox_area_square_root": area**2, "bbox_area_square_root_normalized": area_normalized**2,
                         "bbox_area_normalized": area_normalized, "bbox_ratio": bbox_ratio, "record_index": index,
                         "bbox_xmin_normalized": xmin/width, "bbox_xmax_normalized": xmax/width, "bbox_ymin_normalized": ymin/height, "bbox_ymax_normalized": ymax/height,
                         "bbox_width": bbox_width, "bbox_height": bbox_height,  "bbox_width_normalized": bbox_width/width, "bbox_height_normalized": bbox_height/height,
-                        "erles_corrected": erles_to_string(corrected_mask), "erles": erles_to_string(mask), "mask_area": mask_array.sum(), "mask_area_normalized": mask_array.sum()/mask_array.size, "mask_area_normalized_by_bbox_area": mask_array.sum()/area,
+                        "erles_corrected": erles_to_string(mask), "erles": erles_to_string(decorrected_mask), "mask_area": mask_array.sum(), "mask_area_normalized": mask_array.sum()/mask_array.size, "mask_area_normalized_by_bbox_area": mask_array.sum()/area,
                         "filepath": str(sample_plus_loss.common.filepath), "filename": str(sample_plus_loss.common.filepath).split("/")[-1], "creation_date": datetime.datetime.fromtimestamp(file_stats.st_ctime),
                         "modification_date": datetime.datetime.fromtimestamp(file_stats.st_mtime), "num_annotations": len(prediction["bboxes"]), "is_prediction": False,
                     }
@@ -636,7 +669,7 @@ class InstanceSegmentationResultsDataset(ResultsDataset):
         data = pd.DataFrame(data)
         data["label_num"] = data["label"]
         if class_map is not None:
-            data["label"] = data["label"].apply(class_map.get_by_id)
+            data["label_num"] = data["label"].apply(class_map.get_by_name)
 
         if not any(data["is_prediction"] == True):
             raise ValueError("No predictions found.")

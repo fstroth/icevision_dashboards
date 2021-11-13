@@ -280,22 +280,21 @@ class APInstanceSegmentation:
         self.metric_data = self.get_metric_data()
 
     @staticmethod
-    def calculate_iou(pred_mask, pred_area, gt_mask, gt_area):
-        pred_mask_array = pred_mask
-        gt_mask_array = gt_mask
+    def calculate_iou(pred_mask_array, gt_mask_array):
         mask_combination = pred_mask_array + gt_mask_array
         intersection_area = (mask_combination == 2).sum()
-        iou = intersection_area / (pred_area + gt_area - intersection_area)
-        return iou, pred_area, gt_area, intersection_area
+        non_intersecting_area = (mask_combination == 1).sum()
+        iou = intersection_area / (non_intersecting_area + intersection_area)
+        return iou, intersection_area
 
     def get_image_stats(self, gt_masks, pred_masks, iou_threshold):
         """
         Returns: tp, fp, fn, :if additional_stats: x_center_offsets, y_center_offsets, center_distances, used_gt_mask_areas_normalized, used_pred_mask_areas_normalized, used_gt_mask_areas_normalized, used_pred_mask_areas_normalized
         """
         if pred_masks is None:
-            return 0,  0, len(gt_masks), [], [], [], [], [], [], []
+            return 0,  0, len(gt_masks["masks"]), [], [], [], [], [], [], []
         if len(gt_masks) == 0:
-            return 0, len(pred_masks), 0, [], [], [], [], [], [], []
+            return 0, len(pred_masks["masks"]), 0, [], [], [], [], [], [], []
         else:
             # calculate ious and log their mapping with mask indices
             gt_mask_indices = []
@@ -306,17 +305,17 @@ class APInstanceSegmentation:
             intersection_areas = []
             for pred_mask_index, (pred_mask, pred_area) in enumerate(zip(pred_masks["masks"], pred_masks["areas"])):
                 for gt_mask_index, (gt_mask, gt_area) in enumerate(zip(gt_masks["masks"], gt_masks["areas"])):
-                    iou, pred_mask_area, gt_mask_area, intersection_area = self.calculate_iou(pred_mask, pred_area, gt_mask, gt_area)
+                    iou, intersection_area = self.calculate_iou(pred_mask, gt_mask)
                     if iou >= iou_threshold:
                         gt_mask_indices.append(gt_mask_index)
                         pred_mask_indices.append(pred_mask_index)
                         ious.append(iou)
-                        pred_mask_areas.append(pred_mask_area)
-                        gt_mask_areas.append(gt_mask_area)
+                        pred_mask_areas.append(pred_area)
+                        gt_mask_areas.append(gt_area)
                         intersection_areas.append(intersection_area)
             # check if any hits happend
             if len(ious) == 0:
-                return 0, len(pred_masks), len(gt_masks), [], [], [], [], [], [], []
+                return 0, len(pred_masks["masks"]), len(gt_masks["masks"]), [], [], [], [], [], [], []
             else:
                 # select matches based on iou
                 indices_descending = np.argsort(ious)[::-1]
@@ -473,24 +472,24 @@ class APInstanceSegmentation:
         pred_dict = {}
         for index, row in preds.iterrows():
             if row["label"] not in pred_dict.keys():
-                pred_dict[row["label"]] = {row["score"]: {"masks": [mask_utils.decode([string_to_erles(row["erles"])]).transpose(2, 0, 1)[0,:,:]], "filename": [row["filename"]], "areas": [row["mask_area"]]}}
+                pred_dict[row["label"]] = {row["score"]: {"masks": [mask_utils.decode([string_to_erles(row["erles_corrected"])]).transpose(2, 0, 1)[0,:,:]], "filename": [row["filename"]], "areas": [row["mask_area"]]}}
             else:
                 if not row["filename"] in pred_dict[row["label"]].keys():
-                    pred_dict[row["label"]][row["score"]] = {"masks": [mask_utils.decode([string_to_erles(row["erles"])]).transpose(2, 0, 1)[0,:,:]], "filename": [row["filename"]], "areas": [row["mask_area"]]}
+                    pred_dict[row["label"]][row["score"]] = {"masks": [mask_utils.decode([string_to_erles(row["erles_corrected"])]).transpose(2, 0, 1)[0,:,:]], "filename": [row["filename"]], "areas": [row["mask_area"]]}
                 else:
-                    pred_dict[row["label"]][row["score"]]["maskes"].append(mask_utils.decode([string_to_erles(row["erles"])]).transpose(2, 0, 1)[0,:,:])
+                    pred_dict[row["label"]][row["score"]]["maskes"].append(mask_utils.decode([string_to_erles(row["erles_corrected"])]).transpose(2, 0, 1)[0,:,:])
                     pred_dict[row["label"]][row["score"]]["filename"].append(row["filename"])
                     pred_dict[row["label"]][row["score"]]["areas"].append(row["mask_area"])
 
         gt_dict = {}
         for index, row in ground_truth.iterrows():
             if row["label"] not in gt_dict.keys():
-                gt_dict[row["label"]] = {row["filename"]: {"masks": [mask_utils.decode([string_to_erles(row["erles"])]).transpose(2, 0, 1)[0,:,:]], "areas": [row["mask_area"]]}}
+                gt_dict[row["label"]] = {row["filename"]: {"masks": [mask_utils.decode([string_to_erles(row["erles_corrected"])]).transpose(2, 0, 1)[0,:,:]], "areas": [row["mask_area"]]}}
             else:
                 if not row["filename"] in gt_dict[row["label"]].keys():
-                    gt_dict[row["label"]][row["filename"]] = {"masks": [mask_utils.decode([string_to_erles(row["erles"])]).transpose(2, 0, 1)[0,:,:]], "areas": [row["mask_area"]]}
+                    gt_dict[row["label"]][row["filename"]] = {"masks": [mask_utils.decode([string_to_erles(row["erles_corrected"])]).transpose(2, 0, 1)[0,:,:]], "areas": [row["mask_area"]]}
                 else:
-                    gt_dict[row["label"]][row["filename"]]["masks"].append(mask_utils.decode([string_to_erles(row["erles"])]).transpose(2, 0, 1)[0,:,:])
+                    gt_dict[row["label"]][row["filename"]]["masks"].append(mask_utils.decode([string_to_erles(row["erles_corrected"])]).transpose(2, 0, 1)[0,:,:])
                     gt_dict[row["label"]][row["filename"]]["areas"].append(row["mask_area"])
         return gt_dict, pred_dict
 
@@ -517,6 +516,10 @@ class APInstanceSegmentation:
                 results = Parallel(n_jobs=10)(delayed(self.get_precision_and_recall)(gt_dict[class_name], pred_dict.get(class_name, None), iou) for iou in self.ious)
                 for res in results:
                     iou_data[res[1]] = res[0]
+
+                # for iou in self.ious:
+                #     res = self.get_precision_and_recall(gt_dict[class_name], pred_dict.get(class_name, None), iou)
+                #     iou_data[res[1]] = res[0]
 
                 iou_data["ap"] = np.array([iou["ap"] for iou in iou_data.values()]).mean()
                 class_data[class_name] = iou_data

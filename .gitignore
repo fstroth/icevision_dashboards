@@ -141,4 +141,7 @@ checklink/cookies.txt
 
 # custom
 examples/checkpoints
+examples/lightning_logs
+examples/datasets
+test_data_generation/checkpoints
 test_nbs_for_coverage.py

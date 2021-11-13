@@ -26,6 +26,20 @@ nb_path: "nbs/data.ipynb"
     
 <div class="cell border-box-sizing code_cell rendered">
 
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre><span class="ansi-bold">INFO    </span> - <span class="ansi-bold">The mmdet config folder already exists. No need to downloaded it. Path : /home/frederik/.icevision/mmdetection_configs/mmdetection_configs-2.16.0/configs</span> | <span class="ansi-cyan-fg">icevision.models.mmdet.download_configs</span>:<span class="ansi-cyan-fg">download_mmdet_configs</span>:<span class="ansi-cyan-fg">17</span>
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
     {% endraw %}
 
@@ -79,6 +93,20 @@ nb_path: "nbs/data.ipynb"
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre><span class="ansi-bold">INFO    </span> - <span class="ansi-blue-intense-fg ansi-bold">Autofixing records</span> | <span class="ansi-cyan-fg">icevision.parsers.parser</span>:<span class="ansi-cyan-fg">parse</span>:<span class="ansi-cyan-fg">122</span>
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
     {% endraw %}
 
@@ -96,6 +124,20 @@ nb_path: "nbs/data.ipynb"
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre><span class="ansi-bold">INFO    </span> - <span class="ansi-blue-intense-fg ansi-bold">Autofixing records</span> | <span class="ansi-cyan-fg">icevision.parsers.parser</span>:<span class="ansi-cyan-fg">parse</span>:<span class="ansi-cyan-fg">122</span>
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -119,7 +161,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="RecordDataframeParser" class="doc_header"><code>class</code> <code>RecordDataframeParser</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L44" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>RecordDataframeParser</code>(<strong><code>record_template</code></strong>) :: <code>Parser</code></p>
+<h2 id="RecordDataframeParser" class="doc_header"><code>class</code> <code>RecordDataframeParser</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L45" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>RecordDataframeParser</code>(<strong><code>record_template</code></strong>) :: <code>Parser</code></p>
 </blockquote>
 <p>IceVision parser for pandas dataframes. This parser is mostly used by the RecordDataset to load records from a saved RecordDataset.</p>
 
@@ -151,7 +193,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="RecordDataset" class="doc_header"><code>class</code> <code>RecordDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L67" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>RecordDataset</code>(<strong><code>records</code></strong>:<code>Union</code>[<code>List</code>[<code>BaseRecord</code>], <a href="/icevision_dashboards/core.data.html#ObservableList"><code>ObservableList</code></a>, <code>str</code>], <strong><code>class_map</code></strong>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/core.data.html#GenericDataset"><code>GenericDataset</code></a></p>
+<h2 id="RecordDataset" class="doc_header"><code>class</code> <code>RecordDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L68" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>RecordDataset</code>(<strong><code>records</code></strong>:<code>Union</code>[<code>List</code>[<code>BaseRecord</code>], <a href="/icevision_dashboards/core.data.html#ObservableList"><code>ObservableList</code></a>, <code>str</code>], <strong><code>class_map</code></strong>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/core.data.html#GenericDataset"><code>GenericDataset</code></a></p>
 </blockquote>
 <p>Base class dashboard datasets that are based on IceVision records.</p>
 
@@ -183,7 +225,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ResultsDataset" class="doc_header"><code>class</code> <code>ResultsDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L161" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ResultsDataset</code>(<strong><code>dataframe</code></strong>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/core.data.html#GenericDataset"><code>GenericDataset</code></a></p>
+<h2 id="ResultsDataset" class="doc_header"><code>class</code> <code>ResultsDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L167" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ResultsDataset</code>(<strong><code>dataframe</code></strong>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/core.data.html#GenericDataset"><code>GenericDataset</code></a></p>
 </blockquote>
 <p>Dashboard dataset for the results of and object detection system.</p>
 
@@ -221,7 +263,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="BboxRecordDataframeParser" class="doc_header"><code>class</code> <code>BboxRecordDataframeParser</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L202" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BboxRecordDataframeParser</code>(<strong><code>record_dataframe</code></strong>, <strong><code>class_map</code></strong>) :: <a href="/icevision_dashboards/data.html#RecordDataframeParser"><code>RecordDataframeParser</code></a></p>
+<h2 id="BboxRecordDataframeParser" class="doc_header"><code>class</code> <code>BboxRecordDataframeParser</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L208" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BboxRecordDataframeParser</code>(<strong><code>record_dataframe</code></strong>, <strong><code>class_map</code></strong>) :: <a href="/icevision_dashboards/data.html#RecordDataframeParser"><code>RecordDataframeParser</code></a></p>
 </blockquote>
 <p>Extends the RecordDataframeParser for object detection</p>
 
@@ -253,7 +295,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="DataDescriptorBbox" class="doc_header"><code>class</code> <code>DataDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L214" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>DataDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="DataDescriptorBbox" class="doc_header"><code>class</code> <code>DataDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L220" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>DataDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
 <p>Dashboard dataset for object detection</p>
 
@@ -285,7 +327,7 @@ nb_path: "nbs/data.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="StatsDescriptorBbox" class="doc_header"><code>class</code> <code>StatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L247" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>StatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="StatsDescriptorBbox" class="doc_header"><code>class</code> <code>StatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L253" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>StatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
 <p>Abstract base class for descriptors of datasets.
 The private name of the descriptor is the defined name with a prefix _.
@@ -321,7 +363,7 @@ When inheriting this class the function calculate_description needs to be implem
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ImageStatsDescriptorBbox" class="doc_header"><code>class</code> <code>ImageStatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L262" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ImageStatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="ImageStatsDescriptorBbox" class="doc_header"><code>class</code> <code>ImageStatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L268" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ImageStatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
 <p>Abstract base class for descriptors of datasets.
 The private name of the descriptor is the defined name with a prefix _.
@@ -357,7 +399,7 @@ When inheriting this class the function calculate_description needs to be implem
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ClassStatsDescriptorBbox" class="doc_header"><code>class</code> <code>ClassStatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L274" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ClassStatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="ClassStatsDescriptorBbox" class="doc_header"><code>class</code> <code>ClassStatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L280" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ClassStatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
 <p>Abstract base class for descriptors of datasets.
 The private name of the descriptor is the defined name with a prefix _.
@@ -393,7 +435,7 @@ When inheriting this class the function calculate_description needs to be implem
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="GalleryStatsDescriptorBbox" class="doc_header"><code>class</code> <code>GalleryStatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L291" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GalleryStatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="GalleryStatsDescriptorBbox" class="doc_header"><code>class</code> <code>GalleryStatsDescriptorBbox</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L297" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GalleryStatsDescriptorBbox</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
 <p>Abstract base class for descriptors of datasets.
 The private name of the descriptor is the defined name with a prefix _.
@@ -429,7 +471,7 @@ When inheriting this class the function calculate_description needs to be implem
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="BboxRecordDataset" class="doc_header"><code>class</code> <code>BboxRecordDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L298" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BboxRecordDataset</code>(<strong><code>records</code></strong>:<code>Union</code>[<code>List</code>[<code>BaseRecord</code>], <a href="/icevision_dashboards/core.data.html#ObservableList"><code>ObservableList</code></a>, <code>str</code>], <strong><code>class_map</code></strong>=<em><code>None</code></em>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/data.html#RecordDataset"><code>RecordDataset</code></a></p>
+<h2 id="BboxRecordDataset" class="doc_header"><code>class</code> <code>BboxRecordDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L304" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BboxRecordDataset</code>(<strong><code>records</code></strong>:<code>Union</code>[<code>List</code>[<code>BaseRecord</code>], <a href="/icevision_dashboards/core.data.html#ObservableList"><code>ObservableList</code></a>, <code>str</code>], <strong><code>class_map</code></strong>=<em><code>None</code></em>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/data.html#RecordDataset"><code>RecordDataset</code></a></p>
 </blockquote>
 <p>Base class dashboard datasets that are based on IceVision records.</p>
 
@@ -540,6 +582,21 @@ When inheriting this class the function calculate_description needs to be implem
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre><span class="ansi-bold">INFO    </span> - <span class="ansi-blue-intense-fg ansi-bold">Autofixing records</span> | <span class="ansi-cyan-fg">icevision.parsers.parser</span>:<span class="ansi-cyan-fg">parse</span>:<span class="ansi-cyan-fg">122</span>
+<span class="ansi-bold">INFO    </span> - <span class="ansi-blue-intense-fg ansi-bold">Autofixing records</span> | <span class="ansi-cyan-fg">icevision.parsers.parser</span>:<span class="ansi-cyan-fg">parse</span>:<span class="ansi-cyan-fg">122</span>
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
     {% endraw %}
 
@@ -566,6 +623,20 @@ When inheriting this class the function calculate_description needs to be implem
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre><span class="ansi-bold">INFO    </span> - <span class="ansi-blue-intense-fg ansi-bold">Autofixing records</span> | <span class="ansi-cyan-fg">icevision.parsers.parser</span>:<span class="ansi-cyan-fg">parse</span>:<span class="ansi-cyan-fg">122</span>
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
     {% endraw %}
 
@@ -580,7 +651,7 @@ When inheriting this class the function calculate_description needs to be implem
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="PrecisionRecallMetricsDescriptorObjectDetection" class="doc_header"><code>class</code> <code>PrecisionRecallMetricsDescriptorObjectDetection</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L325" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>PrecisionRecallMetricsDescriptorObjectDetection</code>(<strong><code>ious</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="PrecisionRecallMetricsDescriptorObjectDetection" class="doc_header"><code>class</code> <code>PrecisionRecallMetricsDescriptorObjectDetection</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L331" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>PrecisionRecallMetricsDescriptorObjectDetection</code>(<strong><code>ious</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
 <p>Abstract base class for descriptors of datasets.
 The private name of the descriptor is the defined name with a prefix _.
@@ -616,7 +687,7 @@ When inheriting this class the function calculate_description needs to be implem
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ObjectDetectionResultsDataset" class="doc_header"><code>class</code> <code>ObjectDetectionResultsDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L336" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ObjectDetectionResultsDataset</code>(<strong><code>dataframe</code></strong>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/data.html#ResultsDataset"><code>ResultsDataset</code></a></p>
+<h2 id="ObjectDetectionResultsDataset" class="doc_header"><code>class</code> <code>ObjectDetectionResultsDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L342" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ObjectDetectionResultsDataset</code>(<strong><code>dataframe</code></strong>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/data.html#ResultsDataset"><code>ResultsDataset</code></a></p>
 </blockquote>
 <p>Dashboard dataset for the results of and object detection system.</p>
 
@@ -679,7 +750,7 @@ When inheriting this class the function calculate_description needs to be implem
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="InstanceSegmentationRecordDataframeParser" class="doc_header"><code>class</code> <code>InstanceSegmentationRecordDataframeParser</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L419" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>InstanceSegmentationRecordDataframeParser</code>(<strong><code>record_dataframe</code></strong>, <strong><code>class_map</code></strong>) :: <a href="/icevision_dashboards/data.html#RecordDataframeParser"><code>RecordDataframeParser</code></a></p>
+<h2 id="InstanceSegmentationRecordDataframeParser" class="doc_header"><code>class</code> <code>InstanceSegmentationRecordDataframeParser</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L427" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>InstanceSegmentationRecordDataframeParser</code>(<strong><code>record_dataframe</code></strong>, <strong><code>class_map</code></strong>) :: <a href="/icevision_dashboards/data.html#RecordDataframeParser"><code>RecordDataframeParser</code></a></p>
 </blockquote>
 <p>Extends the RecordDataframeParser for instance segmentation</p>
 
@@ -711,7 +782,7 @@ When inheriting this class the function calculate_description needs to be implem
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="DataDescriptorInstanceSegmentation" class="doc_header"><code>class</code> <code>DataDescriptorInstanceSegmentation</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L437" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>DataDescriptorInstanceSegmentation</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="DataDescriptorInstanceSegmentation" class="doc_header"><code>class</code> <code>DataDescriptorInstanceSegmentation</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L445" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>DataDescriptorInstanceSegmentation</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
 <p>Dashboard dataset for object detection</p>
 
@@ -743,7 +814,7 @@ When inheriting this class the function calculate_description needs to be implem
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="StatsDescriptorInstanceSegmentation" class="doc_header"><code>class</code> <code>StatsDescriptorInstanceSegmentation</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L471" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>StatsDescriptorInstanceSegmentation</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="StatsDescriptorInstanceSegmentation" class="doc_header"><code>class</code> <code>StatsDescriptorInstanceSegmentation</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L487" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>StatsDescriptorInstanceSegmentation</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
 <p>Abstract base class for descriptors of datasets.
 The private name of the descriptor is the defined name with a prefix _.
@@ -779,7 +850,7 @@ When inheriting this class the function calculate_description needs to be implem
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ImageStatsDescriptorInstanceSegmentation" class="doc_header"><code>class</code> <code>ImageStatsDescriptorInstanceSegmentation</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L486" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ImageStatsDescriptorInstanceSegmentation</code>() :: <a href="/icevision_dashboards/data.html#ImageStatsDescriptorBbox"><code>ImageStatsDescriptorBbox</code></a></p>
+<h2 id="ImageStatsDescriptorInstanceSegmentation" class="doc_header"><code>class</code> <code>ImageStatsDescriptorInstanceSegmentation</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L502" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ImageStatsDescriptorInstanceSegmentation</code>() :: <a href="/icevision_dashboards/data.html#ImageStatsDescriptorBbox"><code>ImageStatsDescriptorBbox</code></a></p>
 </blockquote>
 <p>Abstract base class for descriptors of datasets.
 The private name of the descriptor is the defined name with a prefix _.
@@ -815,7 +886,7 @@ When inheriting this class the function calculate_description needs to be implem
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ClassStatsDescriptorInstanceSegmentation" class="doc_header"><code>class</code> <code>ClassStatsDescriptorInstanceSegmentation</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L490" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ClassStatsDescriptorInstanceSegmentation</code>() :: <a href="/icevision_dashboards/data.html#ClassStatsDescriptorBbox"><code>ClassStatsDescriptorBbox</code></a></p>
+<h2 id="ClassStatsDescriptorInstanceSegmentation" class="doc_header"><code>class</code> <code>ClassStatsDescriptorInstanceSegmentation</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L506" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ClassStatsDescriptorInstanceSegmentation</code>() :: <a href="/icevision_dashboards/data.html#ClassStatsDescriptorBbox"><code>ClassStatsDescriptorBbox</code></a></p>
 </blockquote>
 <p>Abstract base class for descriptors of datasets.
 The private name of the descriptor is the defined name with a prefix _.
@@ -851,7 +922,7 @@ When inheriting this class the function calculate_description needs to be implem
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="GalleryStatsDescriptorInstanceSegmentation" class="doc_header"><code>class</code> <code>GalleryStatsDescriptorInstanceSegmentation</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L507" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GalleryStatsDescriptorInstanceSegmentation</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="GalleryStatsDescriptorInstanceSegmentation" class="doc_header"><code>class</code> <code>GalleryStatsDescriptorInstanceSegmentation</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L523" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GalleryStatsDescriptorInstanceSegmentation</code>() :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
 <p>Abstract base class for descriptors of datasets.
 The private name of the descriptor is the defined name with a prefix _.
@@ -887,7 +958,7 @@ When inheriting this class the function calculate_description needs to be implem
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="InstanceSegmentationRecordDataset" class="doc_header"><code>class</code> <code>InstanceSegmentationRecordDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L514" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>InstanceSegmentationRecordDataset</code>(<strong><code>records</code></strong>:<code>Union</code>[<code>List</code>[<code>BaseRecord</code>], <a href="/icevision_dashboards/core.data.html#ObservableList"><code>ObservableList</code></a>, <code>str</code>], <strong><code>class_map</code></strong>=<em><code>None</code></em>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/data.html#RecordDataset"><code>RecordDataset</code></a></p>
+<h2 id="InstanceSegmentationRecordDataset" class="doc_header"><code>class</code> <code>InstanceSegmentationRecordDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L530" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>InstanceSegmentationRecordDataset</code>(<strong><code>records</code></strong>:<code>Union</code>[<code>List</code>[<code>BaseRecord</code>], <a href="/icevision_dashboards/core.data.html#ObservableList"><code>ObservableList</code></a>, <code>str</code>], <strong><code>class_map</code></strong>=<em><code>None</code></em>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/data.html#RecordDataset"><code>RecordDataset</code></a></p>
 </blockquote>
 <p>Base class dashboard datasets that are based on IceVision records.</p>
 
@@ -985,6 +1056,20 @@ When inheriting this class the function calculate_description needs to be implem
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre><span class="ansi-bold">INFO    </span> - <span class="ansi-blue-intense-fg ansi-bold">Autofixing records</span> | <span class="ansi-cyan-fg">icevision.parsers.parser</span>:<span class="ansi-cyan-fg">parse</span>:<span class="ansi-cyan-fg">122</span>
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
     {% endraw %}
 
@@ -1003,11 +1088,25 @@ When inheriting this class the function calculate_description needs to be implem
 <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s2">&quot;dump_dir&quot;</span><span class="p">))</span> <span class="o">==</span> <span class="mi">2</span>
 <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s2">&quot;dump_dir/dataset_instance_segmentation.json&quot;</span><span class="p">)</span>
 <span class="n">test_instance_segmentation_loaded_record_dataset</span> <span class="o">=</span> <span class="n">InstanceSegmentationRecordDataset</span><span class="p">(</span><span class="s2">&quot;dump_dir/dataset_instance_segmentation.json&quot;</span><span class="p">)</span>
-<span class="k">assert</span> <span class="n">test_instance_segmentation_record_dataset</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;mask_area&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">test_instance_segmentation_loaded_record_dataset</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
+<span class="k">assert</span> <span class="n">test_instance_segmentation_record_dataset</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">test_instance_segmentation_loaded_record_dataset</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
 <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="s2">&quot;dump_dir&quot;</span><span class="p">)</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre><span class="ansi-bold">INFO    </span> - <span class="ansi-blue-intense-fg ansi-bold">Autofixing records</span> | <span class="ansi-cyan-fg">icevision.parsers.parser</span>:<span class="ansi-cyan-fg">parse</span>:<span class="ansi-cyan-fg">122</span>
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -1025,7 +1124,7 @@ When inheriting this class the function calculate_description needs to be implem
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="PrecisionRecallMetricsDescriptorInstanceSegmentation" class="doc_header"><code>class</code> <code>PrecisionRecallMetricsDescriptorInstanceSegmentation</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L541" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>PrecisionRecallMetricsDescriptorInstanceSegmentation</code>(<strong><code>ious</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
+<h2 id="PrecisionRecallMetricsDescriptorInstanceSegmentation" class="doc_header"><code>class</code> <code>PrecisionRecallMetricsDescriptorInstanceSegmentation</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L557" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>PrecisionRecallMetricsDescriptorInstanceSegmentation</code>(<strong><code>ious</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/core.data.html#DatasetDescriptor"><code>DatasetDescriptor</code></a></p>
 </blockquote>
 <p>Abstract base class for descriptors of datasets.
 The private name of the descriptor is the defined name with a prefix _.
@@ -1061,7 +1160,7 @@ When inheriting this class the function calculate_description needs to be implem
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="InstanceSegmentationResultsDataset" class="doc_header"><code>class</code> <code>InstanceSegmentationResultsDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L552" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>InstanceSegmentationResultsDataset</code>(<strong><code>dataframe</code></strong>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/data.html#ResultsDataset"><code>ResultsDataset</code></a></p>
+<h2 id="InstanceSegmentationResultsDataset" class="doc_header"><code>class</code> <code>InstanceSegmentationResultsDataset</code><a href="https://github.com/fstroth/icevision_dashboards/tree/master/icevision_dashboards/data.py#L568" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>InstanceSegmentationResultsDataset</code>(<strong><code>dataframe</code></strong>, <strong><code>name</code></strong>=<em><code>None</code></em>, <strong><code>description</code></strong>=<em><code>None</code></em>) :: <a href="/icevision_dashboards/data.html#ResultsDataset"><code>ResultsDataset</code></a></p>
 </blockquote>
 <p>Dashboard dataset for the results of and object detection system.</p>
 

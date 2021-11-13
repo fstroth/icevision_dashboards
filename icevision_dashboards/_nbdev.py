@@ -75,7 +75,8 @@ index = {"Dashboard": "core.dashboards.ipynb",
          "erles_to_string": "utils.ipynb",
          "erles_to_counts_to_utf8": "utils.ipynb",
          "string_to_erles": "utils.ipynb",
-         "correct_mask": "utils.ipynb"}
+         "correct_mask": "utils.ipynb",
+         "decorrect_mask": "utils.ipynb"}
 
 modules = ["core/dashboards.py",
            "core/data.py",
