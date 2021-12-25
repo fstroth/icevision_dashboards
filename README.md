@@ -2,6 +2,13 @@
 
 
 
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/fstroth/icevision_dashboards/HEAD)
+
+
+IceVisionDashboard is an extension to the [IceVision](https://github.com/airctic/icevision) object detection framework. This extension provides different `dashboards` to investigate datasets, create new datasets and analyse the results of a training.
+
+The libary provides dashboards to inspect datasets, create new datasets, investigate the results of a training and much more.
+
 ## Examples
 
 ```python
