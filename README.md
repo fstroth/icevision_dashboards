@@ -26,16 +26,6 @@ The output will look like this:
 <div style="text-align:center"><img src="imgs/dataset_overview_2.png" /></div>
 <div style="text-align:center"><img src="imgs/dataset_overview_3.png" /></div>
 
-## Contributing
-
-If you want to contribute add the following lines to your `pre-commit` file to ensure the notebook cell output don't get pushed into the repo.
-
-```bash
-# ensure the oupt of the notebooks is empty
-jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace nbs/*.ipynb
-git add .
-```
-
 # Contributing
 
 If you want to contribute add the following lines to your `pre-commit` file to ensure the notebook cell output don't get pushed into the repo.

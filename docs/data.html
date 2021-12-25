@@ -93,20 +93,6 @@ nb_path: "nbs/data.ipynb"
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre><span class="ansi-bold">INFO    </span> - <span class="ansi-blue-intense-fg ansi-bold">Autofixing records</span> | <span class="ansi-cyan-fg">icevision.parsers.parser</span>:<span class="ansi-cyan-fg">parse</span>:<span class="ansi-cyan-fg">122</span>
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
     {% endraw %}
 
@@ -124,20 +110,6 @@ nb_path: "nbs/data.ipynb"
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre><span class="ansi-bold">INFO    </span> - <span class="ansi-blue-intense-fg ansi-bold">Autofixing records</span> | <span class="ansi-cyan-fg">icevision.parsers.parser</span>:<span class="ansi-cyan-fg">parse</span>:<span class="ansi-cyan-fg">122</span>
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -582,21 +554,6 @@ When inheriting this class the function calculate_description needs to be implem
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre><span class="ansi-bold">INFO    </span> - <span class="ansi-blue-intense-fg ansi-bold">Autofixing records</span> | <span class="ansi-cyan-fg">icevision.parsers.parser</span>:<span class="ansi-cyan-fg">parse</span>:<span class="ansi-cyan-fg">122</span>
-<span class="ansi-bold">INFO    </span> - <span class="ansi-blue-intense-fg ansi-bold">Autofixing records</span> | <span class="ansi-cyan-fg">icevision.parsers.parser</span>:<span class="ansi-cyan-fg">parse</span>:<span class="ansi-cyan-fg">122</span>
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
     {% endraw %}
 
@@ -620,20 +577,6 @@ When inheriting this class the function calculate_description needs to be implem
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre><span class="ansi-bold">INFO    </span> - <span class="ansi-blue-intense-fg ansi-bold">Autofixing records</span> | <span class="ansi-cyan-fg">icevision.parsers.parser</span>:<span class="ansi-cyan-fg">parse</span>:<span class="ansi-cyan-fg">122</span>
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -1056,20 +999,6 @@ When inheriting this class the function calculate_description needs to be implem
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre><span class="ansi-bold">INFO    </span> - <span class="ansi-blue-intense-fg ansi-bold">Autofixing records</span> | <span class="ansi-cyan-fg">icevision.parsers.parser</span>:<span class="ansi-cyan-fg">parse</span>:<span class="ansi-cyan-fg">122</span>
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
     {% endraw %}
 
@@ -1093,20 +1022,6 @@ When inheriting this class the function calculate_description needs to be implem
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre><span class="ansi-bold">INFO    </span> - <span class="ansi-blue-intense-fg ansi-bold">Autofixing records</span> | <span class="ansi-cyan-fg">icevision.parsers.parser</span>:<span class="ansi-cyan-fg">parse</span>:<span class="ansi-cyan-fg">122</span>
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -1194,8 +1109,11 @@ When inheriting this class the function calculate_description needs to be implem
 
 <span class="c1"># make the saved samples indipendent of the saved enviroment</span>
 <span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="n">test_instance_segmentation_samples</span><span class="p">:</span>
-    <span class="n">sample</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">filepath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">test_instance_segmentation_data_path</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.icevision&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;.icevision&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">filepath</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.icevision&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">sample</span><span class="o">.</span><span class="n">components</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">FilepathRecordComponent</span><span class="p">):</span>
+            <span class="n">_</span><span class="o">.</span><span class="n">set_filepath</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">test_instance_segmentation_data_path</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.icevision&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;.icevision&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">filepath</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.icevision&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">sample</span><span class="o">.</span><span class="n">detection</span><span class="o">.</span><span class="n">masks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">filepath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">test_instance_segmentation_data_path</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.icevision&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;.icevision&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">filepath</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.icevision&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        
 <span class="n">test_odrd_from_samples</span> <span class="o">=</span> <span class="n">InstanceSegmentationResultsDataset</span><span class="o">.</span><span class="n">init_from_preds_and_samples</span><span class="p">(</span><span class="n">test_instance_segmentation_preds</span><span class="p">,</span> <span class="n">test_instance_segmentation_samples</span><span class="p">)</span>
 </pre></div>
 

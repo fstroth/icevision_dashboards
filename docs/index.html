@@ -54,17 +54,6 @@ nb_path: "nbs/index.ipynb"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Contributing">Contributing<a class="anchor-link" href="#Contributing"> </a></h2><p>If you want to contribute add the following lines to your <code>pre-commit</code> file to ensure the notebook cell output don't get pushed into the repo.</p>
-<div class="highlight"><pre><span></span><span class="c1"># ensure the oupt of the notebooks is empty</span>
-jupyter nbconvert --ClearOutputPreprocessor.enabled<span class="o">=</span>True --inplace nbs/*.ipynb
-git add .
-</pre></div>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Contributing">Contributing<a class="anchor-link" href="#Contributing"> </a></h1><p>If you want to contribute add the following lines to your <code>pre-commit</code> file to ensure the notebook cell output don't get pushed into the repo.</p>
 <div class="highlight"><pre><span></span><span class="c1"># ensure the oupt of the notebooks is empty</span>
 jupyter nbconvert --ClearOutputPreprocessor.enabled<span class="o">=</span>True --inplace nbs/*.ipynb
