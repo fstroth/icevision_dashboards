@@ -5,11 +5,13 @@
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/fstroth/icevision_dashboards/HEAD)
 
 
-IceVisionDashboard is an extension to the [IceVision](https://github.com/airctic/icevision) object detection framework. This extension provides different `dashboards` to investigate datasets, create new datasets and analyse the results of a training.
+IceVisionDashboard is an extension to the [IceVision](https://github.com/airctic/icevision) object detection framework. Main goal of the library is to support data scientists with there work on object detection problems. This is done by providing different dashboards to provide different steps of the workflow. The dashboards cover investigating datasets, creating new datasets, comparing datasets and analyzing the results of a training.
 
-The libary provides dashboards to inspect datasets, create new datasets, investigate the results of a training and much more.
+## Test stuff
 
-## Examples
+## Example
+
+The example shows how a set of records (here the training_records) can be visualized with the dashboard lib to get some fast insights into the data. The last 3 lines of code are from the dashboard library all the lines before are usual icevision code.
 
 ```python
 from icevision_dashboards.data import BboxRecordDataset
@@ -28,9 +30,16 @@ overview_dashboard.show()
 
 The output will look like this:
 
+An overview of some descriptive statistics for the dataset, the images and the classes.
 <div style="text-align:center"><img src="imgs/dataset_overview_0.png" /></div>
+
+Some more indepth information about the classes, how they mix (how often they appear at the same time in an image), distribution of annotations per image and a 2D histogram that can be customized. 
 <div style="text-align:center"><img src="imgs/dataset_overview_1.png" /></div>
+
+A gallery with sorting functionality of have a direct look at the images.
 <div style="text-align:center"><img src="imgs/dataset_overview_2.png" /></div>
+
+Tabular representation of all annotations.
 <div style="text-align:center"><img src="imgs/dataset_overview_3.png" /></div>
 
 # Contributing
