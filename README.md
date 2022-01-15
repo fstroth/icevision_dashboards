@@ -40,6 +40,27 @@ A gallery with sorting functionality of have a direct look at the images.
 Tabular representation of all annotations.
 <div style="text-align:center"><img src="imgs/dataset_overview_3.png" /></div>
 
+# Install
+
+IceVisionDashboard is available as a `pip` package via PyPi. To install, simply type:
+
+```shell
+pip install icevision-dashboards
+```
+
+If you are using JupyterLab to view and use your notebooks, a few extra steps are needed. In a terminal, you should type the following:
+
+```shell
+jupyter labextension install @pyviz/jupyterlab_pyviz
+```
+
+And then in a new cell inside the notebook in which you want to load IceVision dashboards, you should type and execute the following code:
+
+```python
+import panel
+panel.extension()
+```
+
 # Contributing
 
 If you want to contribute add the following lines to your `pre-commit` file to ensure the notebook cell output don't get pushed into the repo.
