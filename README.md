@@ -40,6 +40,14 @@ A gallery with sorting functionality of have a direct look at the images.
 Tabular representation of all annotations.
 <div style="text-align:center"><img src="imgs/dataset_overview_3.png" /></div>
 
+# Install
+
+IceVisionDashboard is available as a `pip` package via PyPi. To install, simply type:
+
+```shell
+pip install icevision-dashboards
+```
+
 # Contributing
 
 If you want to contribute add the following lines to your `pre-commit` file to ensure the notebook cell output don't get pushed into the repo.
