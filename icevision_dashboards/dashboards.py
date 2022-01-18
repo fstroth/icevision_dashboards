@@ -114,7 +114,11 @@ class ObjectDetectionDatasetOverview(DatasetOverview):
         return grid
 
     def _generate_gallery_tab(self):
-        return pn.Column(RecordDastasetGallery(self.dataset, "data", "filepath", ["num_annotations", "width", "height", "label", "area", "bbox_ratio", "bbox_width", "bbox_height"], height=self.height).show(), align="center", sizing_mode="stretch_both")
+        try:
+            gallery = RecordDastasetGallery(self.dataset, "data", "filepath", ["num_annotations", "width", "height", "label", "area", "bbox_ratio", "bbox_width", "bbox_height"], height=self.height).show()
+        except FileNotFoundError:
+            gallery = "Could not load images for gallery."
+        return pn.Column(gallery, align="center", sizing_mode="stretch_both")
 
     def build_gui(self):
         dataset_tab = super()._generate_dataset_tab()
@@ -190,7 +194,14 @@ class ObjectDetectionDatasetComparison(DatasetComparison):
         return pn.Row(_mixing_plots, self.categorical_2d_histogram, align="center")
 
     def _generate_gallery_tab(self):
-        return pn.Row(*[RecordDastasetGallery(dataset, "data", "filepath", ["num_annotations", "width", "height", "label", "area", "bbox_ratio", "bbox_width", "bbox_height"], width=floor(self.width/len(self.datasets))).show() for dataset in self.datasets], align="start", sizing_mode="stretch_both")
+        galleries = []
+        for dataset in self.datasets:
+            try:
+                gallery = RecordDastasetGallery(dataset, "data", "filepath", ["num_annotations", "width", "height", "label", "area", "bbox_ratio", "bbox_width", "bbox_height"], width=floor(self.width/len(self.datasets))).show()
+                galleries.append(gallery)
+            except FileNotFoundError:
+                gallery = "Could not load images for gallery."
+        return pn.Row(*galleries, align="start", sizing_mode="stretch_both")
 
     def build_gui(self):
         dataset_tab = self._generate_dataset_tab()
@@ -281,9 +292,15 @@ class ObjectDetectionResultOverview(Dashboard):
             hist_cols=self.loss_keys + ['score', 'area_normalized', 'area', 'bbox_ratio', 'bbox_width', 'bbox_height', 'num_annotations', 'width', 'height', 'label']
         )
 
+        try:
+            gallery = ("Gallery", RecordDastasetGallery(self.dataset, "base_data", "filepath", sort_cols=self.loss_keys, height=self.height).show())
+        except FileNotFoundError:
+            gallery = ("Gallery", "Could not load images. Path might be wrong.")
+
+
         sub_tabs = pn.Tabs(
             ("Histograms", pn.Row(pn.Spacer(sizing_mode="stretch_width"), scatter_overview, pn.Spacer(sizing_mode="stretch_width"), cat_2d_hist, pn.Spacer(sizing_mode="stretch_width"), align="center")),
-            ("Gallery", RecordDastasetGallery(self.dataset, "base_data", "filepath", sort_cols=self.loss_keys, height=self.height).show())
+            gallery
         )
 
         return pn.Column(loss_hists_col, sub_tabs)
@@ -486,9 +503,14 @@ class InstanceSegmentationResultOverview(ObjectDetectionResultOverview):
             hist_cols=self.loss_keys + ['score', 'mask_area', 'mask_area_normalized', 'mask_area_normalized_by_bbox_area', 'bbox_area_normalized', 'bbox_area', 'bbox_ratio', 'bbox_width', 'bbox_height', 'num_annotations', 'width', 'height', 'label']
         )
 
+        try:
+            gallery = ("Gallery", RecordDastasetGallery(self.dataset, "base_data", "filepath", sort_cols=self.loss_keys, height=self.height).show())
+        except FileNotFoundError:
+            gallery = ("Gallery", "Could not load images. Path might be wrong.")
+
         sub_tabs = pn.Tabs(
             ("Histograms", pn.Row(pn.Spacer(sizing_mode="stretch_width"), scatter_overview, pn.Spacer(sizing_mode="stretch_width"), cat_2d_hist, pn.Spacer(sizing_mode="stretch_width"), align="center")),
-            ("Gallery", RecordDastasetGallery(self.dataset, "base_data", "filepath", sort_cols=self.loss_keys, height=self.height).show())
+            gallery
         )
 
         return pn.Column(loss_hists_col, sub_tabs)

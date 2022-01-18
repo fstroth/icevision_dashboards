@@ -82,6 +82,22 @@ nb_path: "nbs/index.ipynb"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Install">Install<a class="anchor-link" href="#Install"> </a></h1><p>IceVisionDashboard is available as a <code>pip</code> package via PyPi. To install, simply type:</p>
+<div class="highlight"><pre><span></span>pip install icevision-dashboards
+</pre></div>
+<p>If you are using JupyterLab to view and use your notebooks, a few extra steps are needed. In a terminal, you should type the following:</p>
+<div class="highlight"><pre><span></span>jupyter labextension install @pyviz/jupyterlab_pyviz
+</pre></div>
+<p>And then in a new cell inside the notebook in which you want to load IceVision dashboards, you should type and execute the following code:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">panel</span>
+<span class="n">panel</span><span class="o">.</span><span class="n">extension</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Contributing">Contributing<a class="anchor-link" href="#Contributing"> </a></h1><p>If you want to contribute add the following lines to your <code>pre-commit</code> file to ensure the notebook cell output don't get pushed into the repo.</p>
 <div class="highlight"><pre><span></span><span class="c1"># ensure the oupt of the notebooks is empty</span>
 jupyter nbconvert --ClearOutputPreprocessor.enabled<span class="o">=</span>True --inplace nbs/*.ipynb
