@@ -188,6 +188,59 @@ The img_id_col is the column that identifies the unique images (e.g. filepath of
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+
+</div>
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div id='1002'>
+
+
+
+
+
+  <div class="bk-root" id="b2890bab-478c-48dd-8069-88b4242b6f25" data-root-id="1002"></div>
+</div>
+<script type="application/javascript">(function(root) {
+  function embed_document(root) {
+    var docs_json = {"95804b72-963c-433d-8d5b-4209fb170bed":{"defs":[],"roots":{"references":[{"attributes":{"children":[{"id":"1011"}],"margin":[0,0,0,0],"min_width":83,"name":"Row00117","width":83},"id":"1010","type":"Row"},{"attributes":{"children":[{"id":"1015"}],"margin":[0,0,0,0],"name":"Row00112"},"id":"1014","type":"Row"},{"attributes":{"margin":[5,10,5,10],"max_length":5000,"min_width":83,"value":"1","width":83},"id":"1009","type":"TextInput"},{"attributes":{"children":[{"id":"1003"},{"id":"1013"}],"margin":[0,0,0,0],"name":"Column00114"},"id":"1002","type":"Column"},{"attributes":{"labels":["Desc.","Drop duplicates"],"margin":[5,10,5,10]},"id":"1006","type":"CheckboxButtonGroup"},{"attributes":{"client_comm_id":"d0d65c3380d9477db2308673d37406e2","comm_id":"e924e646fe26496e94926b77d959d6e3","plot_id":"1002"},"id":"1016","type":"panel.models.comm_manager.CommManager"},{"attributes":{"reload":false},"id":"1017","type":"panel.models.location.Location"},{"attributes":{"icon":null,"label":"<","margin":[5,10,5,10],"min_width":166,"subscribed_events":["button_click"],"width":166},"id":"1008","type":"Button"},{"attributes":{"align":"center","children":[{"id":"1008"},{"id":"1009"},{"id":"1010"},{"id":"1012"}],"height":50,"margin":[0,0,0,0],"min_height":50,"name":"Row00105"},"id":"1007","type":"Row"},{"attributes":{"margin":[5,10,5,10],"options":["label"],"title":"Sort by","value":"label"},"id":"1005","type":"Select"},{"attributes":{"css_classes":["markdown"],"margin":[5,5,5,5],"name":"Markdown00110","text":"&lt;p&gt;4 - Bird&lt;/p&gt;"},"id":"1015","type":"panel.models.markup.HTML"},{"attributes":{"css_classes":["markdown"],"margin":[5,5,5,5],"name":"Markdown00115","text":"&lt;p&gt;/10&lt;/p&gt;"},"id":"1011","type":"panel.models.markup.HTML"},{"attributes":{"icon":null,"label":">","margin":[5,10,5,10],"min_width":166,"subscribed_events":["button_click"],"width":166},"id":"1012","type":"Button"},{"attributes":{"align":"center","children":[{"id":"1014"}],"margin":[0,0,0,0],"name":"Row00113"},"id":"1013","type":"Row"},{"attributes":{"children":[{"id":"1005"},{"id":"1006"}],"margin":[0,0,0,0],"name":"Row00108"},"id":"1004","type":"Row"},{"attributes":{"children":[{"id":"1004"},{"id":"1007"}],"margin":[0,0,0,0],"name":"Column00109"},"id":"1003","type":"Column"}],"root_ids":["1002","1016","1017"]},"title":"Bokeh Application","version":"2.3.2"}};
+    var render_items = [{"docid":"95804b72-963c-433d-8d5b-4209fb170bed","root_ids":["1002"],"roots":{"1002":"b2890bab-478c-48dd-8069-88b4242b6f25"}}];
+    root.Bokeh.embed.embed_items_notebook(docs_json, render_items);
+  }
+  if (root.Bokeh !== undefined && root.Bokeh.Panel !== undefined) {
+    embed_document(root);
+  } else {
+    var attempts = 0;
+    var timer = setInterval(function(root) {
+      if (root.Bokeh !== undefined && root.Bokeh.Panel !== undefined) {
+        clearInterval(timer);
+        embed_document(root);
+      } else if (document.readyState == "complete") {
+        attempts++;
+        if (attempts > 100) {
+          clearInterval(timer);
+          console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing");
+        }
+      }
+    }, 10, root)
+  }
+})(window);</script>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
     {% endraw %}
 
@@ -273,6 +326,59 @@ The img_id_col is the column that identifies the unique images (e.g. filepath of
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+
+</div>
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div id='1026'>
+
+
+
+
+
+  <div class="bk-root" id="0820add9-64c6-4dad-acc4-86487d403778" data-root-id="1026"></div>
+</div>
+<script type="application/javascript">(function(root) {
+  function embed_document(root) {
+    var docs_json = {"c081f6f3-a54e-447e-8fe9-556cf5426fea":{"defs":[],"roots":{"references":[{"attributes":{},"id":"1036","type":"IntEditor"},{"attributes":{},"id":"1031","type":"CellEditor"},{"attributes":{"source":{"id":"1027"}},"id":"1062","type":"CDSView"},{"attributes":{},"id":"1046","type":"StringEditor"},{"attributes":{},"id":"1056","type":"StringEditor"},{"attributes":{},"id":"1041","type":"IntEditor"},{"attributes":{"editor":{"id":"1031"},"field":"index","formatter":{"id":"1029"},"title":"index","width":0},"id":"1032","type":"TableColumn"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"1024","type":"HTMLTemplateFormatter"},{"attributes":{"editor":{"id":"1046"},"field":"filepath","formatter":{"id":"1020"},"title":"filepath","width":0},"id":"1047","type":"TableColumn"},{"attributes":{"editor":{"id":"1036"},"field":"random_stat","formatter":{"id":"1018"},"title":"random_stat","width":0},"id":"1037","type":"TableColumn"},{"attributes":{"editor":{"id":"1041"},"field":"objects_per_image","formatter":{"id":"1019"},"title":"objects_per_image","width":0},"id":"1042","type":"TableColumn"},{"attributes":{"editor":{"id":"1056"},"field":"id","formatter":{"id":"1022"},"title":"id","width":0},"id":"1057","type":"TableColumn"},{"attributes":{"columns":[{"id":"1070"},{"id":"1075"},{"id":"1080"},{"id":"1085"}],"editable":true,"height":200,"index_position":null,"margin":[5,10,5,10],"name":"","row_height":40,"sizing_mode":"fixed","source":{"id":"1065"},"view":{"id":"1090"},"width":500},"id":"1088","type":"DataTable"},{"attributes":{"editor":{"id":"1051"},"field":"label","formatter":{"id":"1021"},"title":"label","width":0},"id":"1052","type":"TableColumn"},{"attributes":{},"id":"1051","type":"StringEditor"},{"attributes":{"client_comm_id":"f0067e3bf4344ad29989edd2f05156c4","comm_id":"f105761a7ac14d18985dd9c41cdd329f","plot_id":"1026"},"id":"1105","type":"panel.models.comm_manager.CommManager"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"1025","type":"HTMLTemplateFormatter"},{"attributes":{"columns":[{"id":"1032"},{"id":"1037"},{"id":"1042"},{"id":"1047"},{"id":"1052"},{"id":"1057"}],"editable":true,"height":200,"index_position":null,"margin":[5,10,5,10],"name":"","row_height":40,"sizing_mode":"fixed","source":{"id":"1027"},"view":{"id":"1062"},"width":500},"id":"1060","type":"DataTable"},{"attributes":{"editor":{"id":"1074"},"field":"num_datapoints","formatter":{"id":"1023"},"title":"num_datapoints","width":0},"id":"1075","type":"TableColumn"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"1023","type":"HTMLTemplateFormatter"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"1021","type":"HTMLTemplateFormatter"},{"attributes":{},"id":"1084","type":"StringEditor"},{"attributes":{"data":{"description":["A dataset for testing"],"index":[0],"name":["TestDataset"],"num_datapoints":[10]},"selected":{"id":"1066"},"selection_policy":{"id":"1095"}},"id":"1065","type":"ColumnDataSource"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"1019","type":"HTMLTemplateFormatter"},{"attributes":{"child":{"id":"1060"},"name":"","title":"Dataset overview"},"id":"1064","type":"Panel"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"1020","type":"HTMLTemplateFormatter"},{"attributes":{},"id":"1093","type":"UnionRenderers"},{"attributes":{"indices":[0]},"id":"1028","type":"Selection"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"1022","type":"HTMLTemplateFormatter"},{"attributes":{"indices":[0]},"id":"1066","type":"Selection"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"1018","type":"HTMLTemplateFormatter"},{"attributes":{},"id":"1069","type":"CellEditor"},{"attributes":{},"id":"1079","type":"StringEditor"},{"attributes":{"editor":{"id":"1079"},"field":"name","formatter":{"id":"1024"},"title":"name","width":0},"id":"1080","type":"TableColumn"},{"attributes":{},"id":"1095","type":"UnionRenderers"},{"attributes":{},"id":"1074","type":"IntEditor"},{"attributes":{"data":{"filepath":["c","a","b","a","a","b","c","c","d","c"],"id":["img8","img1","img2","img3","img4","img5","img6","img6","img7","img8"],"index":[0,1,2,3,4,5,6,7,8,9],"label":["Brid","Dog","Dog","Cat","Dog","Cat","Bird","Dog","Cat","Bird"],"objects_per_image":[4,3,2,3,3,2,4,4,1,4],"random_stat":[1,2,1,1,3,1,2,4,1,2]},"selected":{"id":"1028"},"selection_policy":{"id":"1093"}},"id":"1027","type":"ColumnDataSource"},{"attributes":{"margin":[0,0,0,0],"tabs":[{"id":"1064"},{"id":"1092"}]},"id":"1026","type":"Tabs"},{"attributes":{},"id":"1067","type":"NumberFormatter"},{"attributes":{},"id":"1029","type":"NumberFormatter"},{"attributes":{"editor":{"id":"1084"},"field":"description","formatter":{"id":"1025"},"title":"description","width":0},"id":"1085","type":"TableColumn"},{"attributes":{"source":{"id":"1065"}},"id":"1090","type":"CDSView"},{"attributes":{"editor":{"id":"1069"},"field":"index","formatter":{"id":"1067"},"title":"index","width":0},"id":"1070","type":"TableColumn"},{"attributes":{"child":{"id":"1088"},"name":"","title":"Dataset stats overview"},"id":"1092","type":"Panel"}],"root_ids":["1026","1105"]},"title":"Bokeh Application","version":"2.3.2"}};
+    var render_items = [{"docid":"c081f6f3-a54e-447e-8fe9-556cf5426fea","root_ids":["1026"],"roots":{"1026":"0820add9-64c6-4dad-acc4-86487d403778"}}];
+    root.Bokeh.embed.embed_items_notebook(docs_json, render_items);
+  }
+  if (root.Bokeh !== undefined && root.Bokeh.Panel !== undefined) {
+    embed_document(root);
+  } else {
+    var attempts = 0;
+    var timer = setInterval(function(root) {
+      if (root.Bokeh !== undefined && root.Bokeh.Panel !== undefined) {
+        clearInterval(timer);
+        embed_document(root);
+      } else if (document.readyState == "complete") {
+        attempts++;
+        if (attempts > 100) {
+          clearInterval(timer);
+          console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing");
+        }
+      }
+    }, 10, root)
+  }
+})(window);</script>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
     {% endraw %}
 
@@ -337,6 +443,59 @@ The list of datasets can be expanded by adding new entryies to the datasets attr
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+
+</div>
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div id='1132'>
+
+
+
+
+
+  <div class="bk-root" id="376846cf-882c-4685-85be-1537d72e51db" data-root-id="1132"></div>
+</div>
+<script type="application/javascript">(function(root) {
+  function embed_document(root) {
+    var docs_json = {"4aa2e0e1-8ece-4cd5-a744-a817bc788ccd":{"defs":[],"roots":{"references":[{"attributes":{"children":[{"id":"1133"},{"id":"1157"}],"margin":[0,0,0,0],"name":"Column00163"},"id":"1132","type":"Column"},{"attributes":{},"id":"1153","type":"StringEditor"},{"attributes":{"source":{"id":"1134"}},"id":"1159","type":"CDSView"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"1131","type":"HTMLTemplateFormatter"},{"attributes":{"editor":{"id":"1148"},"field":"name","formatter":{"id":"1130"},"title":"name","width":0},"id":"1149","type":"TableColumn"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"1129","type":"HTMLTemplateFormatter"},{"attributes":{"height":25,"icon":null,"label":"Delete","margin":[5,10,5,10],"sizing_mode":"fixed","subscribed_events":["button_click"],"width":1000},"id":"1133","type":"Button"},{"attributes":{},"id":"1138","type":"CellEditor"},{"attributes":{},"id":"1143","type":"IntEditor"},{"attributes":{},"id":"1136","type":"NumberFormatter"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"1130","type":"HTMLTemplateFormatter"},{"attributes":{"client_comm_id":"8a5d48b9ca6a4ce3bbf0e782d4faec6e","comm_id":"0df111a751ef4aadb27e7b345c381e1f","plot_id":"1132"},"id":"1167","type":"panel.models.comm_manager.CommManager"},{"attributes":{},"id":"1148","type":"StringEditor"},{"attributes":{},"id":"1161","type":"UnionRenderers"},{"attributes":{"editor":{"id":"1138"},"field":"index","formatter":{"id":"1136"},"title":"index","width":0},"id":"1139","type":"TableColumn"},{"attributes":{"data":{"description":["A dataset for testing"],"index":[0],"name":["TestDataset"],"num_datapoints":[10]},"selected":{"id":"1135"},"selection_policy":{"id":"1161"}},"id":"1134","type":"ColumnDataSource"},{"attributes":{"columns":[{"id":"1139"},{"id":"1144"},{"id":"1149"},{"id":"1154"}],"editable":true,"height":75,"index_position":null,"margin":[5,10,5,10],"name":"","row_height":40,"sizing_mode":"fixed","source":{"id":"1134"},"view":{"id":"1159"},"width":500},"id":"1157","type":"DataTable"},{"attributes":{"editor":{"id":"1153"},"field":"description","formatter":{"id":"1131"},"title":"description","width":0},"id":"1154","type":"TableColumn"},{"attributes":{"indices":[0]},"id":"1135","type":"Selection"},{"attributes":{"editor":{"id":"1143"},"field":"num_datapoints","formatter":{"id":"1129"},"title":"num_datapoints","width":0},"id":"1144","type":"TableColumn"}],"root_ids":["1132","1167"]},"title":"Bokeh Application","version":"2.3.2"}};
+    var render_items = [{"docid":"4aa2e0e1-8ece-4cd5-a744-a817bc788ccd","root_ids":["1132"],"roots":{"1132":"376846cf-882c-4685-85be-1537d72e51db"}}];
+    root.Bokeh.embed.embed_items_notebook(docs_json, render_items);
+  }
+  if (root.Bokeh !== undefined && root.Bokeh.Panel !== undefined) {
+    embed_document(root);
+  } else {
+    var attempts = 0;
+    var timer = setInterval(function(root) {
+      if (root.Bokeh !== undefined && root.Bokeh.Panel !== undefined) {
+        clearInterval(timer);
+        embed_document(root);
+      } else if (document.readyState == "complete") {
+        attempts++;
+        if (attempts > 100) {
+          clearInterval(timer);
+          console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing");
+        }
+      }
+    }, 10, root)
+  }
+})(window);</script>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
     {% endraw %}
 
@@ -395,6 +554,59 @@ The list of datasets can be expanded by adding new entryies to the datasets attr
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+
+</div>
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div id='1194'>
+
+
+
+
+
+  <div class="bk-root" id="1cabfbeb-0902-4657-bfa9-6736636565c7" data-root-id="1194"></div>
+</div>
+<script type="application/javascript">(function(root) {
+  function embed_document(root) {
+    var docs_json = {"89277f8f-914f-4be5-bb7d-f3b0a496703f":{"defs":[],"roots":{"references":[{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"1184","type":"HTMLTemplateFormatter"},{"attributes":{"editor":{"id":"1247"},"field":"objects_per_image","formatter":{"id":"1184"},"title":"objects_per_image","width":0},"id":"1248","type":"TableColumn"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"1186","type":"HTMLTemplateFormatter"},{"attributes":{},"id":"1247","type":"IntEditor"},{"attributes":{"editor":{"id":"1252"},"field":"filepath","formatter":{"id":"1185"},"title":"filepath","width":0},"id":"1253","type":"TableColumn"},{"attributes":{},"id":"1237","type":"CellEditor"},{"attributes":{},"id":"1252","type":"StringEditor"},{"attributes":{"editor":{"id":"1237"},"field":"index","formatter":{"id":"1235"},"title":"index","width":0},"id":"1238","type":"TableColumn"},{"attributes":{"children":[{"id":"1229"},{"id":"1266"}],"margin":[0,0,0,0],"name":"Column00168"},"id":"1195","type":"Column"},{"attributes":{"editor":{"id":"1257"},"field":"label","formatter":{"id":"1186"},"title":"label","width":0},"id":"1258","type":"TableColumn"},{"attributes":{},"id":"1235","type":"NumberFormatter"},{"attributes":{},"id":"1257","type":"StringEditor"},{"attributes":{},"id":"1210","type":"IntEditor"},{"attributes":{"data":{"filepath":["c","a","b","a","a","b","c","c","d","c"],"id":["img8","img1","img2","img3","img4","img5","img6","img6","img7","img8"],"index":[0,1,2,3,4,5,6,7,8,9],"label":["Brid","Dog","Dog","Cat","Dog","Cat","Bird","Dog","Cat","Bird"],"objects_per_image":[4,3,2,3,3,2,4,4,1,4],"random_stat":[1,2,1,1,3,1,2,4,1,2]},"selected":{"id":"1234"},"selection_policy":{"id":"1329"}},"id":"1233","type":"ColumnDataSource"},{"attributes":{"editor":{"id":"1262"},"field":"id","formatter":{"id":"1187"},"title":"id","width":0},"id":"1263","type":"TableColumn"},{"attributes":{"editor":{"id":"1205"},"field":"random_stat","formatter":{"id":"1178"},"title":"random_stat","width":0},"id":"1206","type":"TableColumn"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"1182","type":"HTMLTemplateFormatter"},{"attributes":{},"id":"1333","type":"UnionRenderers"},{"attributes":{},"id":"1242","type":"IntEditor"},{"attributes":{},"id":"1262","type":"StringEditor"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"1180","type":"HTMLTemplateFormatter"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"1189","type":"HTMLTemplateFormatter"},{"attributes":{"margin":[0,0,0,0],"tabs":[{"id":"1270"},{"id":"1326"}]},"id":"1194","type":"Tabs"},{"attributes":{},"id":"1274","type":"NumberFormatter"},{"attributes":{},"id":"1205","type":"IntEditor"},{"attributes":{"data":{"description":["A dataset for testing"],"index":[0],"name":["TestDataset"],"num_datapoints":[10]},"selected":{"id":"1273"},"selection_policy":{"id":"1331"}},"id":"1272","type":"ColumnDataSource"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"1188","type":"HTMLTemplateFormatter"},{"attributes":{"client_comm_id":"882609995c1b40deac047c2aa371e81e","comm_id":"5bcf0bc49ec04813a1a7fefe14ade620","plot_id":"1194"},"id":"1351","type":"panel.models.comm_manager.CommManager"},{"attributes":{"source":{"id":"1272"}},"id":"1297","type":"CDSView"},{"attributes":{},"id":"1327","type":"UnionRenderers"},{"attributes":{"child":{"id":"1195"},"name":"Column00168","title":"Dataset overview"},"id":"1270","type":"Panel"},{"attributes":{},"id":"1215","type":"StringEditor"},{"attributes":{"indices":[0]},"id":"1273","type":"Selection"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"1187","type":"HTMLTemplateFormatter"},{"attributes":{"columns":[{"id":"1238"},{"id":"1243"},{"id":"1248"},{"id":"1253"},{"id":"1258"},{"id":"1263"}],"editable":true,"height":200,"index_position":null,"margin":[5,10,5,10],"name":"","row_height":40,"sizing_mode":"fixed","source":{"id":"1233"},"view":{"id":"1268"},"width":500},"id":"1266","type":"DataTable"},{"attributes":{"columns":[{"id":"1277"},{"id":"1282"},{"id":"1287"},{"id":"1292"}],"editable":true,"height":200,"index_position":null,"margin":[5,10,5,10],"name":"","row_height":40,"sizing_mode":"fixed","source":{"id":"1272"},"view":{"id":"1297"},"width":500},"id":"1295","type":"DataTable"},{"attributes":{"indices":[0]},"id":"1197","type":"Selection"},{"attributes":{},"id":"1276","type":"CellEditor"},{"attributes":{"editor":{"id":"1276"},"field":"index","formatter":{"id":"1274"},"title":"index","width":0},"id":"1277","type":"TableColumn"},{"attributes":{"editor":{"id":"1281"},"field":"num_datapoints","formatter":{"id":"1188"},"title":"num_datapoints","width":0},"id":"1282","type":"TableColumn"},{"attributes":{"indices":[0]},"id":"1234","type":"Selection"},{"attributes":{"columns":[{"id":"1201"},{"id":"1206"},{"id":"1211"},{"id":"1216"},{"id":"1221"},{"id":"1226"}],"editable":true,"height":200,"index_position":null,"margin":[5,10,5,10],"name":"","row_height":40,"sizing_mode":"fixed","source":{"id":"1196"},"view":{"id":"1231"},"width":500},"id":"1229","type":"DataTable"},{"attributes":{},"id":"1281","type":"IntEditor"},{"attributes":{"editor":{"id":"1210"},"field":"objects_per_image","formatter":{"id":"1179"},"title":"objects_per_image","width":0},"id":"1211","type":"TableColumn"},{"attributes":{"editor":{"id":"1286"},"field":"name","formatter":{"id":"1189"},"title":"name","width":0},"id":"1287","type":"TableColumn"},{"attributes":{},"id":"1220","type":"StringEditor"},{"attributes":{},"id":"1200","type":"CellEditor"},{"attributes":{"editor":{"id":"1242"},"field":"random_stat","formatter":{"id":"1183"},"title":"random_stat","width":0},"id":"1243","type":"TableColumn"},{"attributes":{},"id":"1286","type":"StringEditor"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"1193","type":"HTMLTemplateFormatter"},{"attributes":{"data":{"filepath":["c","a","b","a","a","b","c","c","d","c"],"id":["img8","img1","img2","img3","img4","img5","img6","img6","img7","img8"],"index":[0,1,2,3,4,5,6,7,8,9],"label":["Brid","Dog","Dog","Cat","Dog","Cat","Bird","Dog","Cat","Bird"],"objects_per_image":[4,3,2,3,3,2,4,4,1,4],"random_stat":[1,2,1,1,3,1,2,4,1,2]},"selected":{"id":"1197"},"selection_policy":{"id":"1327"}},"id":"1196","type":"ColumnDataSource"},{"attributes":{"editor":{"id":"1291"},"field":"description","formatter":{"id":"1190"},"title":"description","width":0},"id":"1292","type":"TableColumn"},{"attributes":{},"id":"1291","type":"StringEditor"},{"attributes":{"editor":{"id":"1318"},"field":"description","formatter":{"id":"1193"},"title":"description","width":0},"id":"1319","type":"TableColumn"},{"attributes":{},"id":"1198","type":"NumberFormatter"},{"attributes":{"editor":{"id":"1225"},"field":"id","formatter":{"id":"1182"},"title":"id","width":0},"id":"1226","type":"TableColumn"},{"attributes":{"indices":[0]},"id":"1300","type":"Selection"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"1178","type":"HTMLTemplateFormatter"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"1183","type":"HTMLTemplateFormatter"},{"attributes":{"source":{"id":"1196"}},"id":"1231","type":"CDSView"},{"attributes":{},"id":"1329","type":"UnionRenderers"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"1185","type":"HTMLTemplateFormatter"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"1190","type":"HTMLTemplateFormatter"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"1191","type":"HTMLTemplateFormatter"},{"attributes":{"columns":[{"id":"1304"},{"id":"1309"},{"id":"1314"},{"id":"1319"}],"editable":true,"height":200,"index_position":null,"margin":[5,10,5,10],"name":"","row_height":40,"sizing_mode":"fixed","source":{"id":"1299"},"view":{"id":"1324"},"width":500},"id":"1322","type":"DataTable"},{"attributes":{"source":{"id":"1233"}},"id":"1268","type":"CDSView"},{"attributes":{"data":{"description":["A dataset for testing"],"index":[0],"name":["TestDataset"],"num_datapoints":[10]},"selected":{"id":"1300"},"selection_policy":{"id":"1333"}},"id":"1299","type":"ColumnDataSource"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"1192","type":"HTMLTemplateFormatter"},{"attributes":{"source":{"id":"1299"}},"id":"1324","type":"CDSView"},{"attributes":{},"id":"1301","type":"NumberFormatter"},{"attributes":{},"id":"1303","type":"CellEditor"},{"attributes":{"children":[{"id":"1295"},{"id":"1322"}],"margin":[0,0,0,0],"name":"Column00171"},"id":"1271","type":"Column"},{"attributes":{"editor":{"id":"1303"},"field":"index","formatter":{"id":"1301"},"title":"index","width":0},"id":"1304","type":"TableColumn"},{"attributes":{"editor":{"id":"1220"},"field":"label","formatter":{"id":"1181"},"title":"label","width":0},"id":"1221","type":"TableColumn"},{"attributes":{"editor":{"id":"1308"},"field":"num_datapoints","formatter":{"id":"1191"},"title":"num_datapoints","width":0},"id":"1309","type":"TableColumn"},{"attributes":{},"id":"1308","type":"IntEditor"},{"attributes":{"editor":{"id":"1313"},"field":"name","formatter":{"id":"1192"},"title":"name","width":0},"id":"1314","type":"TableColumn"},{"attributes":{"editor":{"id":"1200"},"field":"index","formatter":{"id":"1198"},"title":"index","width":0},"id":"1201","type":"TableColumn"},{"attributes":{},"id":"1313","type":"StringEditor"},{"attributes":{},"id":"1225","type":"StringEditor"},{"attributes":{},"id":"1318","type":"StringEditor"},{"attributes":{"editor":{"id":"1215"},"field":"filepath","formatter":{"id":"1180"},"title":"filepath","width":0},"id":"1216","type":"TableColumn"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"1179","type":"HTMLTemplateFormatter"},{"attributes":{"child":{"id":"1271"},"name":"Column00171","title":"Dataset stats overview"},"id":"1326","type":"Panel"},{"attributes":{},"id":"1331","type":"UnionRenderers"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"1181","type":"HTMLTemplateFormatter"}],"root_ids":["1194","1351"]},"title":"Bokeh Application","version":"2.3.2"}};
+    var render_items = [{"docid":"89277f8f-914f-4be5-bb7d-f3b0a496703f","root_ids":["1194"],"roots":{"1194":"1cabfbeb-0902-4657-bfa9-6736636565c7"}}];
+    root.Bokeh.embed.embed_items_notebook(docs_json, render_items);
+  }
+  if (root.Bokeh !== undefined && root.Bokeh.Panel !== undefined) {
+    embed_document(root);
+  } else {
+    var attempts = 0;
+    var timer = setInterval(function(root) {
+      if (root.Bokeh !== undefined && root.Bokeh.Panel !== undefined) {
+        clearInterval(timer);
+        embed_document(root);
+      } else if (document.readyState == "complete") {
+        attempts++;
+        if (attempts > 100) {
+          clearInterval(timer);
+          console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing");
+        }
+      }
+    }, 10, root)
+  }
+})(window);</script>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -518,6 +730,59 @@ The list of datasets can be expanded by adding new entryies to the datasets attr
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+
+</div>
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div id='1548'>
+
+
+
+
+
+  <div class="bk-root" id="7f9c3ee2-5ea4-4d9c-ac29-8aa50cb5e0a4" data-root-id="1548"></div>
+</div>
+<script type="application/javascript">(function(root) {
+  function embed_document(root) {
+    var docs_json = {"d0b2e470-674c-409d-8f47-96a75b5d07ad":{"defs":[],"roots":{"references":[{"attributes":{},"id":"1514","type":"DataRange1d"},{"attributes":{},"id":"1516","type":"LinearScale"},{"attributes":{},"id":"1494","type":"HelpTool"},{"attributes":{"height":175,"margin":[5,10,5,10],"options":["img1","img2","img3","img4","img5","img6","img7","img8"],"sizing_mode":"fixed","title":"id","value":["img2","img5","img7","img3","img8","img1","img4","img6"],"width":166},"id":"1598","type":"MultiSelect"},{"attributes":{"formatter":{"id":"1576"},"major_label_policy":{"id":"1575"},"ticker":{"id":"1521"}},"id":"1520","type":"LinearAxis"},{"attributes":{"formatter":{"id":"1579"},"major_label_policy":{"id":"1578"},"ticker":{"id":"1525"}},"id":"1524","type":"LinearAxis"},{"attributes":{},"id":"1518","type":"LinearScale"},{"attributes":{},"id":"1553","type":"AllLabels"},{"attributes":{},"id":"1533","type":"HelpTool"},{"attributes":{},"id":"1521","type":"BasicTicker"},{"attributes":{"axis":{"id":"1520"},"ticker":null},"id":"1523","type":"Grid"},{"attributes":{"overlay":{"id":"1495"}},"id":"1491","type":"BoxZoomTool"},{"attributes":{"children":[{"id":"1572"},{"id":"1509"}],"height":175,"margin":[0,0,0,0],"min_height":175,"min_width":166,"name":"Column00182","width":166},"id":"1571","type":"Column"},{"attributes":{},"id":"1554","type":"BasicTickFormatter"},{"attributes":{"axis":{"id":"1524"},"dimension":1,"ticker":null},"id":"1527","type":"Grid"},{"attributes":{},"id":"1510","type":"Title"},{"attributes":{},"id":"1556","type":"AllLabels"},{"attributes":{},"id":"1525","type":"BasicTicker"},{"attributes":{},"id":"1529","type":"WheelZoomTool"},{"attributes":{},"id":"1575","type":"AllLabels"},{"attributes":{},"id":"1557","type":"BasicTickFormatter"},{"attributes":{},"id":"1528","type":"PanTool"},{"attributes":{"overlay":{"id":"1534"}},"id":"1530","type":"BoxZoomTool"},{"attributes":{},"id":"1531","type":"SaveTool"},{"attributes":{"data":{"left":{"__ndarray__":"AAAAAAAA8D9mZmZmZmbyP83MzMzMzPQ/MzMzMzMz9z+amZmZmZn5PwAAAAAAAPw/ZmZmZmZm/j9mZmZmZmYAQJqZmZmZmQFAzMzMzMzMAkAAAAAAAAAEQDMzMzMzMwVAZmZmZmZmBkCamZmZmZkHQM3MzMzMzAhAAAAAAAAACkAzMzMzMzMLQGZmZmZmZgxAmZmZmZmZDUDNzMzMzMwOQA==","dtype":"float64","order":"little","shape":[20]},"right":{"__ndarray__":"ZmZmZmZm8j/NzMzMzMz0PzMzMzMzM/c/mpmZmZmZ+T8AAAAAAAD8P2ZmZmZmZv4/ZmZmZmZmAECamZmZmZkBQMzMzMzMzAJAAAAAAAAABEAzMzMzMzMFQGZmZmZmZgZAmpmZmZmZB0DNzMzMzMwIQAAAAAAAAApAMzMzMzMzC0BmZmZmZmYMQJmZmZmZmQ1AzczMzMzMDkAAAAAAAAAQQA==","dtype":"float64","order":"little","shape":[20]},"top":[1,0,0,0,0,0,2,0,0,0,0,0,0,3,0,0,0,0,0,4]},"selected":{"id":"1581"},"selection_policy":{"id":"1580"}},"id":"1542","type":"ColumnDataSource"},{"attributes":{},"id":"1532","type":"ResetTool"},{"attributes":{},"id":"1576","type":"BasicTickFormatter"},{"attributes":{},"id":"1493","type":"ResetTool"},{"attributes":{"formatter":{"id":"1554"},"major_label_policy":{"id":"1553"},"ticker":{"id":"1482"}},"id":"1481","type":"LinearAxis"},{"attributes":{},"id":"1578","type":"AllLabels"},{"attributes":{},"id":"1579","type":"BasicTickFormatter"},{"attributes":{},"id":"1558","type":"UnionRenderers"},{"attributes":{"end":4.03,"margin":[5,10,5,10],"min_width":161,"start":0.97,"step":0.1,"title":"objects_per_image","value":[0.97,4.03],"width":161},"id":"1572","type":"RangeSlider"},{"attributes":{},"id":"1559","type":"Selection"},{"attributes":{"source":{"id":"1542"}},"id":"1546","type":"CDSView"},{"attributes":{"data_source":{"id":"1542"},"glyph":{"id":"1543"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"1544"},"view":{"id":"1546"}},"id":"1545","type":"GlyphRenderer"},{"attributes":{"axis":{"id":"1481"},"ticker":null},"id":"1484","type":"Grid"},{"attributes":{},"id":"1580","type":"UnionRenderers"},{"attributes":{},"id":"1473","type":"DataRange1d"},{"attributes":{"children":[{"id":"1596"}],"height":175,"margin":[0,0,0,0],"min_height":175,"min_width":166,"name":"Column00186","width":166},"id":"1595","type":"Column"},{"attributes":{},"id":"1482","type":"BasicTicker"},{"attributes":{"children":[[{"id":"1549"},0,0,1,1],[{"id":"1571"},0,1,1,1],[{"id":"1593"},0,2,1,1],[{"id":"1595"},1,0,1,1],[{"id":"1597"},1,1,1,1]],"height":350,"margin":[5,5,5,5],"name":"GridSpec00189","sizing_mode":"fixed","width":500},"id":"1548","type":"GridBox"},{"attributes":{"axis":{"id":"1485"},"dimension":1,"ticker":null},"id":"1488","type":"Grid"},{"attributes":{"formatter":{"id":"1557"},"major_label_policy":{"id":"1556"},"ticker":{"id":"1486"}},"id":"1485","type":"LinearAxis"},{"attributes":{"bottom":{"value":0},"fill_alpha":{"value":0.1},"fill_color":{"value":"#1f77b4"},"left":{"field":"left"},"line_alpha":{"value":0.1},"line_color":{"value":"#1f77b4"},"right":{"field":"right"},"top":{"field":"top"}},"id":"1544","type":"Quad"},{"attributes":{},"id":"1581","type":"Selection"},{"attributes":{},"id":"1492","type":"SaveTool"},{"attributes":{},"id":"1486","type":"BasicTicker"},{"attributes":{"end":4.03,"margin":[5,10,5,10],"min_width":161,"start":0.97,"step":0.1,"title":"random_stat","value":[0.97,4.03],"width":161},"id":"1550","type":"RangeSlider"},{"attributes":{"source":{"id":"1503"}},"id":"1507","type":"CDSView"},{"attributes":{"height":175,"margin":[5,10,5,10],"options":["Bird","Brid","Cat","Dog"],"sizing_mode":"fixed","title":"label","value":["Brid","Cat","Bird","Dog"],"width":166},"id":"1596","type":"MultiSelect"},{"attributes":{},"id":"1490","type":"WheelZoomTool"},{"attributes":{"active_multi":null,"logo":null,"tools":[{"id":"1528"},{"id":"1529"},{"id":"1530"},{"id":"1531"},{"id":"1532"},{"id":"1533"}]},"id":"1535","type":"Toolbar"},{"attributes":{},"id":"1489","type":"PanTool"},{"attributes":{"bottom":{"value":0},"fill_color":{"value":"#1f77b4"},"left":{"field":"left"},"line_color":{"value":"#1f77b4"},"right":{"field":"right"},"top":{"field":"top"}},"id":"1543","type":"Quad"},{"attributes":{"bottom_units":"screen","fill_alpha":0.5,"fill_color":"lightgrey","left_units":"screen","level":"overlay","line_alpha":1.0,"line_color":"black","line_dash":[4,4],"line_width":2,"right_units":"screen","syncable":false,"top_units":"screen"},"id":"1534","type":"BoxAnnotation"},{"attributes":{"below":[{"id":"1520"}],"center":[{"id":"1523"},{"id":"1527"}],"height":100,"left":[{"id":"1524"}],"renderers":[{"id":"1545"}],"title":{"id":"1510"},"toolbar":{"id":"1535"},"toolbar_location":null,"width":166,"x_range":{"id":"1512"},"x_scale":{"id":"1516"},"y_range":{"id":"1514"},"y_scale":{"id":"1518"}},"id":"1509","subtype":"Figure","type":"Plot"},{"attributes":{"data_source":{"id":"1503"},"glyph":{"id":"1504"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"1505"},"view":{"id":"1507"}},"id":"1506","type":"GlyphRenderer"},{"attributes":{},"id":"1471","type":"Title"},{"attributes":{"bottom":{"value":0},"fill_alpha":{"value":0.1},"fill_color":{"value":"#1f77b4"},"left":{"field":"left"},"line_alpha":{"value":0.1},"line_color":{"value":"#1f77b4"},"right":{"field":"right"},"top":{"field":"top"}},"id":"1505","type":"Quad"},{"attributes":{},"id":"1475","type":"DataRange1d"},{"attributes":{"below":[{"id":"1481"}],"center":[{"id":"1484"},{"id":"1488"}],"height":100,"left":[{"id":"1485"}],"renderers":[{"id":"1506"}],"title":{"id":"1471"},"toolbar":{"id":"1496"},"toolbar_location":null,"width":166,"x_range":{"id":"1473"},"x_scale":{"id":"1477"},"y_range":{"id":"1475"},"y_scale":{"id":"1479"}},"id":"1470","subtype":"Figure","type":"Plot"},{"attributes":{"children":[{"id":"1550"},{"id":"1470"}],"height":175,"margin":[0,0,0,0],"min_height":175,"min_width":166,"name":"Column00178","width":166},"id":"1549","type":"Column"},{"attributes":{},"id":"1512","type":"DataRange1d"},{"attributes":{"bottom_units":"screen","fill_alpha":0.5,"fill_color":"lightgrey","left_units":"screen","level":"overlay","line_alpha":1.0,"line_color":"black","line_dash":[4,4],"line_width":2,"right_units":"screen","syncable":false,"top_units":"screen"},"id":"1495","type":"BoxAnnotation"},{"attributes":{"data":{"left":{"__ndarray__":"AAAAAAAA8D9mZmZmZmbyP83MzMzMzPQ/MzMzMzMz9z+amZmZmZn5PwAAAAAAAPw/ZmZmZmZm/j9mZmZmZmYAQJqZmZmZmQFAzMzMzMzMAkAAAAAAAAAEQDMzMzMzMwVAZmZmZmZmBkCamZmZmZkHQM3MzMzMzAhAAAAAAAAACkAzMzMzMzMLQGZmZmZmZgxAmZmZmZmZDUDNzMzMzMwOQA==","dtype":"float64","order":"little","shape":[20]},"right":{"__ndarray__":"ZmZmZmZm8j/NzMzMzMz0PzMzMzMzM/c/mpmZmZmZ+T8AAAAAAAD8P2ZmZmZmZv4/ZmZmZmZmAECamZmZmZkBQMzMzMzMzAJAAAAAAAAABEAzMzMzMzMFQGZmZmZmZgZAmpmZmZmZB0DNzMzMzMwIQAAAAAAAAApAMzMzMzMzC0BmZmZmZmYMQJmZmZmZmQ1AzczMzMzMDkAAAAAAAAAQQA==","dtype":"float64","order":"little","shape":[20]},"top":[5,0,0,0,0,0,3,0,0,0,0,0,0,1,0,0,0,0,0,1]},"selected":{"id":"1559"},"selection_policy":{"id":"1558"}},"id":"1503","type":"ColumnDataSource"},{"attributes":{"height":175,"margin":[5,10,5,10],"options":["a","b","c","d"],"sizing_mode":"fixed","title":"filepath","value":["c","d","a","b"],"width":166},"id":"1594","type":"MultiSelect"},{"attributes":{"active_multi":null,"logo":null,"tools":[{"id":"1489"},{"id":"1490"},{"id":"1491"},{"id":"1492"},{"id":"1493"},{"id":"1494"}]},"id":"1496","type":"Toolbar"},{"attributes":{"client_comm_id":"b6cad64a1b4f4292b2f60da268a87a9b","comm_id":"f740e5681db54ec0a0fd6ba65817bc8e","plot_id":"1548"},"id":"1659","type":"panel.models.comm_manager.CommManager"},{"attributes":{"bottom":{"value":0},"fill_color":{"value":"#1f77b4"},"left":{"field":"left"},"line_color":{"value":"#1f77b4"},"right":{"field":"right"},"top":{"field":"top"}},"id":"1504","type":"Quad"},{"attributes":{"children":[{"id":"1594"}],"height":175,"margin":[0,0,0,0],"min_height":175,"min_width":166,"name":"Column00184","width":166},"id":"1593","type":"Column"},{"attributes":{},"id":"1477","type":"LinearScale"},{"attributes":{"children":[{"id":"1598"}],"height":175,"margin":[0,0,0,0],"min_height":175,"min_width":166,"name":"Column00188","width":166},"id":"1597","type":"Column"},{"attributes":{},"id":"1479","type":"LinearScale"}],"root_ids":["1548","1659"]},"title":"Bokeh Application","version":"2.3.2"}};
+    var render_items = [{"docid":"d0b2e470-674c-409d-8f47-96a75b5d07ad","root_ids":["1548"],"roots":{"1548":"7f9c3ee2-5ea4-4d9c-ac29-8aa50cb5e0a4"}}];
+    root.Bokeh.embed.embed_items_notebook(docs_json, render_items);
+  }
+  if (root.Bokeh !== undefined && root.Bokeh.Panel !== undefined) {
+    embed_document(root);
+  } else {
+    var attempts = 0;
+    var timer = setInterval(function(root) {
+      if (root.Bokeh !== undefined && root.Bokeh.Panel !== undefined) {
+        clearInterval(timer);
+        embed_document(root);
+      } else if (document.readyState == "complete") {
+        attempts++;
+        if (attempts > 100) {
+          clearInterval(timer);
+          console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing");
+        }
+      }
+    }, 10, root)
+  }
+})(window);</script>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
     {% endraw %}
 
@@ -572,6 +837,59 @@ The list of datasets can be expanded by adding new entryies to the datasets attr
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+
+</div>
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div id='1801'>
+
+
+
+
+
+  <div class="bk-root" id="6d4f90ac-1915-4a5d-9614-7516e9ad4166" data-root-id="1801"></div>
+</div>
+<script type="application/javascript">(function(root) {
+  function embed_document(root) {
+    var docs_json = {"68f1d337-0938-4d02-bf31-40ef9fac938f":{"defs":[],"roots":{"references":[{"attributes":{"below":[{"id":"1771"}],"center":[{"id":"1774"},{"id":"1778"}],"height":300,"left":[{"id":"1775"}],"renderers":[{"id":"1787"}],"title":{"id":"1790"},"toolbar":{"id":"1781"},"width":500,"x_range":{"id":"1763"},"x_scale":{"id":"1767"},"y_range":{"id":"1765"},"y_scale":{"id":"1769"}},"id":"1762","subtype":"Figure","type":"Plot"},{"attributes":{"height":175,"margin":[5,10,5,10],"options":["Bird","Brid","Cat","Dog"],"sizing_mode":"fixed","title":"label","value":["Bird","Brid","Cat","Dog"],"width":166},"id":"1806","type":"MultiSelect"},{"attributes":{},"id":"1795","type":"AllLabels"},{"attributes":{},"id":"1792","type":"AllLabels"},{"attributes":{"children":[[{"id":"1803"},0,0,1,1],[{"id":"1805"},0,1,1,1],[{"id":"1807"},0,2,1,1]],"height":350,"margin":[5,5,5,5],"name":"GridSpec00225","sizing_mode":"fixed","width":500},"id":"1802","type":"GridBox"},{"attributes":{"fill_alpha":0.5,"fill_color":"lightgrey","level":"overlay","line_alpha":1.0,"line_color":"black","line_dash":[4,4],"line_width":2,"syncable":false,"xs_units":"screen","ys_units":"screen"},"id":"1780","type":"PolyAnnotation"},{"attributes":{},"id":"1765","type":"DataRange1d"},{"attributes":{},"id":"1763","type":"DataRange1d"},{"attributes":{"children":[{"id":"1808"}],"height":175,"margin":[0,0,0,0],"min_height":175,"min_width":166,"name":"Column00206","width":166},"id":"1807","type":"Column"},{"attributes":{"axis_label":"objects_per_image","formatter":{"id":"1796"},"major_label_policy":{"id":"1795"},"ticker":{"id":"1776"}},"id":"1775","type":"LinearAxis"},{"attributes":{},"id":"1796","type":"BasicTickFormatter"},{"attributes":{"indices":[]},"id":"1761","type":"Selection"},{"attributes":{"source":{"id":"1760"}},"id":"1788","type":"CDSView"},{"attributes":{"active":0,"inline":true,"labels":["None","Or","And"],"margin":[5,10,5,10],"min_width":166,"width":166},"id":"1815","type":"RadioGroup"},{"attributes":{"children":[{"id":"1804"}],"height":175,"margin":[0,0,0,0],"min_height":175,"min_width":166,"name":"Column00202","width":166},"id":"1803","type":"Column"},{"attributes":{"fill_color":{"field":"colors"},"line_color":{"value":null},"radius":{"value":0.06},"x":{"field":"random_stat"},"y":{"field":"objects_per_image"}},"id":"1785","type":"Circle"},{"attributes":{"data":{"colors":["gray","gray","gray","gray","gray","gray","gray","gray","gray","gray"],"index":[0,1,2,3,4,5,6,7,8,9],"objects_per_image":[4,3,2,3,3,2,4,4,1,4],"random_stat":[1,2,1,1,3,1,2,4,1,2]},"selected":{"id":"1761"},"selection_policy":{"id":"1797"}},"id":"1760","type":"ColumnDataSource"},{"attributes":{"css_classes":["markdown"],"margin":[5,5,5,5],"name":"Markdown00215","text":"&lt;p style=&#x27;color:#808080&#x27;;&gt;Not selected&lt;/p&gt;"},"id":"1820","type":"panel.models.markup.HTML"},{"attributes":{"axis_label":"random_stat","formatter":{"id":"1793"},"major_label_policy":{"id":"1792"},"ticker":{"id":"1772"}},"id":"1771","type":"LinearAxis"},{"attributes":{"height":175,"margin":[5,10,5,10],"options":["img1","img2","img3","img4","img5","img6","img7","img8"],"sizing_mode":"fixed","title":"id","value":["img1","img2","img3","img4","img5","img6","img7","img8"],"width":166},"id":"1808","type":"MultiSelect"},{"attributes":{"axis":{"id":"1775"},"dimension":1,"ticker":null},"id":"1778","type":"Grid"},{"attributes":{"active":[0],"labels":["Ignore empty selections"],"margin":[5,10,5,10]},"id":"1816","type":"CheckboxGroup"},{"attributes":{},"id":"1793","type":"BasicTickFormatter"},{"attributes":{"css_classes":["markdown"],"margin":[5,5,5,5],"name":"Markdown00213","text":"&lt;p style=&#x27;color:#FF00FF&#x27;;&gt;Selected in another&lt;/p&gt;"},"id":"1819","type":"panel.models.markup.HTML"},{"attributes":{"data_source":{"id":"1760"},"glyph":{"id":"1785"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"1786"},"view":{"id":"1788"}},"id":"1787","type":"GlyphRenderer"},{"attributes":{},"id":"1797","type":"UnionRenderers"},{"attributes":{"height":175,"margin":[5,10,5,10],"options":["a","b","c","d"],"sizing_mode":"fixed","title":"filepath","value":["a","b","c","d"],"width":166},"id":"1804","type":"MultiSelect"},{"attributes":{"height":50,"margin":[5,10,5,10],"options":["random_stat","objects_per_image"],"sizing_mode":"fixed","title":"y-Axis","value":"objects_per_image","width":250},"id":"1812","type":"Select"},{"attributes":{"children":[{"id":"1806"}],"height":175,"margin":[0,0,0,0],"min_height":175,"min_width":166,"name":"Column00204","width":166},"id":"1805","type":"Column"},{"attributes":{"children":[{"id":"1811"},{"id":"1812"}],"margin":[0,0,0,0],"name":"Row00218"},"id":"1810","type":"Row"},{"attributes":{"children":[{"id":"1814"},{"id":"1815"},{"id":"1816"}],"margin":[0,0,0,0],"name":"Row00221"},"id":"1813","type":"Row"},{"attributes":{},"id":"1790","type":"Title"},{"attributes":{"height":50,"margin":[5,10,5,10],"options":["random_stat","objects_per_image"],"sizing_mode":"fixed","title":"x-Axis","value":"random_stat","width":250},"id":"1811","type":"Select"},{"attributes":{"css_classes":["markdown"],"margin":[5,5,5,5],"name":"Markdown00219","text":"&lt;p&gt;Combine selections with: &lt;/p&gt;"},"id":"1814","type":"panel.models.markup.HTML"},{"attributes":{"overlay":{"id":"1780"},"select_every_mousemove":false},"id":"1779","type":"LassoSelectTool"},{"attributes":{"children":[{"id":"1818"},{"id":"1819"},{"id":"1820"}],"margin":[0,0,0,0],"name":"Row00217"},"id":"1817","type":"Row"},{"attributes":{"children":[{"id":"1802"},{"id":"1809"}],"margin":[0,0,0,0],"name":"Column00229"},"id":"1801","type":"Column"},{"attributes":{"active_multi":null,"tools":[{"id":"1779"}]},"id":"1781","type":"Toolbar"},{"attributes":{"css_classes":["markdown"],"margin":[5,5,5,5],"name":"Markdown00211","text":"&lt;p style=&#x27;color:#B22222&#x27;;&gt;Selected in current&lt;/p&gt;"},"id":"1818","type":"panel.models.markup.HTML"},{"attributes":{"axis":{"id":"1771"},"ticker":null},"id":"1774","type":"Grid"},{"attributes":{"fill_alpha":{"value":0.1},"fill_color":{"field":"colors"},"line_alpha":{"value":0.1},"line_color":{"value":null},"radius":{"value":0.06},"x":{"field":"random_stat"},"y":{"field":"objects_per_image"}},"id":"1786","type":"Circle"},{"attributes":{"client_comm_id":"503bd2dc6c2447f9a91eacbd45dd738f","comm_id":"f0a4e90405b64e849c77e0d05b96f746","plot_id":"1801"},"id":"1876","type":"panel.models.comm_manager.CommManager"},{"attributes":{},"id":"1769","type":"LinearScale"},{"attributes":{"children":[{"id":"1810"},{"id":"1813"},{"id":"1817"},{"id":"1762"}],"margin":[0,0,0,0],"name":"Column00224"},"id":"1809","type":"Column"},{"attributes":{},"id":"1776","type":"BasicTicker"},{"attributes":{},"id":"1772","type":"BasicTicker"},{"attributes":{},"id":"1767","type":"LinearScale"}],"root_ids":["1801","1876"]},"title":"Bokeh Application","version":"2.3.2"}};
+    var render_items = [{"docid":"68f1d337-0938-4d02-bf31-40ef9fac938f","root_ids":["1801"],"roots":{"1801":"6d4f90ac-1915-4a5d-9614-7516e9ad4166"}}];
+    root.Bokeh.embed.embed_items_notebook(docs_json, render_items);
+  }
+  if (root.Bokeh !== undefined && root.Bokeh.Panel !== undefined) {
+    embed_document(root);
+  } else {
+    var attempts = 0;
+    var timer = setInterval(function(root) {
+      if (root.Bokeh !== undefined && root.Bokeh.Panel !== undefined) {
+        clearInterval(timer);
+        embed_document(root);
+      } else if (document.readyState == "complete") {
+        attempts++;
+        if (attempts > 100) {
+          clearInterval(timer);
+          console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing");
+        }
+      }
+    }, 10, root)
+  }
+})(window);</script>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -651,6 +969,67 @@ The list of datasets can be expanded by adding new entryies to the datasets attr
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Saved data at dump_dir
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+
+
+
+</div>
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div id='2026'>
+
+
+
+
+
+  <div class="bk-root" id="f6030d83-6aed-4c24-82ce-f72d12d6f841" data-root-id="2026"></div>
+</div>
+<script type="application/javascript">(function(root) {
+  function embed_document(root) {
+    var docs_json = {"a59983f1-df0b-4a88-b3fa-08b2dc6e368a":{"defs":[],"roots":{"references":[{"attributes":{},"id":"1976","type":"DataRange1d"},{"attributes":{"align":"end","height":50,"icon":null,"label":"Export","margin":[5,10,5,10],"min_height":50,"subscribed_events":["button_click"]},"id":"2189","type":"Button"},{"attributes":{},"id":"2060","type":"BasicTickFormatter"},{"attributes":{},"id":"1978","type":"LinearScale"},{"attributes":{"children":[{"id":"2086"},{"id":"2110"}],"margin":[0,0,0,0],"name":"Column00258"},"id":"2085","type":"Column"},{"attributes":{"height":325,"margin":[5,10,5,10],"options":["a","b","c","d"],"sizing_mode":"fixed","title":"filepath","value":["a","b","c","d"],"width":166},"id":"2075","type":"MultiSelect"},{"attributes":{},"id":"1995","type":"HelpTool"},{"attributes":{"bottom":{"value":0},"fill_alpha":{"value":0.1},"fill_color":{"value":"#1f77b4"},"left":{"field":"left"},"line_alpha":{"value":0.1},"line_color":{"value":"#1f77b4"},"right":{"field":"right"},"top":{"field":"top"}},"id":"2006","type":"Quad"},{"attributes":{"height":50,"margin":[5,10,5,10],"max_length":5000,"min_height":50,"title":"Export path","value":"dump_dir"},"id":"2188","type":"TextInput"},{"attributes":{"data_source":{"id":"2004"},"glyph":{"id":"2005"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"2006"},"view":{"id":"2008"}},"id":"2007","type":"GlyphRenderer"},{"attributes":{"formatter":{"id":"2057"},"major_label_policy":{"id":"2056"},"ticker":{"id":"1983"}},"id":"1982","type":"LinearAxis"},{"attributes":{},"id":"2095","type":"NumberFormatter"},{"attributes":{},"id":"2059","type":"AllLabels"},{"attributes":{},"id":"2207","type":"UnionRenderers"},{"attributes":{"child":{"id":"2027"},"name":"Column00255","title":"Dataset Filter"},"id":"2082","type":"Panel"},{"attributes":{},"id":"2056","type":"AllLabels"},{"attributes":{"formatter":{"id":"2060"},"major_label_policy":{"id":"2059"},"ticker":{"id":"1987"}},"id":"1986","type":"LinearAxis"},{"attributes":{"height":325,"margin":[5,10,5,10],"options":["Bird","Brid","Cat","Dog"],"sizing_mode":"fixed","title":"label","value":["Bird","Brid","Cat","Dog"],"width":166},"id":"2077","type":"MultiSelect"},{"attributes":{"axis":{"id":"1986"},"dimension":1,"ticker":null},"id":"1989","type":"Grid"},{"attributes":{"children":[{"id":"2079"}],"height":325,"margin":[0,0,0,0],"min_height":325,"min_width":166,"name":"Column00245","width":166},"id":"2078","type":"Column"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"2024","type":"HTMLTemplateFormatter"},{"attributes":{"child":{"id":"2083"},"name":"Column00272","title":"Dataset Overview"},"id":"2190","type":"Panel"},{"attributes":{},"id":"1980","type":"LinearScale"},{"attributes":{"source":{"id":"2004"}},"id":"2008","type":"CDSView"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"2022","type":"HTMLTemplateFormatter"},{"attributes":{},"id":"2062","type":"Selection"},{"attributes":{"children":[{"id":"2075"}],"height":325,"margin":[0,0,0,0],"min_height":325,"min_width":166,"name":"Column00241","width":166},"id":"2074","type":"Column"},{"attributes":{"axis":{"id":"1982"},"ticker":null},"id":"1985","type":"Grid"},{"attributes":{"children":[{"id":"2077"}],"height":325,"margin":[0,0,0,0],"min_height":325,"min_width":166,"name":"Column00243","width":166},"id":"2076","type":"Column"},{"attributes":{"editor":{"id":"2101"},"field":"name","formatter":{"id":"2100"},"title":"name","width":0},"id":"2102","type":"TableColumn"},{"attributes":{},"id":"1983","type":"BasicTicker"},{"attributes":{},"id":"2061","type":"UnionRenderers"},{"attributes":{"editor":{"id":"2091"},"field":"index","formatter":{"id":"2089"},"title":"index","width":0},"id":"2092","type":"TableColumn"},{"attributes":{},"id":"2040","type":"Selection"},{"attributes":{"align":"center","children":[{"id":"2081"}],"margin":[0,0,0,0],"name":"Row00254"},"id":"2080","type":"Row"},{"attributes":{},"id":"2193","type":"UnionRenderers"},{"attributes":{"end":4.03,"margin":[5,10,5,10],"min_width":161,"start":0.97,"step":0.1,"title":"objects_per_image","value":[0.97,4.03],"width":161},"id":"2053","type":"RangeSlider"},{"attributes":{"children":[{"id":"2084"},{"id":"2114"},{"id":"2182"}],"margin":[0,0,0,0],"name":"Column00272"},"id":"2083","type":"Column"},{"attributes":{},"id":"2101","type":"StringEditor"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"2019","type":"HTMLTemplateFormatter"},{"attributes":{},"id":"2035","type":"BasicTickFormatter"},{"attributes":{"align":"center","children":[{"id":"2029"}],"margin":[0,0,0,0],"name":"Row00253"},"id":"2028","type":"Row"},{"attributes":{"overlay":{"id":"1996"}},"id":"1992","type":"BoxZoomTool"},{"attributes":{},"id":"2057","type":"BasicTickFormatter"},{"attributes":{"client_comm_id":"1c6638c098f049a4bd001b142f6d7f8c","comm_id":"4371275efaae44b68945b84f82ba5fbd","plot_id":"2026"},"id":"2269","type":"panel.models.comm_manager.CommManager"},{"attributes":{},"id":"2209","type":"UnionRenderers"},{"attributes":{"below":[{"id":"1982"}],"center":[{"id":"1985"},{"id":"1989"}],"height":100,"left":[{"id":"1986"}],"renderers":[{"id":"2007"}],"title":{"id":"1972"},"toolbar":{"id":"1997"},"toolbar_location":null,"width":166,"x_range":{"id":"1974"},"x_scale":{"id":"1978"},"y_range":{"id":"1976"},"y_scale":{"id":"1980"}},"id":"1971","subtype":"Figure","type":"Plot"},{"attributes":{},"id":"2038","type":"BasicTickFormatter"},{"attributes":{},"id":"1990","type":"PanTool"},{"attributes":{},"id":"1972","type":"Title"},{"attributes":{"children":[{"id":"2115"}],"margin":[0,0,0,0],"name":"Row00277"},"id":"2114","type":"Row"},{"attributes":{"bottom":{"value":0},"fill_color":{"value":"#1f77b4"},"left":{"field":"left"},"line_color":{"value":"#1f77b4"},"right":{"field":"right"},"top":{"field":"top"}},"id":"2005","type":"Quad"},{"attributes":{"source":{"id":"1965"}},"id":"1969","type":"CDSView"},{"attributes":{"margin":[0,0,0,0],"tabs":[{"id":"2082"},{"id":"2190"}]},"id":"2026","type":"Tabs"},{"attributes":{"height":50,"icon":null,"label":"Create","margin":[5,10,5,10],"min_height":50,"subscribed_events":["button_click"]},"id":"2081","type":"Button"},{"attributes":{},"id":"2034","type":"AllLabels"},{"attributes":{},"id":"1994","type":"ResetTool"},{"attributes":{"children":[{"id":"2028"},{"id":"2080"}],"margin":[0,0,0,0],"name":"Column00255"},"id":"2027","type":"Column"},{"attributes":{},"id":"2091","type":"CellEditor"},{"attributes":{"columns":[{"id":"2092"},{"id":"2097"},{"id":"2102"},{"id":"2107"}],"editable":true,"height":125,"index_position":null,"margin":[5,10,5,10],"name":"","row_height":40,"sizing_mode":"fixed","source":{"id":"2087"},"view":{"id":"2112"},"width":500},"id":"2110","type":"DataTable"},{"attributes":{},"id":"2037","type":"AllLabels"},{"attributes":{},"id":"1974","type":"DataRange1d"},{"attributes":{"data_source":{"id":"1965"},"glyph":{"id":"1966"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"1967"},"view":{"id":"1969"}},"id":"1968","type":"GlyphRenderer"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"2021","type":"HTMLTemplateFormatter"},{"attributes":{"source":{"id":"2087"}},"id":"2112","type":"CDSView"},{"attributes":{},"id":"1987","type":"BasicTicker"},{"attributes":{"data":{"left":{"__ndarray__":"AAAAAAAA8D9mZmZmZmbyP83MzMzMzPQ/MzMzMzMz9z+amZmZmZn5PwAAAAAAAPw/ZmZmZmZm/j9mZmZmZmYAQJqZmZmZmQFAzMzMzMzMAkAAAAAAAAAEQDMzMzMzMwVAZmZmZmZmBkCamZmZmZkHQM3MzMzMzAhAAAAAAAAACkAzMzMzMzMLQGZmZmZmZgxAmZmZmZmZDUDNzMzMzMwOQA==","dtype":"float64","order":"little","shape":[20]},"right":{"__ndarray__":"ZmZmZmZm8j/NzMzMzMz0PzMzMzMzM/c/mpmZmZmZ+T8AAAAAAAD8P2ZmZmZmZv4/ZmZmZmZmAECamZmZmZkBQMzMzMzMzAJAAAAAAAAABEAzMzMzMzMFQGZmZmZmZgZAmpmZmZmZB0DNzMzMzMwIQAAAAAAAAApAMzMzMzMzC0BmZmZmZmYMQJmZmZmZmQ1AzczMzMzMDkAAAAAAAAAQQA==","dtype":"float64","order":"little","shape":[20]},"top":[1,0,0,0,0,0,2,0,0,0,0,0,0,3,0,0,0,0,0,4]},"selected":{"id":"2062"},"selection_policy":{"id":"2061"}},"id":"2004","type":"ColumnDataSource"},{"attributes":{"active_multi":null,"logo":null,"tools":[{"id":"1990"},{"id":"1991"},{"id":"1992"},{"id":"1993"},{"id":"1994"},{"id":"1995"}]},"id":"1997","type":"Toolbar"},{"attributes":{},"id":"2096","type":"IntEditor"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"2020","type":"HTMLTemplateFormatter"},{"attributes":{"indices":[0]},"id":"2088","type":"Selection"},{"attributes":{},"id":"2039","type":"UnionRenderers"},{"attributes":{"children":[[{"id":"2030"},0,0,1,1],[{"id":"2052"},0,1,1,1],[{"id":"2074"},0,2,1,1],[{"id":"2076"},1,0,1,1],[{"id":"2078"},1,1,1,1]],"height":650,"margin":[5,5,5,5],"name":"GridSpec00246","sizing_mode":"fixed","width":500},"id":"2029","type":"GridBox"},{"attributes":{"bottom_units":"screen","fill_alpha":0.5,"fill_color":"lightgrey","left_units":"screen","level":"overlay","line_alpha":1.0,"line_color":"black","line_dash":[4,4],"line_width":2,"right_units":"screen","syncable":false,"top_units":"screen"},"id":"1996","type":"BoxAnnotation"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"2025","type":"HTMLTemplateFormatter"},{"attributes":{},"id":"2100","type":"StringFormatter"},{"attributes":{"bottom_units":"screen","fill_alpha":0.5,"fill_color":"lightgrey","left_units":"screen","level":"overlay","line_alpha":1.0,"line_color":"black","line_dash":[4,4],"line_width":2,"right_units":"screen","syncable":false,"top_units":"screen"},"id":"1957","type":"BoxAnnotation"},{"attributes":{},"id":"1993","type":"SaveTool"},{"attributes":{"children":[{"id":"2031"},{"id":"1932"}],"height":325,"margin":[0,0,0,0],"min_height":325,"min_width":166,"name":"Column00235","width":166},"id":"2030","type":"Column"},{"attributes":{"editor":{"id":"2096"},"field":"num_datapoints","formatter":{"id":"2095"},"title":"num_datapoints","width":0},"id":"2097","type":"TableColumn"},{"attributes":{},"id":"1991","type":"WheelZoomTool"},{"attributes":{},"id":"2089","type":"NumberFormatter"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"2018","type":"HTMLTemplateFormatter"},{"attributes":{"height":325,"margin":[5,10,5,10],"options":["img1","img2","img3","img4","img5","img6","img7","img8"],"sizing_mode":"fixed","title":"id","value":["img1","img2","img3","img4","img5","img6","img7","img8"],"width":166},"id":"2079","type":"MultiSelect"},{"attributes":{"bottom":{"value":0},"fill_alpha":{"value":0.1},"fill_color":{"value":"#1f77b4"},"left":{"field":"left"},"line_alpha":{"value":0.1},"line_color":{"value":"#1f77b4"},"right":{"field":"right"},"top":{"field":"top"}},"id":"1967","type":"Quad"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"2023","type":"HTMLTemplateFormatter"},{"attributes":{},"id":"2105","type":"StringFormatter"},{"attributes":{},"id":"1944","type":"BasicTicker"},{"attributes":{},"id":"2106","type":"StringEditor"},{"attributes":{"editor":{"id":"2106"},"field":"description","formatter":{"id":"2105"},"title":"description","width":0},"id":"2107","type":"TableColumn"},{"attributes":{"end":4.03,"margin":[5,10,5,10],"min_width":161,"start":0.97,"step":0.1,"title":"random_stat","value":[0.97,4.03],"width":161},"id":"2031","type":"RangeSlider"},{"attributes":{"height":50,"margin":[5,10,5,10],"max_length":5000,"min_height":50,"title":"Description","value":"A dataset for testing_new"},"id":"2186","type":"TextAreaInput"},{"attributes":{"height":50,"margin":[5,10,5,10],"max_length":5000,"min_height":50,"title":"Dataset name","value":"test_ds"},"id":"2185","type":"TextInput"},{"attributes":{"overlay":{"id":"1957"}},"id":"1953","type":"BoxZoomTool"},{"attributes":{"data":{"filepath":["c","a","b","a","a","b","c","c","d","c"],"id":["img8","img1","img2","img3","img4","img5","img6","img6","img7","img8"],"index":[0,1,2,3,4,5,6,7,8,9],"label":["Brid","Dog","Dog","Cat","Dog","Cat","Bird","Dog","Cat","Bird"],"objects_per_image":[4,3,2,3,3,2,4,4,1,4],"random_stat":[1,2,1,1,3,1,2,4,1,2]},"selected":{"id":"2117"},"selection_policy":{"id":"2207"}},"id":"2116","type":"ColumnDataSource"},{"attributes":{"children":[{"id":"2053"},{"id":"1971"}],"height":325,"margin":[0,0,0,0],"min_height":325,"min_width":166,"name":"Column00239","width":166},"id":"2052","type":"Column"},{"attributes":{"margin":[0,0,0,0],"tabs":[{"id":"2153"},{"id":"2181"}]},"id":"2115","type":"Tabs"},{"attributes":{"align":"center","children":[{"id":"2183"}],"margin":[0,0,0,0],"name":"Row00271"},"id":"2182","type":"Row"},{"attributes":{"source":{"id":"2116"}},"id":"2151","type":"CDSView"},{"attributes":{"indices":[0]},"id":"2117","type":"Selection"},{"attributes":{"editor":{"id":"2120"},"field":"index","formatter":{"id":"2118"},"title":"index","width":0},"id":"2121","type":"TableColumn"},{"attributes":{"columns":[{"id":"2121"},{"id":"2126"},{"id":"2131"},{"id":"2136"},{"id":"2141"},{"id":"2146"}],"editable":true,"height":350,"index_position":null,"margin":[5,10,5,10],"name":"","row_height":40,"sizing_mode":"fixed","source":{"id":"2116"},"view":{"id":"2151"},"width":500},"id":"2149","type":"DataTable"},{"attributes":{},"id":"2120","type":"CellEditor"},{"attributes":{},"id":"2118","type":"NumberFormatter"},{"attributes":{"height":25,"icon":null,"label":"Delete","margin":[5,10,5,10],"sizing_mode":"fixed","subscribed_events":["button_click"],"width":500},"id":"2086","type":"Button"},{"attributes":{"editor":{"id":"2125"},"field":"random_stat","formatter":{"id":"2018"},"title":"random_stat","width":0},"id":"2126","type":"TableColumn"},{"attributes":{},"id":"2125","type":"IntEditor"},{"attributes":{"editor":{"id":"2130"},"field":"objects_per_image","formatter":{"id":"2019"},"title":"objects_per_image","width":0},"id":"2131","type":"TableColumn"},{"attributes":{},"id":"1951","type":"PanTool"},{"attributes":{},"id":"2130","type":"IntEditor"},{"attributes":{"data":{"description":["A dataset for testing_new"],"index":[0],"name":["test_ds"],"num_datapoints":[10]},"selected":{"id":"2088"},"selection_policy":{"id":"2193"}},"id":"2087","type":"ColumnDataSource"},{"attributes":{},"id":"1952","type":"WheelZoomTool"},{"attributes":{"editor":{"id":"2135"},"field":"filepath","formatter":{"id":"2020"},"title":"filepath","width":0},"id":"2136","type":"TableColumn"},{"attributes":{},"id":"1954","type":"SaveTool"},{"attributes":{},"id":"2135","type":"StringEditor"},{"attributes":{},"id":"1941","type":"LinearScale"},{"attributes":{},"id":"1939","type":"LinearScale"},{"attributes":{"align":"center","children":[{"id":"2085"}],"margin":[0,0,0,0],"name":"Row00269"},"id":"2084","type":"Row"},{"attributes":{"editor":{"id":"2140"},"field":"label","formatter":{"id":"2021"},"title":"label","width":0},"id":"2141","type":"TableColumn"},{"attributes":{},"id":"2140","type":"StringEditor"},{"attributes":{"editor":{"id":"2145"},"field":"id","formatter":{"id":"2022"},"title":"id","width":0},"id":"2146","type":"TableColumn"},{"attributes":{},"id":"2145","type":"StringEditor"},{"attributes":{"editor":{"id":"2158"},"field":"index","formatter":{"id":"2156"},"title":"index","width":0},"id":"2159","type":"TableColumn"},{"attributes":{"child":{"id":"2149"},"name":"","title":"Dataset overview"},"id":"2153","type":"Panel"},{"attributes":{"indices":[0]},"id":"2155","type":"Selection"},{"attributes":{"axis":{"id":"1947"},"dimension":1,"ticker":null},"id":"1950","type":"Grid"},{"attributes":{"formatter":{"id":"2035"},"major_label_policy":{"id":"2034"},"ticker":{"id":"1944"}},"id":"1943","type":"LinearAxis"},{"attributes":{"data":{"description":["A dataset for testing_new"],"index":[0],"name":["test_ds"],"num_datapoints":[10]},"selected":{"id":"2155"},"selection_policy":{"id":"2209"}},"id":"2154","type":"ColumnDataSource"},{"attributes":{"data":{"left":{"__ndarray__":"AAAAAAAA8D9mZmZmZmbyP83MzMzMzPQ/MzMzMzMz9z+amZmZmZn5PwAAAAAAAPw/ZmZmZmZm/j9mZmZmZmYAQJqZmZmZmQFAzMzMzMzMAkAAAAAAAAAEQDMzMzMzMwVAZmZmZmZmBkCamZmZmZkHQM3MzMzMzAhAAAAAAAAACkAzMzMzMzMLQGZmZmZmZgxAmZmZmZmZDUDNzMzMzMwOQA==","dtype":"float64","order":"little","shape":[20]},"right":{"__ndarray__":"ZmZmZmZm8j/NzMzMzMz0PzMzMzMzM/c/mpmZmZmZ+T8AAAAAAAD8P2ZmZmZmZv4/ZmZmZmZmAECamZmZmZkBQMzMzMzMzAJAAAAAAAAABEAzMzMzMzMFQGZmZmZmZgZAmpmZmZmZB0DNzMzMzMwIQAAAAAAAAApAMzMzMzMzC0BmZmZmZmYMQJmZmZmZmQ1AzczMzMzMDkAAAAAAAAAQQA==","dtype":"float64","order":"little","shape":[20]},"top":[5,0,0,0,0,0,3,0,0,0,0,0,0,1,0,0,0,0,0,1]},"selected":{"id":"2040"},"selection_policy":{"id":"2039"}},"id":"1965","type":"ColumnDataSource"},{"attributes":{},"id":"1948","type":"BasicTicker"},{"attributes":{},"id":"2156","type":"NumberFormatter"},{"attributes":{"active_multi":null,"logo":null,"tools":[{"id":"1951"},{"id":"1952"},{"id":"1953"},{"id":"1954"},{"id":"1955"},{"id":"1956"}]},"id":"1958","type":"Toolbar"},{"attributes":{"source":{"id":"2154"}},"id":"2179","type":"CDSView"},{"attributes":{},"id":"2158","type":"CellEditor"},{"attributes":{"columns":[{"id":"2159"},{"id":"2164"},{"id":"2169"},{"id":"2174"}],"editable":true,"height":350,"index_position":null,"margin":[5,10,5,10],"name":"","row_height":40,"sizing_mode":"fixed","source":{"id":"2154"},"view":{"id":"2179"},"width":500},"id":"2177","type":"DataTable"},{"attributes":{},"id":"1955","type":"ResetTool"},{"attributes":{"axis":{"id":"1943"},"ticker":null},"id":"1946","type":"Grid"},{"attributes":{"editor":{"id":"2163"},"field":"num_datapoints","formatter":{"id":"2023"},"title":"num_datapoints","width":0},"id":"2164","type":"TableColumn"},{"attributes":{},"id":"2163","type":"IntEditor"},{"attributes":{"editor":{"id":"2168"},"field":"name","formatter":{"id":"2024"},"title":"name","width":0},"id":"2169","type":"TableColumn"},{"attributes":{},"id":"1933","type":"Title"},{"attributes":{"below":[{"id":"1943"}],"center":[{"id":"1946"},{"id":"1950"}],"height":100,"left":[{"id":"1947"}],"renderers":[{"id":"1968"}],"title":{"id":"1933"},"toolbar":{"id":"1958"},"toolbar_location":null,"width":166,"x_range":{"id":"1935"},"x_scale":{"id":"1939"},"y_range":{"id":"1937"},"y_scale":{"id":"1941"}},"id":"1932","subtype":"Figure","type":"Plot"},{"attributes":{},"id":"2168","type":"StringEditor"},{"attributes":{"editor":{"id":"2173"},"field":"description","formatter":{"id":"2025"},"title":"description","width":0},"id":"2174","type":"TableColumn"},{"attributes":{},"id":"1935","type":"DataRange1d"},{"attributes":{},"id":"1956","type":"HelpTool"},{"attributes":{},"id":"2173","type":"StringEditor"},{"attributes":{"formatter":{"id":"2038"},"major_label_policy":{"id":"2037"},"ticker":{"id":"1948"}},"id":"1947","type":"LinearAxis"},{"attributes":{"children":[{"id":"2185"},{"id":"2186"}],"margin":[0,0,0,0],"name":"Row00266"},"id":"2184","type":"Row"},{"attributes":{"bottom":{"value":0},"fill_color":{"value":"#1f77b4"},"left":{"field":"left"},"line_color":{"value":"#1f77b4"},"right":{"field":"right"},"top":{"field":"top"}},"id":"1966","type":"Quad"},{"attributes":{"children":[{"id":"2184"},{"id":"2187"}],"margin":[0,0,0,0],"name":"Column00268"},"id":"2183","type":"Column"},{"attributes":{},"id":"1937","type":"DataRange1d"},{"attributes":{"children":[{"id":"2188"},{"id":"2189"}],"margin":[0,0,0,0],"name":"Row00267"},"id":"2187","type":"Row"},{"attributes":{"child":{"id":"2177"},"name":"","title":"Dataset stats overview"},"id":"2181","type":"Panel"}],"root_ids":["2026","2269"]},"title":"Bokeh Application","version":"2.3.2"}};
+    var render_items = [{"docid":"a59983f1-df0b-4a88-b3fa-08b2dc6e368a","root_ids":["2026"],"roots":{"2026":"f6030d83-6aed-4c24-82ce-f72d12d6f841"}}];
+    root.Bokeh.embed.embed_items_notebook(docs_json, render_items);
+  }
+  if (root.Bokeh !== undefined && root.Bokeh.Panel !== undefined) {
+    embed_document(root);
+  } else {
+    var attempts = 0;
+    var timer = setInterval(function(root) {
+      if (root.Bokeh !== undefined && root.Bokeh.Panel !== undefined) {
+        clearInterval(timer);
+        embed_document(root);
+      } else if (document.readyState == "complete") {
+        attempts++;
+        if (attempts > 100) {
+          clearInterval(timer);
+          console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing");
+        }
+      }
+    }, 10, root)
+  }
+})(window);</script>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
     {% endraw %}
 
@@ -698,6 +1077,59 @@ The list of datasets can be expanded by adding new entryies to the datasets attr
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+
+</div>
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div id='2449'>
+
+
+
+
+
+  <div class="bk-root" id="51162a92-272b-40a8-9eaf-c7cce516cc6d" data-root-id="2449"></div>
+</div>
+<script type="application/javascript">(function(root) {
+  function embed_document(root) {
+    var docs_json = {"30b9cb2e-4f50-4d47-b973-d2cce9d1be0b":{"defs":[],"roots":{"references":[{"attributes":{"editor":{"id":"2562"},"field":"num_datapoints","formatter":{"id":"2446"},"title":"num_datapoints","width":0},"id":"2563","type":"TableColumn"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"2442","type":"HTMLTemplateFormatter"},{"attributes":{"children":[{"id":"2469"},{"id":"2470"},{"id":"2471"}],"margin":[0,0,0,0],"name":"Row00296"},"id":"2468","type":"Row"},{"attributes":{"height":50,"icon":null,"label":"Create","margin":[5,10,5,10],"min_height":50,"subscribed_events":["button_click"]},"id":"2495","type":"Button"},{"attributes":{"indices":[]},"id":"2401","type":"Selection"},{"attributes":{},"id":"2602","type":"UnionRenderers"},{"attributes":{"source":{"id":"2501"}},"id":"2511","type":"CDSView"},{"attributes":{"children":[{"id":"2500"},{"id":"2509"}],"margin":[0,0,0,0],"name":"Column00315"},"id":"2499","type":"Column"},{"attributes":{"indices":[0]},"id":"2502","type":"Selection"},{"attributes":{"editor":{"id":"2567"},"field":"name","formatter":{"id":"2447"},"title":"name","width":0},"id":"2568","type":"TableColumn"},{"attributes":{},"id":"2430","type":"Title"},{"attributes":{"align":"center","children":[{"id":"2514"}],"margin":[0,0,0,0],"name":"Row00327"},"id":"2513","type":"Row"},{"attributes":{"height":25,"icon":null,"label":"Delete","margin":[5,10,5,10],"sizing_mode":"fixed","subscribed_events":["button_click"],"width":500},"id":"2500","type":"Button"},{"attributes":{"children":[{"id":"2583"},{"id":"2586"}],"margin":[0,0,0,0],"name":"Column00325"},"id":"2582","type":"Column"},{"attributes":{"child":{"id":"2450"},"name":"Column00312","title":"Dataset Filter"},"id":"2496","type":"Panel"},{"attributes":{"align":"center","children":[{"id":"2499"}],"margin":[0,0,0,0],"name":"Row00326"},"id":"2498","type":"Row"},{"attributes":{"child":{"id":"2576"},"name":"","title":"Dataset stats overview"},"id":"2580","type":"Panel"},{"attributes":{"editor":{"id":"2557"},"field":"index","formatter":{"id":"2555"},"title":"index","width":0},"id":"2558","type":"TableColumn"},{"attributes":{"children":[{"id":"2457"}],"height":162,"margin":[0,0,0,0],"min_height":162,"min_width":166,"name":"Column00283","width":166},"id":"2456","type":"Column"},{"attributes":{"data":{"colors":["gray","gray","gray","gray","gray","gray","gray","gray","gray","gray"],"index":[0,1,2,3,4,5,6,7,8,9],"objects_per_image":[4,3,2,3,3,2,4,4,1,4],"random_stat":[1,2,1,1,3,1,2,4,1,2]},"selected":{"id":"2401"},"selection_policy":{"id":"2437"}},"id":"2400","type":"ColumnDataSource"},{"attributes":{},"id":"2557","type":"CellEditor"},{"attributes":{"margin":[0,0,0,0],"tabs":[{"id":"2552"},{"id":"2580"}]},"id":"2514","type":"Tabs"},{"attributes":{"axis_label":"objects_per_image","formatter":{"id":"2436"},"major_label_policy":{"id":"2435"},"ticker":{"id":"2416"}},"id":"2415","type":"LinearAxis"},{"attributes":{"indices":[0]},"id":"2554","type":"Selection"},{"attributes":{},"id":"2555","type":"NumberFormatter"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"2443","type":"HTMLTemplateFormatter"},{"attributes":{"child":{"id":"2497"},"name":"Column00329","title":"Dataset Overview"},"id":"2589","type":"Panel"},{"attributes":{},"id":"2562","type":"IntEditor"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"2444","type":"HTMLTemplateFormatter"},{"attributes":{},"id":"2416","type":"BasicTicker"},{"attributes":{"indices":[0]},"id":"2516","type":"Selection"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"2445","type":"HTMLTemplateFormatter"},{"attributes":{"child":{"id":"2548"},"name":"","title":"Dataset overview"},"id":"2552","type":"Panel"},{"attributes":{},"id":"2544","type":"StringEditor"},{"attributes":{"editor":{"id":"2544"},"field":"id","formatter":{"id":"2445"},"title":"id","width":0},"id":"2545","type":"TableColumn"},{"attributes":{},"id":"2432","type":"AllLabels"},{"attributes":{},"id":"2433","type":"BasicTickFormatter"},{"attributes":{"children":[[{"id":"2454"},0,0,1,1],[{"id":"2456"},0,1,1,1],[{"id":"2458"},0,2,1,1]],"height":325,"margin":[5,5,5,5],"name":"GridSpec00304","sizing_mode":"fixed","width":500},"id":"2453","type":"GridBox"},{"attributes":{},"id":"2539","type":"StringEditor"},{"attributes":{"children":[{"id":"2465"},{"id":"2466"},{"id":"2467"}],"margin":[0,0,0,0],"name":"Row00300"},"id":"2464","type":"Row"},{"attributes":{},"id":"2592","type":"UnionRenderers"},{"attributes":{"editor":{"id":"2539"},"field":"label","formatter":{"id":"2444"},"title":"label","width":0},"id":"2540","type":"TableColumn"},{"attributes":{"align":"end","height":50,"icon":null,"label":"Export","margin":[5,10,5,10],"min_height":50,"subscribed_events":["button_click"]},"id":"2588","type":"Button"},{"attributes":{},"id":"2403","type":"DataRange1d"},{"attributes":{"height":50,"margin":[5,10,5,10],"max_length":5000,"min_height":50,"title":"Description"},"id":"2585","type":"TextAreaInput"},{"attributes":{},"id":"2534","type":"StringEditor"},{"attributes":{"height":50,"margin":[5,10,5,10],"max_length":5000,"min_height":50,"title":"Export path","value":"datasets"},"id":"2587","type":"TextInput"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"2448","type":"HTMLTemplateFormatter"},{"attributes":{},"id":"2435","type":"AllLabels"},{"attributes":{"editor":{"id":"2534"},"field":"filepath","formatter":{"id":"2443"},"title":"filepath","width":0},"id":"2535","type":"TableColumn"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"2447","type":"HTMLTemplateFormatter"},{"attributes":{"height":50,"margin":[5,10,5,10],"options":["random_stat","objects_per_image"],"sizing_mode":"fixed","title":"x-Axis","value":"random_stat","width":250},"id":"2462","type":"Select"},{"attributes":{"css_classes":["markdown"],"margin":[5,5,5,5],"name":"Markdown00290","text":"&lt;p style=&#x27;color:#B22222&#x27;;&gt;Selected in current&lt;/p&gt;"},"id":"2469","type":"panel.models.markup.HTML"},{"attributes":{},"id":"2412","type":"BasicTicker"},{"attributes":{},"id":"2436","type":"BasicTickFormatter"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"2446","type":"HTMLTemplateFormatter"},{"attributes":{"active_multi":null,"tools":[{"id":"2419"}]},"id":"2421","type":"Toolbar"},{"attributes":{"height":50,"margin":[5,10,5,10],"max_length":5000,"min_height":50,"title":"Dataset name"},"id":"2584","type":"TextInput"},{"attributes":{"children":[{"id":"2584"},{"id":"2585"}],"margin":[0,0,0,0],"name":"Row00323"},"id":"2583","type":"Row"},{"attributes":{},"id":"2529","type":"IntEditor"},{"attributes":{"children":[{"id":"2587"},{"id":"2588"}],"margin":[0,0,0,0],"name":"Row00324"},"id":"2586","type":"Row"},{"attributes":{"editor":{"id":"2529"},"field":"objects_per_image","formatter":{"id":"2442"},"title":"objects_per_image","width":0},"id":"2530","type":"TableColumn"},{"attributes":{},"id":"2524","type":"IntEditor"},{"attributes":{},"id":"2572","type":"StringEditor"},{"attributes":{},"id":"2407","type":"LinearScale"},{"attributes":{"css_classes":["markdown"],"margin":[5,5,5,5],"name":"Markdown00298","text":"&lt;p&gt;Combine selections with: &lt;/p&gt;"},"id":"2465","type":"panel.models.markup.HTML"},{"attributes":{"client_comm_id":"fe6723768f434ea19b3bf83e15a587a1","comm_id":"dac0f8157d6247a790ee730ec4f869f7","plot_id":"2449"},"id":"2641","type":"panel.models.comm_manager.CommManager"},{"attributes":{"axis":{"id":"2415"},"dimension":1,"ticker":null},"id":"2418","type":"Grid"},{"attributes":{"editor":{"id":"2524"},"field":"random_stat","formatter":{"id":"2441"},"title":"random_stat","width":0},"id":"2525","type":"TableColumn"},{"attributes":{"overlay":{"id":"2420"},"select_every_mousemove":false},"id":"2419","type":"LassoSelectTool"},{"attributes":{"children":[{"id":"2451"},{"id":"2494"}],"margin":[0,0,0,0],"name":"Column00312"},"id":"2450","type":"Column"},{"attributes":{},"id":"2517","type":"NumberFormatter"},{"attributes":{"columns":[{"id":"2558"},{"id":"2563"},{"id":"2568"},{"id":"2573"}],"editable":true,"height":450,"index_position":null,"margin":[5,10,5,10],"name":"","row_height":40,"sizing_mode":"fixed","source":{"id":"2553"},"view":{"id":"2578"},"width":500},"id":"2576","type":"DataTable"},{"attributes":{},"id":"2567","type":"StringEditor"},{"attributes":{"height":162,"margin":[5,10,5,10],"options":["a","b","c","d"],"sizing_mode":"fixed","title":"filepath","value":["a","b","c","d"],"width":166},"id":"2455","type":"MultiSelect"},{"attributes":{"align":"center","children":[{"id":"2495"}],"margin":[0,0,0,0],"name":"Row00311"},"id":"2494","type":"Row"},{"attributes":{"css_classes":["markdown"],"margin":[5,5,5,5],"name":"Markdown00294","text":"&lt;p style=&#x27;color:#808080&#x27;;&gt;Not selected&lt;/p&gt;"},"id":"2471","type":"panel.models.markup.HTML"},{"attributes":{},"id":"2519","type":"CellEditor"},{"attributes":{"editor":{"id":"2519"},"field":"index","formatter":{"id":"2517"},"title":"index","width":0},"id":"2520","type":"TableColumn"},{"attributes":{"template":"<span href=\"#\" data-toggle=\"tooltip\" title=\"<%= value %>\"><%= value %></span>"},"id":"2441","type":"HTMLTemplateFormatter"},{"attributes":{"below":[{"id":"2411"}],"center":[{"id":"2414"},{"id":"2418"}],"height":275,"left":[{"id":"2415"}],"renderers":[{"id":"2427"}],"title":{"id":"2430"},"toolbar":{"id":"2421"},"width":500,"x_range":{"id":"2403"},"x_scale":{"id":"2407"},"y_range":{"id":"2405"},"y_scale":{"id":"2409"}},"id":"2402","subtype":"Figure","type":"Plot"},{"attributes":{"columns":[{"id":"2520"},{"id":"2525"},{"id":"2530"},{"id":"2535"},{"id":"2540"},{"id":"2545"}],"editable":true,"height":450,"index_position":null,"margin":[5,10,5,10],"name":"","row_height":40,"sizing_mode":"fixed","source":{"id":"2515"},"view":{"id":"2550"},"width":500},"id":"2548","type":"DataTable"},{"attributes":{},"id":"2437","type":"UnionRenderers"},{"attributes":{"children":[{"id":"2461"},{"id":"2464"},{"id":"2468"},{"id":"2402"}],"margin":[0,0,0,0],"name":"Column00303"},"id":"2460","type":"Column"},{"attributes":{"children":[{"id":"2455"}],"height":162,"margin":[0,0,0,0],"min_height":162,"min_width":166,"name":"Column00281","width":166},"id":"2454","type":"Column"},{"attributes":{"margin":[0,0,0,0],"tabs":[{"id":"2496"},{"id":"2589"}]},"id":"2449","type":"Tabs"},{"attributes":{"source":{"id":"2515"}},"id":"2550","type":"CDSView"},{"attributes":{"children":[{"id":"2453"},{"id":"2460"}],"margin":[0,0,0,0],"name":"Column00308"},"id":"2452","type":"Column"},{"attributes":{"data":{"filepath":["c","a","b","a","a","b","c","c","d","c"],"id":["img8","img1","img2","img3","img4","img5","img6","img6","img7","img8"],"index":[0,1,2,3,4,5,6,7,8,9],"label":["Brid","Dog","Dog","Cat","Dog","Cat","Bird","Dog","Cat","Bird"],"objects_per_image":[4,3,2,3,3,2,4,4,1,4],"random_stat":[1,2,1,1,3,1,2,4,1,2]},"selected":{"id":"2516"},"selection_policy":{"id":"2600"}},"id":"2515","type":"ColumnDataSource"},{"attributes":{"source":{"id":"2400"}},"id":"2428","type":"CDSView"},{"attributes":{"align":"center","children":[{"id":"2582"}],"margin":[0,0,0,0],"name":"Row00328"},"id":"2581","type":"Row"},{"attributes":{},"id":"2409","type":"LinearScale"},{"attributes":{},"id":"2503","type":"StringFormatter"},{"attributes":{"data_source":{"id":"2400"},"glyph":{"id":"2425"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"2426"},"view":{"id":"2428"}},"id":"2427","type":"GlyphRenderer"},{"attributes":{"children":[{"id":"2498"},{"id":"2513"},{"id":"2581"}],"margin":[0,0,0,0],"name":"Column00329"},"id":"2497","type":"Column"},{"attributes":{"active":0,"inline":true,"labels":["None","Or","And"],"margin":[5,10,5,10],"min_width":166,"width":166},"id":"2466","type":"RadioGroup"},{"attributes":{},"id":"2505","type":"CellEditor"},{"attributes":{"align":"center","children":[{"id":"2452"}],"margin":[0,0,0,0],"name":"Row00310"},"id":"2451","type":"Row"},{"attributes":{"children":[{"id":"2459"}],"height":162,"margin":[0,0,0,0],"min_height":162,"min_width":166,"name":"Column00285","width":166},"id":"2458","type":"Column"},{"attributes":{"fill_alpha":{"value":0.1},"fill_color":{"field":"colors"},"line_alpha":{"value":0.1},"line_color":{"value":null},"radius":{"value":0.06},"x":{"field":"random_stat"},"y":{"field":"objects_per_image"}},"id":"2426","type":"Circle"},{"attributes":{"height":162,"margin":[5,10,5,10],"options":["Bird","Brid","Cat","Dog"],"sizing_mode":"fixed","title":"label","value":["Bird","Brid","Cat","Dog"],"width":166},"id":"2457","type":"MultiSelect"},{"attributes":{"source":{"id":"2553"}},"id":"2578","type":"CDSView"},{"attributes":{"editor":{"id":"2505"},"field":"index","formatter":{"id":"2503"},"title":"index","width":0},"id":"2506","type":"TableColumn"},{"attributes":{"active":[0],"labels":["Ignore empty selections"],"margin":[5,10,5,10]},"id":"2467","type":"CheckboxGroup"},{"attributes":{},"id":"2405","type":"DataRange1d"},{"attributes":{"axis":{"id":"2411"},"ticker":null},"id":"2414","type":"Grid"},{"attributes":{"fill_color":{"field":"colors"},"line_color":{"value":null},"radius":{"value":0.06},"x":{"field":"random_stat"},"y":{"field":"objects_per_image"}},"id":"2425","type":"Circle"},{"attributes":{"data":{"index":[]},"selected":{"id":"2502"},"selection_policy":{"id":"2592"}},"id":"2501","type":"ColumnDataSource"},{"attributes":{"columns":[{"id":"2506"}],"editable":true,"height":125,"index_position":null,"margin":[5,10,5,10],"name":"","row_height":40,"sizing_mode":"fixed","source":{"id":"2501"},"view":{"id":"2511"},"width":500},"id":"2509","type":"DataTable"},{"attributes":{"height":162,"margin":[5,10,5,10],"options":["img1","img2","img3","img4","img5","img6","img7","img8"],"sizing_mode":"fixed","title":"id","value":["img1","img2","img3","img4","img5","img6","img7","img8"],"width":166},"id":"2459","type":"MultiSelect"},{"attributes":{"css_classes":["markdown"],"margin":[5,5,5,5],"name":"Markdown00292","text":"&lt;p style=&#x27;color:#FF00FF&#x27;;&gt;Selected in another&lt;/p&gt;"},"id":"2470","type":"panel.models.markup.HTML"},{"attributes":{"editor":{"id":"2572"},"field":"description","formatter":{"id":"2448"},"title":"description","width":0},"id":"2573","type":"TableColumn"},{"attributes":{"height":50,"margin":[5,10,5,10],"options":["random_stat","objects_per_image"],"sizing_mode":"fixed","title":"y-Axis","value":"objects_per_image","width":250},"id":"2463","type":"Select"},{"attributes":{},"id":"2600","type":"UnionRenderers"},{"attributes":{"fill_alpha":0.5,"fill_color":"lightgrey","level":"overlay","line_alpha":1.0,"line_color":"black","line_dash":[4,4],"line_width":2,"syncable":false,"xs_units":"screen","ys_units":"screen"},"id":"2420","type":"PolyAnnotation"},{"attributes":{"children":[{"id":"2462"},{"id":"2463"}],"margin":[0,0,0,0],"name":"Row00297"},"id":"2461","type":"Row"},{"attributes":{"axis_label":"random_stat","formatter":{"id":"2433"},"major_label_policy":{"id":"2432"},"ticker":{"id":"2412"}},"id":"2411","type":"LinearAxis"},{"attributes":{"data":{"description":["A dataset for testing"],"index":[0],"name":["TestDataset"],"num_datapoints":[10]},"selected":{"id":"2554"},"selection_policy":{"id":"2602"}},"id":"2553","type":"ColumnDataSource"}],"root_ids":["2449","2641"]},"title":"Bokeh Application","version":"2.3.2"}};
+    var render_items = [{"docid":"30b9cb2e-4f50-4d47-b973-d2cce9d1be0b","root_ids":["2449"],"roots":{"2449":"51162a92-272b-40a8-9eaf-c7cce516cc6d"}}];
+    root.Bokeh.embed.embed_items_notebook(docs_json, render_items);
+  }
+  if (root.Bokeh !== undefined && root.Bokeh.Panel !== undefined) {
+    embed_document(root);
+  } else {
+    var attempts = 0;
+    var timer = setInterval(function(root) {
+      if (root.Bokeh !== undefined && root.Bokeh.Panel !== undefined) {
+        clearInterval(timer);
+        embed_document(root);
+      } else if (document.readyState == "complete") {
+        attempts++;
+        if (attempts > 100) {
+          clearInterval(timer);
+          console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing");
+        }
+      }
+    }, 10, root)
+  }
+})(window);</script>
+</div>
+
+</div>
+
 </div>
 </div>
 
