@@ -354,21 +354,21 @@ class ObjectDetectionResultsDataset(ResultsDataset):
             # correct the width and height to the values of the original image
             prediction = prediction.pred.as_dict()["detection"]
 
-            if len(prediction["labels"]) > 0:
-                losses = sample_plus_loss.losses
-                sample_plus_loss_dict = sample_plus_loss.as_dict()
-                # bbox correction
-                img = Image.open(str(sample_plus_loss.common.filepath))
-                width, height = img.size[0], img.size[1]
-                # use bool to int for padded_along_shortest and int(sample_plus_loss["width"] < sample_plus_loss["height"]) to avoid if branches
-                resize_factor = sample_plus_loss_dict["common"]["width"]/width if width > height else sample_plus_loss_dict["common"]["height"]/height
-                resized_x = resize_factor * width
-                resized_y = resize_factor * height
-                pad_x = sample_plus_loss_dict["common"]["width"]-resized_x
-                pad_y = sample_plus_loss_dict["common"]["height"]-resized_y
-                correct_x = lambda x: (x-pad_x/2)/resize_factor
-                correct_y = lambda y: (y-pad_y/2)/resize_factor
+            losses = sample_plus_loss.losses
+            sample_plus_loss_dict = sample_plus_loss.as_dict()
+            # bbox correction
+            img = Image.open(str(sample_plus_loss.common.filepath))
+            width, height = img.size[0], img.size[1]
+            # use bool to int for padded_along_shortest and int(sample_plus_loss["width"] < sample_plus_loss["height"]) to avoid if branches
+            resize_factor = sample_plus_loss_dict["common"]["width"]/width if width > height else sample_plus_loss_dict["common"]["height"]/height
+            resized_x = resize_factor * width
+            resized_y = resize_factor * height
+            pad_x = sample_plus_loss_dict["common"]["width"]-resized_x
+            pad_y = sample_plus_loss_dict["common"]["height"]-resized_y
+            correct_x = lambda x: (x-pad_x/2)/resize_factor
+            correct_y = lambda y: (y-pad_y/2)/resize_factor
 
+            if len(prediction["labels"]) > 0:
                 for label, bbox, score in zip(prediction["labels"], prediction["bboxes"], prediction["scores"]):
                     xmin, xmax, ymin, ymax = correct_x(bbox.xmin), correct_x(bbox.xmax), correct_y(bbox.ymin), correct_y(bbox.ymax)
                     file_stats = sample_plus_loss.common.filepath.stat()
