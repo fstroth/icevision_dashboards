@@ -24,8 +24,9 @@ import panel.widgets as pnw
 from .utils import *
 
 # Cell
-def barplot(counts: Union[np.ndarray, List[np.ndarray]], values: Union[np.ndarray, List[np.ndarray]], bar_type: Union["horizontal", "vertical"] = "horizontal", linked_axis=True, width: int = 500, height: int = 500, **kwargs) -> bokeh.plotting.Figure:
-    """Creates a figure with a barplot, were the counts is the bar height and values are the labels for the bars.
+def barplot(counts: Union[np.ndarray, List[np.ndarray]], values: Union[np.ndarray, List[np.ndarray]], bar_type: Union["horizontal", "vertical"] = "horizontal", linked_axis=True, width: int = 500, height: int = 500, **kwargs) -> bokeh.plotting.figure:
+    """Creates a 
+    with a barplot, were the counts is the bar height and values are the labels for the bars.
     Input can be a numpy array or a list of numpy array to create multiple plots.
     """
     if isinstance(counts, list) and isinstance(values, list):
@@ -71,7 +72,7 @@ def barplot(counts: Union[np.ndarray, List[np.ndarray]], values: Union[np.ndarra
         raise TypeError("counts and values need to be of the same type (list or np.ndarray)")
 
 # Cell
-def histogram(values: Union[np.ndarray, List[np.ndarray]], bins: int = 10, range: Tuple[int] = None, density: bool = False, remove_tools: bool = False, linked_axis=True, title="", x_label="", y_label="", orientation="horizontal", width: int = 500, height: int = 500) -> bokeh.plotting.Figure:
+def histogram(values: Union[np.ndarray, List[np.ndarray]], bins: int = 10, range: Tuple[int] = None, density: bool = False, remove_tools: bool = False, linked_axis=True, title="", x_label="", y_label="", orientation="horizontal", width: int = 500, height: int = 500) -> bokeh.plotting.figure:
     "Creates a histogram."
     if isinstance(values, np.ndarray):
         if orientation == "vertical":
@@ -115,7 +116,7 @@ def histogram(values: Union[np.ndarray, List[np.ndarray]], bins: int = 10, range
         raise TypeError("values has to be of type list or np.ndarray")
 
 # Cell
-def heatmap(data: Union[pd.DataFrame, List[pd.DataFrame]], col_x: str, col_y: str, col_values: str, color_mapper: Optional[bokeh.models.ColorMapper] = None, normalize: str = "None", link_plots: bool = True, height: int = 500, width: int = 500) -> bokeh.plotting.Figure:
+def heatmap(data: Union[pd.DataFrame, List[pd.DataFrame]], col_x: str, col_y: str, col_values: str, color_mapper: Optional[bokeh.models.ColorMapper] = None, normalize: str = "None", link_plots: bool = True, height: int = 500, width: int = 500) -> bokeh.plotting.figure:
     def _heatmap(df: pd.DataFrame, col_x: str, col_y: str, col_values: str, color_mapper: Optional[bokeh.models.ColorMapper] = None, normalize: str = "None", height: int = 500, width: int = 500, x_range=None, y_range=None):
         df = df.copy()
 
@@ -193,7 +194,7 @@ def heatmap(data: Union[pd.DataFrame, List[pd.DataFrame]], col_x: str, col_y: st
         raise TypeError("Data has to be of type list or pd.Dataframe")
 
 # Cell
-def time_arc_plot(start_dates: pd.core.series.Series, end_dates: Iterable[datetime.datetime], width: int = 500, height: int  = 300) -> bokeh.plotting.Figure:
+def time_arc_plot(start_dates: pd.core.series.Series, end_dates: Iterable[datetime.datetime], width: int = 500, height: int  = 300) -> bokeh.plotting.figure:
     """Creates a plot of arcs where each ark spans from a start date to an end date."""
     radius = (end_dates-start_dates)/2
     x = start_dates + radius
