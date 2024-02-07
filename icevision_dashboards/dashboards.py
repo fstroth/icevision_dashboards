@@ -263,6 +263,7 @@ class ObjectDetectionResultOverview(Dashboard):
                 coordinate += center_size
         return coordinates
 
+    
     def build_loss_tab(self):
         # loss hists
         fig_loss_hists, ax_loss_hists = plt.subplots(1, len(self.loss_keys), figsize=(16*5,9))
@@ -270,13 +271,16 @@ class ObjectDetectionResultOverview(Dashboard):
         for single_ax, key in zip(ax_loss_hists, self.loss_keys):
             single_ax.hist(unique_losses[key].values, bins=20)
             single_ax.set_title(" ".join(key.split("_")).title(), fontsize=40)
-            for tick in single_ax.xaxis.get_major_ticks():
-                tick.label.set_fontsize(34)
-                tick.label.set_rotation(45)
-            for tick in single_ax.yaxis.get_major_ticks():
-                tick.label.set_fontsize(34)
+
+            # Update x-axis tick labels
+            single_ax.tick_params(axis='x', labelsize=34, rotation=45)
+
+            # Update y-axis tick labels
+            single_ax.tick_params(axis='y', labelsize=34)
+
         plt.tight_layout()
         plt.close()
+
         loss_hists_col = pn.pane.Matplotlib(fig_loss_hists, width=self.width)
         axis_cols = ['score', 'area_normalized', 'area', 'bbox_ratio', 'bbox_width', 'bbox_height', 'num_annotations'] + self.loss_keys + ['width', 'height']
         scatter_overview = scatter_plot_with_gui(
